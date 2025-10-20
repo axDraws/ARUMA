@@ -1,0 +1,186 @@
+:root {
+  --olive: #a5b49f;
+  --olive-dark: #8a9b85;
+  --yellow-pastel: #fff5b7;
+  --bg-light: #ffffff;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg-light);
+}
+
+/* Botón personalizado */
+.btn-olive {
+  background-color: var(--olive);
+  color: white;
+  border: none;
+}
+.btn-olive:hover {
+  background-color: var(--olive-dark);
+  color: white;
+}
+
+.text-olive {
+  color: var(--olive-dark);
+}
+
+/* Galería tipo Pinterest */
+.masonry-gallery {
+  columns: 4 200px;
+  column-gap: 1rem;
+}
+.masonry-gallery img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.masonry-gallery img:hover {
+  transform: scale(1.03);
+}
+
+/* Modal imagen */
+.img-modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px) brightness(0.3);
+}
+
+.img-modal img {
+  display: block;
+  margin: auto;
+  max-width: 80%;
+  border-radius: 10px;
+}
+
+.img-modal .close {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}
+:root {
+  --olive: #a5b49f;
+  --olive-dark: #8a9b85;
+  --yellow-pastel: #fff5b7;
+  --bg-light: #ffffff;
+}
+
+/* Botón custom */
+.btn-olive {
+  background-color: var(--olive);
+  color: #fff;
+  border: none;
+}
+.btn-olive:hover,
+.btn-olive:focus {
+  background-color: var(--olive-dark);
+  color: #fff;
+}
+
+/* Modal personalizado - fondo con blur y oscurecimiento */
+.modal-backdrop.show {
+  /* aplicar blur y atenuación al fondo */
+  backdrop-filter: blur(6px) brightness(0.45);
+  background-color: rgba(0,0,0,0.25); /* fallback */
+}
+
+/* Estética del modal (card flotante) */
+.modal-content {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  border: none;
+  padding: 1rem;
+}
+
+/* Ajustes del header del modal */
+.modal-header .modal-title {
+  font-weight: 600;
+}
+
+/* Inputs y enfoque */
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(165,180,159,0.18);
+  border-color: var(--olive-dark);
+}
+
+/* Botón grande dentro del modal */
+.modal .btn-olive.btn-lg {
+  padding: .7rem;
+  font-size: 1rem;
+  border-radius: .5rem;
+}
+
+/* Pequeñas mejoras responsive */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 1rem;
+  
+  }
+  :root {
+  --olive: #a5b49f;
+  --olive-dark: #8a9b85;
+  --yellow-pastel: #fff5b7;
+  --bg-light: #ffffff;
+}
+
+/* Botón custom */
+.btn-olive {
+  background-color: var(--olive);
+  color: #fff;
+  border: none;
+}
+.btn-olive:hover,
+.btn-olive:focus {
+  background-color: var(--olive-dark);
+  color: #fff;
+}
+
+/* Modal personalizado - fondo con blur y oscurecimiento */
+.modal-backdrop.show {
+  /* aplicar blur y atenuación al fondo */
+  backdrop-filter: blur(6px) brightness(0.45);
+  background-color: rgba(0,0,0,0.25); /* fallback */
+}
+
+/* Estética del modal (card flotante) */
+.modal-content {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  border: none;
+  padding: 1rem;
+}
+
+/* Ajustes del header del modal */
+.modal-header .modal-title {
+  font-weight: 600;
+}
+
+/* Inputs y enfoque */
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(165,180,159,0.18);
+  border-color: var(--olive-dark);
+}
+
+/* Botón grande dentro del modal */
+.modal .btn-olive.btn-lg {
+  padding: .7rem;
+  font-size: 1rem;
+  border-radius: .5rem;
+}
+
+/* Pequeñas mejoras responsive */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 1rem;
+  }
+}
+}

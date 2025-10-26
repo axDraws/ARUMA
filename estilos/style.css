@@ -193,14 +193,20 @@ body {
 }
 
 /* Hero Section */
+
+/* --- estilos de footer, botones, etc. --- */
+
+/* Hero Section Fondo */
 .hero {
-    background: linear-gradient(135deg, var(--cambridge-blue-dark), var(--cambridge-blue-light), var(--mindaro));
+    background-image: url('../img/aruma spa/abstract-dark-green-leaf-floral-pattern-background-illustration-vector.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     align-items: center;
+    color: #fff;
     position: relative;
-    overflow: hidden;
-    padding-top: 80px;
 }
 
 .hero::before {

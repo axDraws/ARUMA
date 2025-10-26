@@ -1,169 +1,475 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARUMA Spa</title>
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Estilos personalizados -->
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aruma Spa - Bienestar y Belleza</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="estilos/style.css">
 </head>
-<!-- LOGIN MODAL -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 shadow-lg">
-      <div class="modal-header border-0">
-        <h5 class="modal-title text-olive" id="loginModalLabel">Iniciar sesión</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-
-      <div class="modal-body">
-        <form id="loginForm" novalidate>
-          <div class="mb-3">
-            <label for="email" class="form-label">Correo</label>
-            <input id="email" type="email" class="form-control" placeholder="tu@correo.com" required>
-            <div class="invalid-feedback">Introduce un correo válido.</div>
-          </div>
-
-          <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input id="password" type="password" class="form-control" placeholder="••••••••" required minlength="6">
-            <div class="invalid-feedback">La contraseña es obligatoria (mínimo 6 caracteres).</div>
-          </div>
-
-          <div class="d-grid mt-3">
-            <button type="submit" class="btn btn-olive btn-lg">Entrar</button>
-          </div>
-
-          <div class="text-center mt-3">
-            <small class="text-muted">¿No tienes cuenta? <a href="#">Regístrate</a></small>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 <body>
-
-  <!-- NAVBAR -->
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fs-3 fw-bold text-olive" href="#">ARUMA</a>
-
-    <!-- resto del nav ... -->
-
-    <div class="ms-auto">
-      <!-- Botón que abre el modal de login -->
-      <button type="button" class="btn btn-olive" data-bs-toggle="modal" data-bs-target="#loginModal">
-        Login
-      </button>
-    </div>
-  </div>
-</nav>
-
-
-  <!-- HERO -->
-  <section class="text-center py-5 bg-light">
-    <div class="container">
-      <h1 class="display-5 fw-bold text-olive">Bienvenido a ARUMA Spa</h1>
-      <p class="lead text-muted">Tu espacio para relajarte, renovar tu energía y cuidar tu cuerpo.</p>
-    </div>
-  </section>
-
-  <!-- CARRUSEL DE SERVICIOS -->
-  <section class="container py-5">
-    <h2 class="text-center text-olive mb-4">Nuestros Servicios</h2>
-    <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-
-        <div class="carousel-item active">
-          <img src="img/servicios/masaje.jpg" class="d-block w-100 rounded" alt="Masajes relajantes">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Masajes Relajantes</h5>
-            <p>Equilibra cuerpo y mente.</p>
-            <a href="login.html" class="btn btn-olive">Agendar cita</a>
-          </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-spa"></i> ARUMA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+                </ul>
+                <button class="btn btn-login ms-3" id="btnLogin">
+                    <i class="fas fa-user"></i> Iniciar Sesión
+                </button>
+            </div>
         </div>
+    </nav>
 
-        <div class="carousel-item">
-          <img src="img/servicios/facial.jpg" class="d-block w-100 rounded" alt="Faciales naturales">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>Faciales Naturales</h5>
-            <p>Nutre y rejuvenece tu piel.</p>
-            <a href="login.html" class="btn btn-olive">Agendar cita</a>
-          </div>
+    <!-- Modal de Login -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-modal">
+            <button class="btn-close-modal" id="btnCloseLogin">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="text-center mb-4">Iniciar Sesión</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" placeholder="tu@email.com">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" placeholder="••••••••">
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">Recordarme</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                <div class="text-center mt-3">
+                    <a href="#" class="text-muted">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
         </div>
-
-      </div>
-
-      <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
     </div>
-  </section>
 
-  <!-- CARRUSEL DE PRODUCTOS -->
-  <section class="bg-olive-light py-5">
-    <div class="container">
-      <h2 class="text-center text-olive mb-4">Productos que usamos</h2>
-      <div id="productosCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner text-center">
-
-          <div class="carousel-item active">
-            <img src="img/productos/aceite1.jpg" class="w-50 rounded" alt="Aceite Esencial">
-            <p class="mt-2">Aceite Esencial de Lavanda</p>
-          </div>
-
-          <div class="carousel-item">
-            <img src="img/productos/crema1.jpg" class="w-50 rounded" alt="Crema hidratante">
-            <p class="mt-2">Crema Hidratante Natural</p>
-          </div>
-
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Bienvenido a Aruma Spa</h1>
+                    <p class="hero-subtitle">Tu espacio de bienestar y relajación</p>
+                    <a href="#servicios" class="btn btn-hero">Conoce Nuestros Servicios</a>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#productosCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
+    <!-- Carrusel de Servicios -->
+    <section id="servicios" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
+            <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-spa service-icon"></i>
+                                    <h3>Masajes Relajantes</h3>
+                                    <p>Libera tensiones con nuestros masajes terapéuticos personalizados</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-water service-icon"></i>
+                                    <h3>Hidroterapia</h3>
+                                    <p>Tratamientos con agua para revitalizar cuerpo y mente</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-leaf service-icon"></i>
+                                    <h3>Aromaterapia</h3>
+                                    <p>Terapias naturales con aceites esenciales</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-hands service-icon"></i>
+                                    <h3>Tratamientos Faciales</h3>
+                                    <p>Cuida tu piel con productos de alta calidad</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-heartbeat service-icon"></i>
+                                    <h3>Reflexología</h3>
+                                    <p>Equilibra tu energía a través de puntos de presión</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-fire service-icon"></i>
+                                    <h3>Piedras Calientes</h3>
+                                    <p>Masaje con piedras volcánicas calientes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-dumbbell service-icon"></i>
+                                    <h3>Yoga & Meditación</h3>
+                                    <p>Clases guiadas para conectar cuerpo y mente</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-cut service-icon"></i>
+                                    <h3>Manicure & Pedicure</h3>
+                                    <p>Cuidado completo para manos y pies</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="service-card">
+                                    <i class="fas fa-compress service-icon"></i>
+                                    <h3>Sauna & Vapor</h3>
+                                    <p>Desintoxica tu cuerpo en un ambiente relajante</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Carrusel Marca 1 -->
+    <section id="productos" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Productos que Utilizamos</h2>
+            
+            <h3 class="text-center mb-4">Línea Premium Natural</h3>
+            <div id="marca1Carousel" class="carousel slide mb-5" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <h4>Aceite de Argán</h4>
+                                    <p>100% orgánico</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-flask"></i>
+                                    </div>
+                                    <h4>Sérum Vitamina C</h4>
+                                    <p>Anti-edad</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <h4>Crema Aloe Vera</h4>
+                                    <p>Hidratación profunda</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-spa"></i>
+                                    </div>
+                                    <h4>Mascarilla Arcilla</h4>
+                                    <p>Purificante</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                    <h4>Aceite Esencial Lavanda</h4>
+                                    <p>Relajante</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-mortar-pestle"></i>
+                                    </div>
+                                    <h4>Exfoliante Natural</h4>
+                                    <p>Grano fino</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-fire-alt"></i>
+                                    </div>
+                                    <h4>Aceite de Masaje</h4>
+                                    <p>Efecto calor</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-moon"></i>
+                                    </div>
+                                    <h4>Crema Nocturna</h4>
+                                    <p>Regeneradora</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#marca1Carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#marca1Carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+
+            <!-- Carrusel Marca 2 -->
+            <h3 class="text-center mb-4 mt-5">Línea Luxury Professional</h3>
+            <div id="marca2Carousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-gem"></i>
+                                    </div>
+                                    <h4>Caviar Gold Serum</h4>
+                                    <p>Lujo premium</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <h4>Ácido Hialurónico</h4>
+                                    <p>Efecto lifting</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-certificate"></i>
+                                    </div>
+                                    <h4>Colágeno Marino</h4>
+                                    <p>Anti-arrugas</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <h4>Oro 24K Mask</h4>
+                                    <p>Revitalizante</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-magic"></i>
+                                    </div>
+                                    <h4>Peeling Diamante</h4>
+                                    <p>Microdermoabrasión</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <h4>Vitamina E Pro</h4>
+                                    <p>Antioxidante</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-snowflake"></i>
+                                    </div>
+                                    <h4>Cryo Gel</h4>
+                                    <p>Efecto frío</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="product-card">
+                                    <div class="product-img">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h4>SPF 50+ Defense</h4>
+                                    <p>Protección solar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#marca2Carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#marca2Carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería Pinterest Style -->
+    <section id="galeria" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Nuestra Galería</h2>
+            <div class="pinterest-grid">
+                <div class="pinterest-item" data-title="Sala de Masajes">
+                    <div class="pinterest-content">
+                        <i class="fas fa-bed gallery-icon"></i>
+                        <h4>Sala de Masajes</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item tall" data-title="Área de Relajación">
+                    <div class="pinterest-content">
+                        <i class="fas fa-couch gallery-icon"></i>
+                        <h4>Área de Relajación</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item" data-title="Tratamiento Facial">
+                    <div class="pinterest-content">
+                        <i class="fas fa-user gallery-icon"></i>
+                        <h4>Tratamiento Facial</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item wide" data-title="Piscina Termal">
+                    <div class="pinterest-content">
+                        <i class="fas fa-swimming-pool gallery-icon"></i>
+                        <h4>Piscina Termal</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item" data-title="Sauna">
+                    <div class="pinterest-content">
+                        <i class="fas fa-hot-tub gallery-icon"></i>
+                        <h4>Sauna</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item tall" data-title="Yoga Studio">
+                    <div class="pinterest-content">
+                        <i class="fas fa-om gallery-icon"></i>
+                        <h4>Yoga Studio</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item" data-title="Recepción">
+                    <div class="pinterest-content">
+                        <i class="fas fa-concierge-bell gallery-icon"></i>
+                        <h4>Recepción</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item" data-title="Manicure">
+                    <div class="pinterest-content">
+                        <i class="fas fa-hand-sparkles gallery-icon"></i>
+                        <h4>Manicure</h4>
+                    </div>
+                </div>
+                <div class="pinterest-item wide" data-title="Jardín Zen">
+                    <div class="pinterest-content">
+                        <i class="fas fa-tree gallery-icon"></i>
+                        <h4>Jardín Zen</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Galería -->
+    <div class="gallery-overlay" id="galleryOverlay">
+        <button class="btn-close-gallery" id="btnCloseGallery">
+            <i class="fas fa-times"></i>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#productosCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
-      </div>
+        <div class="gallery-modal-content">
+            <i class="gallery-modal-icon"></i>
+            <h3 class="gallery-modal-title"></h3>
+        </div>
     </div>
-  </section>
 
-  <!-- GALERÍA -->
-  <section class="container py-5">
-    <h2 class="text-center text-olive mb-4">Galería ARUMA</h2>
-    <div class="masonry-gallery">
-      <img src="img/galeria/1.jpg" alt="">
-      <img src="img/galeria/2.jpg" alt="">
-      <img src="img/galeria/3.jpg" alt="">
-      <img src="img/galeria/4.jpg" alt="">
-      <img src="img/galeria/5.jpg" alt="">
-    </div>
-  </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-spa"></i> ARUMA SPA</h5>
+                    <p>Tu espacio de bienestar donde cuerpo y mente encuentran armonía perfecta.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="footer-links">
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#galeria">Galería</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Síguenos</h5>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-3 border-top">
+                <p>&copy; 2024 Aruma Spa. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
 
-  <!-- MODAL para imágenes -->
-  <div id="imgModal" class="img-modal">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="imgModalContent">
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="text-center py-4 bg-light text-muted">
-    <p>&copy; 2025 ARUMA Spa — Cuidando tu bienestar 🌿</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
-

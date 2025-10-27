@@ -1547,3 +1547,105 @@ html {
 .btn-success:hover {
     background-color: #4c7761;
 }
+
+
+/* ===== CARRUSEL DE SERVICIOS ===== */
+.service-card {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 15px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.service-img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.service-img:hover {
+  transform: scale(1.05);
+}
+
+/* ===== MODAL ===== */
+.service-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.service-modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  max-width: 900px;
+  width: 90%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.service-modal-body {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+}
+
+.service-modal-text {
+  flex: 1;
+}
+
+.service-modal-text h3 {
+  color: #3b4a3f;
+  margin-bottom: 1rem;
+}
+
+.service-modal-image img {
+  max-width: 320px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.service-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  color: #3b4a3f;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.service-modal-close:hover {
+  color: #1f2a22;
+}
+
+@media (max-width: 768px) {
+  .service-modal-body {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .service-modal-image img {
+    max-width: 100%;
+  }
+}

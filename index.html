@@ -74,104 +74,94 @@
 </section>
    
 
-    <!-- Carrusel de Servicios -->
-    <section id="servicios" class="py-5">
-        <div class="container">
-            <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
-            <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="0" class="active"></button>
-                    <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="1"></button>
-                    <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="2"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-spa service-icon"></i>
-                                    <h3>Masajes Relajantes</h3>
-                                    <p>Libera tensiones con nuestros masajes terapéuticos personalizados</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-water service-icon"></i>
-                                    <h3>Hidroterapia</h3>
-                                    <p>Tratamientos con agua para revitalizar cuerpo y mente</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-leaf service-icon"></i>
-                                    <h3>Aromaterapia</h3>
-                                    <p>Terapias naturales con aceites esenciales</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-hands service-icon"></i>
-                                    <h3>Tratamientos Faciales</h3>
-                                    <p>Cuida tu piel con productos de alta calidad</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-heartbeat service-icon"></i>
-                                    <h3>Reflexología</h3>
-                                    <p>Equilibra tu energía a través de puntos de presión</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-fire service-icon"></i>
-                                    <h3>Piedras Calientes</h3>
-                                    <p>Masaje con piedras volcánicas calientes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-dumbbell service-icon"></i>
-                                    <h3>Yoga & Meditación</h3>
-                                    <p>Clases guiadas para conectar cuerpo y mente</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-cut service-icon"></i>
-                                    <h3>Manicure & Pedicure</h3>
-                                    <p>Cuidado completo para manos y pies</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="service-card">
-                                    <i class="fas fa-compress service-icon"></i>
-                                    <h3>Sauna & Vapor</h3>
-                                    <p>Desintoxica tu cuerpo en un ambiente relajante</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
-        </div>
-    </section>
+<!-- Carrusel de Servicios con Modal -->
+<section id="servicios" class="py-5">
+  <div class="container">
+    <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
 
-    <!-- Carrusel Marca 1 -->
+    <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="1"></button>
+      </div>
+
+      <div class="carousel-inner">
+        <!-- Grupo 1 -->
+        <div class="carousel-item active">
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="service-card">
+                <img src="img/servicios/uñas.jpg" alt="UÑAS" class="service-img" data-title="UÑAS" data-desc="Manicure, Pedicure, Gel semi permanente, Gel de imersion, Soft gel">
+                <h3>Gel semi permanente</h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="service-card">
+                <img src="img/servicios/manicura.jpg" alt="Hidroterapia" class="service-img" data-title="Hidroterapia" data-desc="Tratamientos con agua para revitalizar cuerpo y mente mediante chorros, burbujas y temperatura controlada.">
+                <h3>Manicura</h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="service-card">
+                <img src="img/servicios/pedicura.jpg" alt="Aromaterapia" class="service-img" data-title="Aromaterapia" data-desc="Terapias naturales con aceites esenciales que promueven la calma y el bienestar.">
+                <h3>Pedicura</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grupo 2 -->
+        <div class="carousel-item">
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="service-card">
+                <img src="img/facial.jpg" alt="Tratamientos Faciales" class="service-img" data-title="Tratamientos Faciales" data-desc="Cuida tu piel con productos naturales y técnicas que limpian, hidratan y rejuvenecen.">
+                <h3>Tratamientos Faciales</h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="service-card">
+                <img src="img/piedras.jpg" alt="Piedras Calientes" class="service-img" data-title="Piedras Calientes" data-desc="Masaje con piedras volcánicas calientes para aliviar la tensión muscular y promover la relajación profunda.">
+                <h3>Piedras Calientes</h3>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="service-card">
+                <img src="img/yoga.jpg" alt="Yoga & Meditación" class="service-img" data-title="Yoga & Meditación" data-desc="Clases guiadas para conectar cuerpo, mente y espíritu a través del movimiento consciente.">
+                <h3>Yoga & Meditación</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="serviceModal" class="service-modal">
+  <div class="service-modal-content">
+    <span class="service-modal-close">&times;</span>
+    <div class="service-modal-body">
+      <div class="service-modal-text">
+        <h3 id="serviceTitle"></h3>
+        <p id="serviceDescription"></p>
+      </div>
+      <div class="service-modal-image">
+        <img id="serviceImage" src="" alt="Servicio">
+      </div>
+    </div>
+  </div>
+</div>
+
+       <!-- Carrusel Marca 1 -->
     <section id="productos" class="py-5 bg-light">
         <div class="container">
             <h2 class="section-title text-center mb-5">Productos que Utilizamos</h2>

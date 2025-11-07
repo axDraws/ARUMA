@@ -366,37 +366,43 @@ body {
     border-color: var(--cambridge-blue-dark);
 }
 
+/* Imagen del producto */
 .product-img {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, var(--cambridge-blue-dark), var(--mindaro));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
     margin: 0 auto 1rem;
     transition: all 0.3s ease;
+    background: #f8f8f8;
 }
 
-.product-card:hover .product-img {
-    transform: rotate(360deg);
+/* Imagen dentro del contenedor */
+.product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
-.product-img i {
-    font-size: 2rem;
-    color: var(--white);
+/* Efecto zoom al pasar el mouse */
+.product-card:hover .product-img img {
+    transform: scale(1.08);
 }
 
+/* Título del producto */
 .product-card h4 {
     color: var(--cambridge-blue-dark);
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
 }
 
+/* Descripción del producto */
 .product-card p {
     color: var(--gray);
     font-size: 0.9rem;
 }
+
 
 /* Pinterest Gallery */
 .pinterest-grid {

@@ -1,20 +1,35 @@
+
 // Variables globales
 const loginOverlay = document.getElementById('loginOverlay');
+const registerOverlay = document.getElementById('registerOverlay'); // Nuevo modal de registro
 const btnLogin = document.getElementById('btnLogin');
 const btnCloseLogin = document.getElementById('btnCloseLogin');
+const btnCloseRegister = document.getElementById('btnCloseRegister'); // Botón cerrar registro
 const galleryOverlay = document.getElementById('galleryOverlay');
 const btnCloseGallery = document.getElementById('btnCloseGallery');
 const pinterestItems = document.querySelectorAll('.pinterest-item');
 
-// Función para abrir modal de login
+// Funciones para modales de Login
 function openLoginModal() {
     loginOverlay.classList.add('active');
+    registerOverlay?.classList.remove('active');
     document.body.style.overflow = 'hidden';
 }
 
-// Función para cerrar modal de login
 function closeLoginModal() {
     loginOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Funciones para modales de Registro
+function openRegisterModal() {
+    registerOverlay.classList.add('active');
+    loginOverlay?.classList.remove('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeRegisterModal() {
+    registerOverlay.classList.remove('active');
     document.body.style.overflow = 'auto';
 }
 
@@ -37,14 +52,37 @@ function closeGallery() {
 }
 
 // Event Listeners para Login Modal
-btnLogin.addEventListener('click', openLoginModal);
-btnCloseLogin.addEventListener('click', closeLoginModal);
+btnLogin?.addEventListener('click', openLoginModal);
+btnCloseLogin?.addEventListener('click', closeLoginModal);
+btnCloseRegister?.addEventListener('click', closeRegisterModal);
+
+// Enlace “Regístrate” → cambiar de login a registro
+document.querySelectorAll('.link-register').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openRegisterModal();
+    });
+});
+
+// Enlace “¿Ya tienes cuenta?” → cambiar de registro a login
+document.querySelectorAll('.link-login').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLoginModal();
+    });
+});
 
 // Cerrar modal al hacer clic fuera de él
-loginOverlay.addEventListener('click', (e) => {
-    if (e.target === loginOverlay) {
-        closeLoginModal();
-    }
+loginOverlay?.addEventListener('click', (e) => {
+    if (e.target === loginOverlay) closeLoginModal();
+});
+
+registerOverlay?.addEventListener('click', (e) => {
+    if (e.target === registerOverlay) closeRegisterModal();
+});
+
+galleryOverlay?.addEventListener('click', (e) => {
+    if (e.target === galleryOverlay) closeGallery();
 });
 
 // Event Listeners para Galería
@@ -54,24 +92,14 @@ pinterestItems.forEach(item => {
     });
 });
 
-btnCloseGallery.addEventListener('click', closeGallery);
-
-// Cerrar galería al hacer clic fuera de la imagen
-galleryOverlay.addEventListener('click', (e) => {
-    if (e.target === galleryOverlay) {
-        closeGallery();
-    }
-});
+btnCloseGallery?.addEventListener('click', closeGallery);
 
 // Cerrar modales con tecla ESC
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        if (loginOverlay.classList.contains('active')) {
-            closeLoginModal();
-        }
-        if (galleryOverlay.classList.contains('active')) {
-            closeGallery();
-        }
+        if (loginOverlay?.classList.contains('active')) closeLoginModal();
+        if (registerOverlay?.classList.contains('active')) closeRegisterModal();
+        if (galleryOverlay?.classList.contains('active')) closeGallery();
     }
 });
 
@@ -81,9 +109,8 @@ document.querySelectorAll('form').forEach(form => {
         e.preventDefault();
         alert('Gracias por tu mensaje. En un entorno real, esto se enviaría al servidor.');
         form.reset();
-        if (loginOverlay.classList.contains('active')) {
-            closeLoginModal();
-        }
+        if (loginOverlay?.classList.contains('active')) closeLoginModal();
+        if (registerOverlay?.classList.contains('active')) closeRegisterModal();
     });
 });
 
@@ -93,13 +120,9 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 100) {
-        navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
-    } else {
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-    }
-    
+    navbar.style.boxShadow = currentScroll > 100
+        ? '0 5px 20px rgba(0, 0, 0, 0.2)'
+        : '0 2px 10px rgba(0, 0, 0, 0.1)';
     lastScroll = currentScroll;
 });
 
@@ -108,21 +131,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        
         if (target) {
             const navbarHeight = navbar.offsetHeight;
-            const targetPosition = target.offsetTop - navbarHeight;
-            
             window.scrollTo({
-                top: targetPosition,
+                top: target.offsetTop - navbarHeight,
                 behavior: 'smooth'
             });
-            
-            // Cerrar menú móvil si está abierto
             const navbarCollapse = document.querySelector('.navbar-collapse');
-            if (navbarCollapse.classList.contains('show')) {
-                navbarCollapse.classList.remove('show');
-            }
+            navbarCollapse?.classList.remove('show');
         }
     });
 });
@@ -142,7 +158,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Aplicar animación a cards
 document.querySelectorAll('.service-card, .product-card, .pinterest-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
@@ -151,80 +166,36 @@ document.querySelectorAll('.service-card, .product-card, .pinterest-item').forEa
 });
 
 // Auto-play de carruseles más lento
-const carousels = document.querySelectorAll('.carousel');
-carousels.forEach(carousel => {
-    const bsCarousel = new bootstrap.Carousel(carousel, {
-        interval: 5000,
-        wrap: true
-    });
+document.querySelectorAll('.carousel').forEach(carousel => {
+    new bootstrap.Carousel(carousel, { interval: 5000, wrap: true });
 });
 
-// Precargar imágenes de iconos (optimización)
-window.addEventListener('load', () => {
-    console.log('Aruma Spa - Página cargada correctamente');
-});
-
-// Añadir efecto parallax al hero
+// Parallax en hero
 window.addEventListener('scroll', () => {
     const hero = document.querySelector('.hero');
-    if (hero) {
-        const scrolled = window.pageYOffset;
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
+    if (hero) hero.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
 });
 
-// Animación de números (si se añaden estadísticas)
-function animateNumber(element, target, duration) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    
-    const timer = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-            element.textContent = target;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(start);
-        }
-    }, 16);
-}
-
-// Hover effect mejorado para tarjetas
+// Hover effect mejorado
 document.querySelectorAll('.service-card, .product-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.zIndex = '10';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.zIndex = '1';
-    });
+    card.addEventListener('mouseenter', () => card.style.zIndex = '10');
+    card.addEventListener('mouseleave', () => card.style.zIndex = '1');
 });
 
-// Detectar si el usuario está en móvil para ajustar interacciones
+// Ajustes móviles
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
 if (isMobile) {
-    // Ajustar comportamiento táctil
     pinterestItems.forEach(item => {
-        item.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.95)';
-        });
-        
-        item.addEventListener('touchend', function() {
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 100);
-        });
+        item.addEventListener('touchstart', () => item.style.transform = 'scale(0.95)');
+        item.addEventListener('touchend', () => setTimeout(() => item.style.transform = '', 100));
     });
 }
 
-// Prevenir zoom en doble tap en iOS
+// Prevenir zoom en doble tap (iOS)
 let lastTouchEnd = 0;
 document.addEventListener('touchend', (e) => {
     const now = Date.now();
-    if (now - lastTouchEnd <= 300) {
-        e.preventDefault();
-    }
+    if (now - lastTouchEnd <= 300) e.preventDefault();
     lastTouchEnd = now;
 }, false);
 

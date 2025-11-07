@@ -32,34 +32,72 @@
         </div>
     </nav>
 
-    <!-- Modal de Login -->
-    <div class="login-overlay" id="loginOverlay">
-        <div class="login-modal">
-            <button class="btn-close-modal" id="btnCloseLogin">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2 class="text-center mb-4">Iniciar Sesión</h2>
-            <form>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Correo Electrónico</label>
-                    <input type="email" class="form-control" id="email" placeholder="tu@email.com">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="password" placeholder="••••••••">
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="remember">
-                    <label class="form-check-label" for="remember">Recordarme</label>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-                <div class="text-center mt-3">
-                    <a href="#" class="text-muted">¿Olvidaste tu contraseña?</a>
-                </div>
-            </form>
-        </div>
-    </div>
+    
+<!-- Modal de Login -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-modal">
+        <button class="btn-close-modal" id="btnCloseLogin">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+        <form>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" placeholder="tu@email.com">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" placeholder="••••••••">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="remember">
+                <label class="form-check-label" for="remember">Recordarme</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
 
+            <!-- Enlaces debajo del botón -->
+            
+              
+              <div class="text-center mt-3">
+              <a href="#" class="text-muted d-block mb-2">¿Olvidaste tu contraseña?</a>
+              <a href="#" class="text-muted link-register">¿No tienes cuenta? Regístrate</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal de Registro -->
+<div class="login-overlay" id="registerOverlay">
+    <div class="login-modal">
+        <button class="btn-close-modal" id="btnCloseRegister">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="text-center mb-4">Crear Cuenta</h2>
+        <form>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre Completo</label>
+                <input type="text" class="form-control" id="nombre" placeholder="Tu nombre completo" required>
+            </div>
+            <div class="mb-3">
+                <label for="correoRegistro" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="correoRegistro" placeholder="tu@email.com" required>
+            </div>
+            <div class="mb-3">
+                <label for="passwordRegistro" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="passwordRegistro" placeholder="••••••••" required>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Registrarme</button>
+            <div class="text-center mt-3">
+                <a href="#" class="text-muted d-block" id="linkToLogin">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- Hero Section -->
 <section id="inicio" class="hero">
     <div class="container">

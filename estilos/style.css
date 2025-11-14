@@ -404,7 +404,7 @@ body {
 }
 
 
-/* Pinterest Gallery */
+/* --- Pinterest Gallery --- */
 .pinterest-grid {
     column-count: 3;
     column-gap: 20px;
@@ -425,137 +425,41 @@ body {
 .pinterest-item {
     break-inside: avoid;
     margin-bottom: 20px;
-    background: linear-gradient(135deg, var(--cambridge-blue-dark), var(--cambridge-blue-light));
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.3s ease;
     position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Proporción base */
 .pinterest-item::before {
     content: '';
     display: block;
     padding-top: 100%;
 }
 
+/* Más alta */
 .pinterest-item.tall::before {
     padding-top: 150%;
 }
 
-.pinterest-item.wide {
-    grid-column: span 2;
-}
-
+/* Más ancha */
 .pinterest-item.wide::before {
-    padding-top: 50%;
+    padding-top: 60%;
 }
 
-.pinterest-content {
+/* Imagen dentro del ítem — AJUSTADA SIN CORTARSE */
+.pinterest-item img {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    transition: all 0.3s ease;
-}
-
-.pinterest-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 40px rgba(143, 173, 136, 0.4);
-}
-
-.pinterest-item:hover .pinterest-content {
-    background: rgba(143, 173, 136, 0.4);
-}
-
-.gallery-icon {
-    font-size: 4rem;
-    color: var(--white);
-    margin-bottom: 1rem;
-}
-
-.pinterest-item h4 {
-    color: var(--white);
-    font-size: 1.3rem;
-    text-align: center;
-    font-weight: 600;
-}
-
-/* Gallery Overlay */
-.gallery-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     width: 100%;
     height: 100%;
-    background: rgba(143, 173, 136, 0.95);
-    backdrop-filter: blur(15px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
+    object-fit: cover; /* <<<<<< NO CORTA NADA */
+    transform: translate(-50%, -50%);
+    background: #000; /* opcional, para rellenar borde */
     transition: opacity 0.3s ease;
-}
-
-.gallery-overlay.active {
-    display: flex;
-    opacity: 1;
-}
-
-.btn-close-gallery {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    background: var(--mindaro);
-    border: none;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    color: var(--cambridge-blue-dark);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10000;
-}
-
-.btn-close-gallery:hover {
-    background: var(--white);
-    transform: rotate(90deg) scale(1.1);
-}
-    padding-top: 100%;
-}
-
-.pinterest-item.tall::before {
-    padding-top: 150%;
-}
-
-.pinterest-item.wide {
-    grid-column: span 2;
-}
-
-.pinterest-item.wide::before {
-    padding-top: 50%;
-}
-
-.pinterest-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    transition: all 0.3s ease;
 }
 
 .pinterest-item:hover {
@@ -563,24 +467,11 @@ body {
     box-shadow: 0 10px 40px rgba(27, 64, 121, 0.3);
 }
 
-.pinterest-item:hover .pinterest-content {
-    background: rgba(27, 64, 121, 0.3);
+.pinterest-item:hover img {
+    opacity: 0.85;
 }
 
-.gallery-icon {
-    font-size: 4rem;
-    color: var(--white);
-    margin-bottom: 1rem;
-}
-
-.pinterest-item h4 {
-    color: var(--white);
-    font-size: 1.3rem;
-    text-align: center;
-    font-weight: 600;
-}
-
-/* Gallery Overlay */
+/* --- Gallery Overlay Modal --- */
 .gallery-overlay {
     position: fixed;
     top: 0;
@@ -592,6 +483,7 @@ body {
     display: none;
     align-items: center;
     justify-content: center;
+    padding: 20px;
     z-index: 9999;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -602,6 +494,7 @@ body {
     opacity: 1;
 }
 
+/* Botón cerrar */
 .btn-close-gallery {
     position: fixed;
     top: 2rem;
@@ -623,9 +516,18 @@ body {
     transform: rotate(90deg) scale(1.1);
 }
 
-.gallery-modal-content {
-    text-align: center;
+/* Imagen del modal — PERFECTAMENTE AJUSTADA */
+#galleryModalImg {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain; /* <<< Nunca se corta */
+    border-radius: 15px;
     animation: zoomIn 0.4s ease;
+}
+
+/* Quitamos el título */
+.gallery-modal-title {
+    display: none !important;
 }
 
 @keyframes zoomIn {
@@ -637,18 +539,6 @@ body {
         transform: scale(1);
         opacity: 1;
     }
-}
-
-.gallery-modal-icon {
-    font-size: 10rem;
-    color: var(--mindaro);
-    margin-bottom: 2rem;
-}
-
-.gallery-modal-title {
-    color: var(--white);
-    font-size: 3rem;
-    font-weight: bold;
 }
 
 /* Contact Section */

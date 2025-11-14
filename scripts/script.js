@@ -1,10 +1,11 @@
 
 // Variables globales
 const loginOverlay = document.getElementById('loginOverlay');
-const registerOverlay = document.getElementById('registerOverlay'); // Nuevo modal de registro
+const registerOverlay = document.getElementById('registerOverlay');
 const btnLogin = document.getElementById('btnLogin');
 const btnCloseLogin = document.getElementById('btnCloseLogin');
-const btnCloseRegister = document.getElementById('btnCloseRegister'); // Botón cerrar registro
+const btnCloseRegister = document.getElementById('btnCloseRegister');
+
 const galleryOverlay = document.getElementById('galleryOverlay');
 const btnCloseGallery = document.getElementById('btnCloseGallery');
 const pinterestItems = document.querySelectorAll('.pinterest-item');
@@ -33,14 +34,18 @@ function closeRegisterModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Función para abrir galería
+/* ============================================================
+   FUNCIÓN PARA ABRIR LA GALERÍA CON IMAGEN REAL (.jpg)
+============================================================ */
+
 function openGallery(item) {
     const title = item.getAttribute('data-title');
-    const icon = item.querySelector('.gallery-icon').className;
-    
-    document.querySelector('.gallery-modal-icon').className = 'gallery-modal-icon ' + icon;
-    document.querySelector('.gallery-modal-title').textContent = title;
-    
+    const imgSrc = item.querySelector('img').src;
+
+    // Insertar en el modal
+    document.getElementById('galleryModalImg').src = imgSrc;
+    //document.getElementById('galleryModalTitle').textContent = title;
+
     galleryOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -56,7 +61,6 @@ btnLogin?.addEventListener('click', openLoginModal);
 btnCloseLogin?.addEventListener('click', closeLoginModal);
 btnCloseRegister?.addEventListener('click', closeRegisterModal);
 
-// Enlace “Regístrate” → cambiar de login a registro
 document.querySelectorAll('.link-register').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -64,7 +68,6 @@ document.querySelectorAll('.link-register').forEach(link => {
     });
 });
 
-// Enlace “¿Ya tienes cuenta?” → cambiar de registro a login
 document.querySelectorAll('.link-login').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -72,78 +75,70 @@ document.querySelectorAll('.link-login').forEach(link => {
     });
 });
 
-// Cerrar modal al hacer clic fuera de él
+// Cerrar modal al hacer clic fuera
 loginOverlay?.addEventListener('click', (e) => {
     if (e.target === loginOverlay) closeLoginModal();
 });
-
 registerOverlay?.addEventListener('click', (e) => {
     if (e.target === registerOverlay) closeRegisterModal();
 });
-
 galleryOverlay?.addEventListener('click', (e) => {
     if (e.target === galleryOverlay) closeGallery();
 });
 
-// Event Listeners para Galería
+// Abrir galería con imágenes
 pinterestItems.forEach(item => {
-    item.addEventListener('click', () => {
-        openGallery(item);
-    });
+    item.addEventListener('click', () => openGallery(item));
 });
 
 btnCloseGallery?.addEventListener('click', closeGallery);
 
-// Cerrar modales con tecla ESC
+// Tecla ESC
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        if (loginOverlay?.classList.contains('active')) closeLoginModal();
-        if (registerOverlay?.classList.contains('active')) closeRegisterModal();
-        if (galleryOverlay?.classList.contains('active')) closeGallery();
+        closeLoginModal();
+        closeRegisterModal();
+        closeGallery();
     }
 });
 
-// Prevenir envío de formularios (solo frontend)
+// Formularios (demo)
 document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        alert('Gracias por tu mensaje. En un entorno real, esto se enviaría al servidor.');
+        alert('Gracias por tu mensaje. Esto es un ejemplo.');
         form.reset();
-        if (loginOverlay?.classList.contains('active')) closeLoginModal();
-        if (registerOverlay?.classList.contains('active')) closeRegisterModal();
+        closeLoginModal();
+        closeRegisterModal();
     });
 });
 
-// Navbar transparente/sólido al hacer scroll
+// Navbar sombra scroll
 const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
-
 window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    navbar.style.boxShadow = currentScroll > 100
-        ? '0 5px 20px rgba(0, 0, 0, 0.2)'
-        : '0 2px 10px rgba(0, 0, 0, 0.1)';
-    lastScroll = currentScroll;
+    navbar.style.boxShadow =
+        window.pageYOffset > 100
+            ? '0 5px 20px rgba(0, 0, 0, 0.2)'
+            : '0 2px 10px rgba(0, 0, 0, 0.1)';
 });
 
-// Smooth scroll para enlaces del navbar
+// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const navbarHeight = navbar.offsetHeight;
-            window.scrollTo({
-                top: target.offsetTop - navbarHeight,
-                behavior: 'smooth'
-            });
-            const navbarCollapse = document.querySelector('.navbar-collapse');
-            navbarCollapse?.classList.remove('show');
-        }
+        const navbarHeight = navbar.offsetHeight;
+
+        window.scrollTo({
+            top: target.offsetTop - navbarHeight,
+            behavior: 'smooth'
+        });
+
+        document.querySelector('.navbar-collapse')?.classList.remove('show');
     });
 });
 
-// Animación de aparición para elementos al hacer scroll
+// Animación scroll
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -165,24 +160,24 @@ document.querySelectorAll('.service-card, .product-card, .pinterest-item').forEa
     observer.observe(el);
 });
 
-// Auto-play de carruseles más lento
+// Carruseles
 document.querySelectorAll('.carousel').forEach(carousel => {
     new bootstrap.Carousel(carousel, { interval: 5000, wrap: true });
 });
 
-// Parallax en hero
+// Parallax
 window.addEventListener('scroll', () => {
     const hero = document.querySelector('.hero');
     if (hero) hero.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
 });
 
-// Hover effect mejorado
+// Hover Z-index
 document.querySelectorAll('.service-card, .product-card').forEach(card => {
     card.addEventListener('mouseenter', () => card.style.zIndex = '10');
     card.addEventListener('mouseleave', () => card.style.zIndex = '1');
 });
 
-// Ajustes móviles
+// Móviles
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 if (isMobile) {
     pinterestItems.forEach(item => {
@@ -191,7 +186,7 @@ if (isMobile) {
     });
 }
 
-// Prevenir zoom en doble tap (iOS)
+// Prevenir doble tap zoom (iOS)
 let lastTouchEnd = 0;
 document.addEventListener('touchend', (e) => {
     const now = Date.now();
@@ -199,4 +194,4 @@ document.addEventListener('touchend', (e) => {
     lastTouchEnd = now;
 }, false);
 
-console.log('Aruma Spa - Scripts cargados correctamente ✨');
+console.log('Aruma Spa - Scripts cargados correctamente ✨ (versión imágenes)');

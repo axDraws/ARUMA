@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aruma Spa - Bienestar y Belleza</title>
-    <link rel="stylesheet" href="estilos/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/estilos/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="estilos/style.css">
-    <link rel="icon" type="image/png" href="img/aruma spa/logo1.jpg">
+    <link rel="stylesheet" href="../public/estilos/style.css">
+    <link rel="icon" type="image/png" href="../public/img/aruma spa/logo1.jpg">
 </head>
 <body>
     <!-- Navbar -->
@@ -40,66 +40,31 @@
         <button class="btn-close-modal" id="btnCloseLogin">
             <i class="fas fa-times"></i>
         </button>
+
         <h2 class="text-center mb-4">Iniciar Sesión</h2>
-        <form>
+
+        <!-- FORMULARIO REAL DE LOGIN -->
+        <form method="POST" action="/login">
             <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" placeholder="tu@email.com">
+                <label for="email_login" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" name="email" id="email_login" required>
             </div>
+
             <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" placeholder="••••••••">
+                <label for="password_login" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="password" id="password_login" required>
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="remember">
-                <label class="form-check-label" for="remember">Recordarme</label>
-            </div>
+
             <button type="submit" class="btn btn-primary w-100">Ingresar</button>
 
-            <!-- Enlaces debajo del botón -->
-            
-              
-              <div class="text-center mt-3">
-              <a href="#" class="text-muted d-block mb-2">¿Olvidaste tu contraseña?</a>
-              <a href="#" class="text-muted link-register">¿No tienes cuenta? Regístrate</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<!-- Modal de Registro -->
-<div class="login-overlay" id="registerOverlay">
-    <div class="login-modal">
-        <button class="btn-close-modal" id="btnCloseRegister">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 class="text-center mb-4">Crear Cuenta</h2>
-        <form>
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre Completo</label>
-                <input type="text" class="form-control" id="nombre" placeholder="Tu nombre completo" required>
-            </div>
-            <div class="mb-3">
-                <label for="correoRegistro" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="correoRegistro" placeholder="tu@email.com" required>
-            </div>
-            <div class="mb-3">
-                <label for="passwordRegistro" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="passwordRegistro" placeholder="••••••••" required>
-            </div>
-            <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Registrarme</button>
             <div class="text-center mt-3">
-                <a href="#" class="text-muted d-block" id="linkToLogin">¿Ya tienes cuenta? Inicia sesión</a>
+                <a href="#" class="text-muted d-block mb-2">¿Olvidaste tu contraseña?</a>
+                <a href="#" class="text-muted link-register">¿No tienes cuenta? Regístrate</a>
             </div>
         </form>
     </div>
 </div>
-<!-- Hero Section -->
+!-- Hero Section -->
 <section id="inicio" class="hero">
     <div class="container">
         <div class="row align-items-center">
@@ -113,6 +78,40 @@
 </section>
  
 
+<!-- Modal de Registro -->
+<div class="login-overlay" id="registerOverlay">
+    <div class="login-modal">
+        <button class="btn-close-modal" id="btnCloseRegister">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <h2 class="text-center mb-4">Crear Cuenta</h2>
+
+        <!-- FORMULARIO REAL DE REGISTRO -->
+        <form method="POST" action="/register">
+            <div class="mb-3">
+                <label class="form-label">Nombre Completo</label>
+                <input type="text" class="form-control" name="nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Registrarme</button>
+
+            <div class="text-center mt-3">
+                <a href="#" class="text-muted d-block" id="linkToLogin">¿Ya tienes cuenta? Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- Carrusel de Servicios con Modal -->
 <section id="servicios" class="py-5">
   <div class="container">
@@ -140,19 +139,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/uñas.jpg" alt="UÑAS" class="service-img" data-title="UÑAS" data-desc="Manicure, Pedicure, Gel semi permanente, Gel de inmersión, Soft gel.">
+                <img src="../public/img/servicios/uñas.jpg" alt="UÑAS" class="service-img" data-title="UÑAS" data-desc="Manicure, Pedicure, Gel semi permanente, Gel de inmersión, Soft gel.">
                 <h3>Gel semi permanente</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/manicura.jpg" alt="Manicura" class="service-img" data-title="Manicura" data-desc="Cuidado profesional de uñas y cutículas.">
+                <img src="../public/img/servicios/manicura.jpg" alt="Manicura" class="service-img" data-title="Manicura" data-desc="Cuidado profesional de uñas y cutículas.">
                 <h3>Manicura</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/pedicura.jpg" alt="Pedicura" class="service-img" data-title="Pedicura" data-desc="Tratamiento estético para pies que limpia, hidrata y embellece.">
+                <img src="../public/img/servicios/pedicura.jpg" alt="Pedicura" class="service-img" data-title="Pedicura" data-desc="Tratamiento estético para pies que limpia, hidrata y embellece.">
                 <h3>Pedicura</h3>
               </div>
             </div>
@@ -164,19 +163,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/gel de inmercion.jpg" alt="Gel de Inmersión" class="service-img" data-title="Gel de Inmersión" data-desc="Técnica avanzada que ofrece uñas duraderas con acabado natural.">
+                <img src="../public/img/servicios/gel de inmercion.jpg" alt="Gel de Inmersión" class="service-img" data-title="Gel de Inmersión" data-desc="Técnica avanzada que ofrece uñas duraderas con acabado natural.">
                 <h3>Gel de inmersión</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/softGel.jpg" alt="Soft Gel" class="service-img" data-title="Soft Gel" data-desc="Extensiones ligeras y resistentes con un acabado perfecto.">
+                <img src="../public/img/servicios/softGel.jpg" alt="Soft Gel" class="service-img" data-title="Soft Gel" data-desc="Extensiones ligeras y resistentes con un acabado perfecto.">
                 <h3>Soft Gel</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/lavadoDeCabello.jpg" alt="Lavado de Cabello" class="service-img" data-title="Lavado de Cabello" data-desc="Limpieza profunda con productos profesionales.">
+                <img src="../public/img/servicios/lavadoDeCabello.jpg" alt="Lavado de Cabello" class="service-img" data-title="Lavado de Cabello" data-desc="Limpieza profunda con productos profesionales.">
                 <h3>Lavado de cabello</h3>
               </div>
             </div>
@@ -188,19 +187,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/peinadoSocial.jpg" alt="Peinado Social" class="service-img" data-title="Peinado Social" data-desc="Estilos elegantes para eventos especiales.">
+                <img src="../public/img/servicios/peinadoSocial.jpg" alt="Peinado Social" class="service-img" data-title="Peinado Social" data-desc="Estilos elegantes para eventos especiales.">
                 <h3>Peinado social</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/moldeado.jpg" alt="Moldeado" class="service-img" data-title="Moldeado" data-desc="Dale forma y volumen a tu cabello con técnicas suaves.">
+                <img src="../public/img/servicios/moldeado.jpg" alt="Moldeado" class="service-img" data-title="Moldeado" data-desc="Dale forma y volumen a tu cabello con técnicas suaves.">
                 <h3>Moldeado</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/planchado.png" alt="Planchado" class="service-img" data-title="Planchado" data-desc="Cabello perfectamente liso y brillante.">
+                <img src="../public/img/servicios/planchado.png" alt="Planchado" class="service-img" data-title="Planchado" data-desc="Cabello perfectamente liso y brillante.">
                 <h3>Planchado</h3>
               </div>
             </div>
@@ -212,19 +211,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/tinte.jpg" alt="Tinte" class="service-img" data-title="Tinte" data-desc="Coloración profesional con tonos vibrantes o naturales.">
+                <img src="../public/img/servicios/tinte.jpg" alt="Tinte" class="service-img" data-title="Tinte" data-desc="Coloración profesional con tonos vibrantes o naturales.">
                 <h3>Decoloracion completa</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/rizado.jpeg" alt="Reflejos" class="service-img" data-title="Reflejos" data-desc="Iluminaciones que aportan brillo y movimiento.">
+                <img src="../public/img/servicios/rizado.jpeg" alt="Reflejos" class="service-img" data-title="Reflejos" data-desc="Iluminaciones que aportan brillo y movimiento.">
                 <h3>Rizado</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/corteDama.jpg" alt="Depilación con Cera" class="service-img" data-title="Depilación con Cera" data-desc="Elimina el vello desde la raíz para una piel suave.">
+                <img src="../public/img/servicios/corteDama.jpg" alt="Depilación con Cera" class="service-img" data-title="Depilación con Cera" data-desc="Elimina el vello desde la raíz para una piel suave.">
                 <h3>Corte de dama</h3>
               </div>
             </div>
@@ -236,19 +235,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/corteCaballero.jpg" alt="Maquillaje Social" class="service-img" data-title="Maquillaje Social" data-desc="Maquillaje profesional para cualquier ocasión.">
+                <img src="../public/img/servicios/corteCaballero.jpg" alt="Maquillaje Social" class="service-img" data-title="Maquillaje Social" data-desc="Maquillaje profesional para cualquier ocasión.">
                 <h3>Maquillaje social</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/arregloBarba.jpg" alt="Diseño de Cejas" class="service-img" data-title="Diseño de Cejas" data-desc="Moldea tus cejas con precisión.">
+                <img src="../public/img/servicios/arregloBarba.jpg" alt="Diseño de Cejas" class="service-img" data-title="Diseño de Cejas" data-desc="Moldea tus cejas con precisión.">
                 <h3>Areglo de barba</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/planchadoCeja.jpg" alt="Extensión de Pestañas" class="service-img" data-title="Extensión de Pestañas" data-desc="Logra una mirada intensa con extensiones naturales.">
+                <img src="../public/img/servicios/planchadoCeja.jpg" alt="Extensión de Pestañas" class="service-img" data-title="Extensión de Pestañas" data-desc="Logra una mirada intensa con extensiones naturales.">
                 <h3>Planchado de cejas</h3>
               </div>
             </div>
@@ -260,19 +259,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/bioplastia.jpg" alt="Spa de Pies" class="service-img" data-title="Spa de Pies" data-desc="Relaja y revitaliza tus pies con sales, aceites y masajes.">
+                <img src="../public/img/servicios/bioplastia.jpg" alt="Spa de Pies" class="service-img" data-title="Spa de Pies" data-desc="Relaja y revitaliza tus pies con sales, aceites y masajes.">
                 <h3>bioplastia</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/mascarilla.jpg" alt="Masaje Corporal" class="service-img" data-title="Masaje Corporal" data-desc="Terapia relajante que alivia tensión y mejora la circulación.">
+                <img src="../public/img/servicios/mascarilla.jpg" alt="Masaje Corporal" class="service-img" data-title="Masaje Corporal" data-desc="Terapia relajante que alivia tensión y mejora la circulación.">
                 <h3>Mascarilla</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/ampolletas.jpg" alt="Exfoliación" class="service-img" data-title="Exfoliación" data-desc="Elimina impurezas para una piel más suave y luminosa.">
+                <img src="../public/img/servicios/ampolletas.jpg" alt="Exfoliación" class="service-img" data-title="Exfoliación" data-desc="Elimina impurezas para una piel más suave y luminosa.">
                 <h3>Ampolletas</h3>
               </div>
             </div>
@@ -284,19 +283,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/efectoColor.jpg" alt="Mascarilla Facial" class="service-img" data-title="Mascarilla Facial" data-desc="Tratamiento nutritivo que hidrata y suaviza la piel.">
+                <img src="../public/img/servicios/efectoColor.jpg" alt="Mascarilla Facial" class="service-img" data-title="Mascarilla Facial" data-desc="Tratamiento nutritivo que hidrata y suaviza la piel.">
                 <h3>Tinte efecto de color</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/retoqueTinte.jpg" alt="Hidratación" class="service-img" data-title="Hidratación" data-desc="Tratamiento capilar para cabello seco y dañado.">
+                <img src="../public/img/servicios/retoqueTinte.jpg" alt="Hidratación" class="service-img" data-title="Hidratación" data-desc="Tratamiento capilar para cabello seco y dañado.">
                 <h3>Retoque de tinte</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/epilacionCeja.png" alt="Corte de Cabello" class="service-img" data-title="Corte de Cabello" data-desc="Estilos modernos y personalizados según tu rostro.">
+                <img src="../public/img/servicios/epilacionCeja.png" alt="Corte de Cabello" class="service-img" data-title="Corte de Cabello" data-desc="Estilos modernos y personalizados según tu rostro.">
                 <h3>Epilacion de ceja</h3>
               </div>
             </div>
@@ -308,19 +307,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/epilacionBozo.jpg" alt="Barbería" class="service-img" data-title="Barbería" data-desc="Cortes y perfilado de barba con precisión.">
+                <img src="../public/img/servicios/epilacionBozo.jpg" alt="Barbería" class="service-img" data-title="Barbería" data-desc="Cortes y perfilado de barba con precisión.">
                 <h3>Epilacion de bozo</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/epilacionPatilla.jpg" alt="Alisado Permanente" class="service-img" data-title="Alisado Permanente" data-desc="Cabello liso por más tiempo con tratamientos sin daño.">
+                <img src="../public/img/servicios/epilacionPatilla.jpg" alt="Alisado Permanente" class="service-img" data-title="Alisado Permanente" data-desc="Cabello liso por más tiempo con tratamientos sin daño.">
                 <h3>Epilacion de patilla</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/epilacionRostro.jpg" alt="Tratamiento con Keratina" class="service-img" data-title="Tratamiento con Keratina" data-desc="Repara el cabello dañado y devuelve su brillo natural.">
+                <img src="../public/img/servicios/epilacionRostro.jpg" alt="Tratamiento con Keratina" class="service-img" data-title="Tratamiento con Keratina" data-desc="Repara el cabello dañado y devuelve su brillo natural.">
                 <h3>Epilacion de rostro</h3>
               </div>
             </div>
@@ -332,19 +331,19 @@
           <div class="row g-4">
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/EpilacionPierna.jpg" alt="Tinte Fantasía" class="service-img" data-title="Tinte Fantasía" data-desc="Colores vibrantes y únicos para un look atrevido.">
+                <img src="../public/img/servicios/EpilacionPierna.jpg" alt="Tinte Fantasía" class="service-img" data-title="Tinte Fantasía" data-desc="Colores vibrantes y únicos para un look atrevido.">
                 <h3>Epilacion de media pierna</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/epilacionAntebrazo.jpg" alt="Maquillaje de Novia" class="service-img" data-title="Maquillaje de Novia" data-desc="Maquillaje elegante y duradero para tu gran día.">
+                <img src="../public/img/servicios/epilacionAntebrazo.jpg" alt="Maquillaje de Novia" class="service-img" data-title="Maquillaje de Novia" data-desc="Maquillaje elegante y duradero para tu gran día.">
                 <h3>Epilacion de antebrazo</h3>
               </div>
             </div>
             <div class="col-md-4">
               <div class="service-card">
-                <img src="img/servicios/balayage.jpeg" alt="Peinado de Novia" class="service-img" data-title="Peinado de Novia" data-desc="Diseños personalizados que realzan tu belleza natural.">
+                <img src="../public/img/servicios/balayage.jpeg" alt="Peinado de Novia" class="service-img" data-title="Peinado de Novia" data-desc="Diseños personalizados que realzan tu belleza natural.">
                 <h3>Balayage</h3>
               </div>
             </div>
@@ -396,7 +395,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/AcondicionadorBioMarine_335.jpg" alt="Acondicionador Bio Marine" class="img-fluid rounded">
+                  <img src="../public/img/salerm/AcondicionadorBioMarine_335.jpg" alt="Acondicionador Bio Marine" class="img-fluid rounded">
                 </div>
                 <h4>Acondicionador Bio Marine</h4>
                 <p>$335</p>
@@ -406,7 +405,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/mascarillaMultiProteinas.jpg" alt="Mascarilla Multi Proteinas" class="img-fluid rounded">
+                  <img src="../public/img/salerm/mascarillaMultiProteinas.jpg" alt="Mascarilla Multi Proteinas" class="img-fluid rounded">
                 </div>
                 <h4>Mascarilla Multi Proteinas</h4>
                 <p>$399</p>
@@ -416,7 +415,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/ShampooControlCaspa.jpg" alt="Shampoo Control Caspa" class="img-fluid rounded">
+                  <img src="../public/img/salerm/ShampooControlCaspa.jpg" alt="Shampoo Control Caspa" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Control Caspa</h4>
                 <p>$267</p>
@@ -426,7 +425,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/SampooCabellosblancos.jpg" alt="Shampoo Cabellos Blancos" class="img-fluid rounded">
+                  <img src="../public/img/salerm/SampooCabellosblancos.jpg" alt="Shampoo Cabellos Blancos" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Cabellos Blancos</h4>
                 <p>$265</p>
@@ -436,7 +435,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/CeraParaPeinar.jpeg" alt="Cera Para Peinar" class="img-fluid rounded">
+                  <img src="../public/img/salerm/CeraParaPeinar.jpeg" alt="Cera Para Peinar" class="img-fluid rounded">
                 </div>
                 <h4>Cera Para Peinar</h4>
                 <p>$343</p>
@@ -453,7 +452,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/AcondicionadorColorDurarero.jpg" alt="Acondicionador Color Duradero" class="img-fluid rounded">
+                  <img src="../public/img/salerm/AcondicionadorColorDurarero.jpg" alt="Acondicionador Color Duradero" class="img-fluid rounded">
                 </div>
                 <h4>Acondicionador Color Duradero</h4>
                 <p>$399</p>
@@ -463,7 +462,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/ShampooControlCaida.jpeg" alt="Shampoo Control Caída" class="img-fluid rounded">
+                  <img src="../public/img/salerm/ShampooControlCaida.jpeg" alt="Shampoo Control Caída" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Control Caída</h4>
                 <p>$290</p>
@@ -473,7 +472,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/SalermCosmetics21Shampoo.jpeg" alt="Salerm Cosmetics 21 Shampoo" class="img-fluid rounded">
+                  <img src="../public/img/salerm/SalermCosmetics21Shampoo.jpeg" alt="Salerm Cosmetics 21 Shampoo" class="img-fluid rounded">
                 </div>
                 <h4>Salerm Cosmetics 21 Shampoo</h4>
                 <p>$267</p>
@@ -483,7 +482,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/IceGel03.jpeg" alt="Ice Gel 03" class="img-fluid rounded">
+                  <img src="../public/img/salerm/IceGel03.jpeg" alt="Ice Gel 03" class="img-fluid rounded">
                 </div>
                 <h4>Ice Gel 03</h4>
                 <p>$278</p>
@@ -493,7 +492,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/MascarillaGermenDeTrigo.jpeg" alt="Mascarilla Germen de Trigo" class="img-fluid rounded">
+                  <img src="../public/img/salerm/MascarillaGermenDeTrigo.jpeg" alt="Mascarilla Germen de Trigo" class="img-fluid rounded">
                 </div>
                 <h4>Mascarilla Germen de Trigo</h4>
                 <p>$531</p>
@@ -510,7 +509,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/ShampooBalsamoAcondicionador.jpg" alt="Salerm 21 Silk Protein" class="img-fluid rounded">
+                  <img src="../public/img/salerm/ShampooBalsamoAcondicionador.jpg" alt="Salerm 21 Silk Protein" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Balsamo Acondicionador</h4>
                 <p>$535</p>
@@ -520,7 +519,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/GelParaDespuesDeAfeitar.jpeg" alt="Brillo Final Spray" class="img-fluid rounded">
+                  <img src="../public/img/salerm/GelParaDespuesDeAfeitar.jpeg" alt="Brillo Final Spray" class="img-fluid rounded">
                 </div>
                 <h4>Gel Para Despues De Afeitar</h4>
                 <p>$192</p>
@@ -530,7 +529,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/GelParaAfeita.jpg" alt="Keratin Shot" class="img-fluid rounded">
+                  <img src="../public/img/salerm/GelParaAfeita.jpg" alt="Keratin Shot" class="img-fluid rounded">
                 </div>
                 <h4>GelParaAfeita</h4>
                 <p>$344</p>
@@ -540,7 +539,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/CeraParaCabelloYBarba.jpeg" alt="Mascarilla Argán" class="img-fluid rounded">
+                  <img src="../public/img/salerm/CeraParaCabelloYBarba.jpeg" alt="Mascarilla Argán" class="img-fluid rounded">
                 </div>
                 <h4>Cera Para Cabello Y Barba</h4>
                 <p>$315</p>
@@ -550,7 +549,7 @@
             <div class="col-6 col-sm-4 col-md-2">
               <div class="product-card">
                 <div class="product-img">
-                  <img src="img/salerm/AceiteParaBarba.jpeg" alt="Sérum Capilar" class="img-fluid rounded">
+                  <img src="../public/img/salerm/AceiteParaBarba.jpeg" alt="Sérum Capilar" class="img-fluid rounded">
                 </div>
                 <h4>Aceite Para Barba</h4>
                 <p>$312</p>
@@ -583,9 +582,9 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/AceiteCorporalEnSeco.jpeg" alt="Caviar Gold Serum" class="img-fluid rounded">
+              <img src="../public/img/cuccio/AceiteCorporalEnSeco.jpeg" alt="Caviar Gold Serum" class="img-fluid rounded">
             </div>
-            <h4>Aceite Corporal EnSeco</h4>
+            <h4>Aceite Corporal En Seco</h4>
             <p>$549</p>
           </div>
         </div>
@@ -593,7 +592,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/AceiteDeCuticulaEnBola.jpeg" alt="Ácido Hialurónico" class="img-fluid rounded">
+              <img src="../public/img/cuccio/AceiteDeCuticulaEnBola.jpeg" alt="Ácido Hialurónico" class="img-fluid rounded">
             </div>
             <h4>Aceite De Cuticula En Bola</h4>
             <p>$349</p>
@@ -603,7 +602,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/CremaButterBlend8oz.jpeg" alt="Colágeno Marino" class="img-fluid rounded">
+              <img src="../public/img/cuccio/CremaButterBlend8oz.jpeg" alt="Colágeno Marino" class="img-fluid rounded">
             </div>
             <h4>Crema Butter Blend 8oz</h4>
             <p>$359</p>
@@ -613,7 +612,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/CremaLyteButter32oz.jpg" alt="Oro 24K Mask" class="img-fluid rounded">
+              <img src="../public/img/cuccio/CremaLyteButter32oz.jpg" alt="Oro 24K Mask" class="img-fluid rounded">
             </div>
             <h4>Crema Lyte Butter 32oz</h4>
             <p>$799</p>
@@ -623,7 +622,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/CremaParaMasajeCuccio.jpeg" alt="Oro 24K Mask" class="img-fluid rounded">
+              <img src="../public/img/cuccio/CremaParaMasajeCuccio.jpeg" alt="Oro 24K Mask" class="img-fluid rounded">
             </div>
             <h4>Crema ParaMasaje Cuccio</h4>
             <p>$729</p>
@@ -640,7 +639,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/CremaBonce8oz.jpeg" alt="Peeling Diamante" class="img-fluid rounded">
+              <img src="../public/img/cuccio/CremaBonce8oz.jpeg" alt="Peeling Diamante" class="img-fluid rounded">
             </div>
             <h4>Crema Bonze 8oz</h4>
             <p>$389</p>
@@ -650,7 +649,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/BañoDeLeche.jpeg" alt="Vitamina E Pro" class="img-fluid rounded">
+              <img src="../public/img/cuccio/BañoDeLeche.jpeg" alt="Vitamina E Pro" class="img-fluid rounded">
             </div>
             <h4>Baño De Leche</h4>
             <p>$689</p>
@@ -660,7 +659,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/AceiteDeCuticulaRollOn.jpg" alt="Cryo Gel" class="img-fluid rounded">
+              <img src="../public/img/cuccio/AceiteDeCuticulaRollOn.jpg" alt="Cryo Gel" class="img-fluid rounded">
             </div>
             <h4>Aceite De Cuticula Roll On</h4>
             <p>$169</p>
@@ -670,7 +669,7 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/ExfolianteCuccio156oz.jpeg" alt="SPF 50+ Defense" class="img-fluid rounded">
+              <img src="../public/img/cuccio/ExfolianteCuccio156oz.jpeg" alt="SPF 50+ Defense" class="img-fluid rounded">
             </div>
             <h4>Exfoliante Cuccio 156 oz</h4>
             <p>$1399</p>
@@ -680,16 +679,14 @@
         <div class="col-6 col-sm-4 col-md-2">
           <div class="product-card">
             <div class="product-img">
-              <img src="img/cuccio/DetoxWashCuccio8oz.jpeg" alt="SPF 50+ Defense" class="img-fluid rounded">
+              <img src="../public/img/cuccio/DetoxWashCuccio8oz.jpeg" alt="SPF 50+ Defense" class="img-fluid rounded">
             </div>
             <h4>Detox Wash Cuccio 8oz</h4>
             <p>$359</p>
           </div>
         </div>
-
       </div>
     </div>
-
   </div>
 
   <button class="carousel-control-prev" type="button" data-bs-target="#marca2Carousel" data-bs-slide="prev">
@@ -710,39 +707,39 @@
         <div class="pinterest-grid">
 
             <div class="pinterest-item" data-title="Sala de Masajes">
-                <img src="img/aruma spa/Local1.jpg" alt="Sala de Masajes">
+                <img src="../public/img/aruma spa/Local1.jpg" alt="Sala de Masajes">
             </div>
 
             <div class="pinterest-item tall" data-title="Área de Relajación">
-                <img src="img/aruma spa/Local3.jpeg" alt="Área de Relajación">
+                <img src="../public/img/aruma spa/Local3.jpeg" alt="Área de Relajación">
             </div>
 
             <div class="pinterest-item" data-title="Tratamiento Facial">
-                <img src="img/aruma spa/Local4.jpeg" alt="Tratamiento Facial">
+                <img src="../public/img/aruma spa/Local4.jpeg" alt="Tratamiento Facial">
             </div>
 
             <div class="pinterest-item wide" data-title="Piscina Termal">
-                <img src="img/aruma spa/Local5.jpeg" alt="Piscina Termal">
+                <img src="../public/img/aruma spa/Local5.jpeg" alt="Piscina Termal">
             </div>
 
             <div class="pinterest-item" data-title="Sauna">
-                <img src="img/aruma spa/Local6.jpeg" alt="Sauna">
+                <img src="../public/img/aruma spa/Local6.jpeg" alt="Sauna">
             </div>
 
             <div class="pinterest-item tall" data-title="Yoga Studio">
-                <img src="img/aruma spa/Local7.jpeg" alt="Yoga Studio">
+                <img src="../public/img/aruma spa/Local7.jpeg" alt="Yoga Studio">
             </div>
 
             <div class="pinterest-item" data-title="Recepción">
-                <img src="img/aruma spa/Local8.jpeg" alt="Recepción">
+                <img src="../public/img/aruma spa/Local8.jpeg" alt="Recepción">
             </div>
 
             <div class="pinterest-item" data-title="Manicure">
-                <img src="img/aruma spa/Local9.jpeg" alt="Manicure">
+                <img src="../public/img/aruma spa/Local9.jpeg" alt="Manicure">
             </div>
 
             <div class="pinterest-item wide" data-title="Jardín Zen">
-                <img src="img/aruma spa/Local11.jpeg" alt="Jardín Zen">
+                <img src="../public/img/aruma spa/Local11.jpeg" alt="Jardín Zen">
             </div>
         </div>
     </div>
@@ -790,7 +787,7 @@
                         <li><a href="#servicios">Servicios</a></li>
                         <li><a href="#productos">Productos</a></li>
                         <li><a href="#galeria">Galería</a></li>
-                        <li><a href="pages/mision-vision.html">Nosotros</a></li>
+                        <li><a href="../views/mision-vision.php">Nosotros</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -810,7 +807,7 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="scripts/script.js"></script>
+    <script src="../public/scripts/bootstrap.bundle.min.js"></script>
+    <script src="../public/scripts/script.js"></script>
 </body>
 </html>

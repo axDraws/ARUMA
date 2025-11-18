@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Misión y Visión - Aruma Spa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../public/estilos/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../estilos/style.css">
+    <link rel="stylesheet" href="../public/estilos/style.css">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="../views/home.php">
                 <i class="fas fa-spa"></i> ARUMA
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -278,12 +278,11 @@
                 <div class="col-md-4 mb-4">
                     <h5>Enlaces Rápidos</h5>
                     <ul class="footer-links">
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="index.html#servicios">Servicios</a></li>
-                        <li><a href="index.html#productos">Productos</a></li>
-                        <li><a href="mision-vision.html">Nosotros</a></li>
-                        <li><a href="index.html#galeria">Galería</a></li>
-                        <li><a href="index.html#contacto">Contacto</a></li>
+                        <li><a href="../views/home.php">Inicio</a></li>
+                        <li><a href="../views/home.php#servicios">Servicios</a></li>
+                        <li><a href="../views/home.php#productos">Productos</a></li>
+                        <li><a href="../views/mision-vision.php">Nosotros</a></li>
+                        <li><a href="../views/home.php#galeria">Galería</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -302,7 +301,7 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../scripts/script.js"></script>
+    <script src="../public/scripts/bootstrap.bundle.min.js></script>
+    <script src="../public/scripts/script.js"></script>
 </body>
 </html>

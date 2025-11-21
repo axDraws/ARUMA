@@ -21,7 +21,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/mision-vision.php">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
@@ -787,7 +787,7 @@
                         <li><a href="#servicios">Servicios</a></li>
                         <li><a href="#productos">Productos</a></li>
                         <li><a href="#galeria">Galería</a></li>
-                        <li><a href="../views/mision-vision.php">Nosotros</a></li>
+                        <li><a href="../views/mision-vision.php">inicio</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">

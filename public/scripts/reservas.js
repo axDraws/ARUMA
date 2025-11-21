@@ -1,412 +1,211 @@
-// ========================================
-// FUNCIONES GENERALES
-// ========================================
+/* ============================================================
+   ARUMA SPA - SISTEMA DE RESERVAS CONECTADO A MVC REAL
+============================================================ */
 
 // Mostrar fecha actual
 function mostrarFechaActual() {
-    const fechaElement = document.getElementById('fecha-actual');
+    const fechaElement = document.getElementById("fecha-actual");
     if (fechaElement) {
         const hoy = new Date();
-        const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        fechaElement.textContent = hoy.toLocaleDateString('es-ES', opciones);
+        const opciones = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+        fechaElement.textContent = hoy.toLocaleDateString("es-ES", opciones);
     }
 }
 
-// Logout
+// Logout REAL (dirige al backend)
 function logout() {
-    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-        alert('Sesión cerrada correctamente');
-        window.location.href = 'index.html';
+    if (confirm("¿Cerrar sesión?")) {
+        window.location.href = "/logout";
     }
 }
 
-// ========================================
-// FUNCIONES VISTA CLIENTE
-// ========================================
-
-// Cambiar entre secciones del panel cliente
-function showSection(sectionId) {
-    // Ocultar todas las secciones
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
-    
-    // Mostrar la sección seleccionada
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.classList.add('active');
-    }
-    
-    // Actualizar menú activo
-    const menuItems = document.querySelectorAll('.sidebar-menu li');
-    menuItems.forEach(item => {
-        item.classList.remove('active');
-    });
-    event.target.closest('li').classList.add('active');
-}
-
-// Editar reserva (cliente)
-function editarReserva(id) {
-    const modal = new bootstrap.Modal(document.getElementById('modalEditarReserva'));
-    modal.show();
-    console.log('Editando reserva #' + id);
-}
-
-// Cancelar reserva
-function cancelarReserva(id) {
-    if (confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
-        alert('Reserva #' + id + ' cancelada correctamente');
-        // Aquí se eliminaría la tarjeta o se actualizaría el estado
-    }
-}
-
-// Guardar cambios de edición
-function guardarCambios() {
-    alert('Cambios guardados correctamente');
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarReserva'));
-    modal.hide();
-}
-
-// Manejar envío de nueva reserva (cliente)
-const formNuevaReserva = document.getElementById('formNuevaReserva');
-if (formNuevaReserva) {
-    formNuevaReserva.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Reserva creada exitosamente. Te enviaremos un correo de confirmación.');
-        showSection('mis-reservas');
-        formNuevaReserva.reset();
-    });
-}
-
-// ========================================
-// FUNCIONES VISTA ADMINISTRADOR
-// ========================================
-
-// Cambiar entre secciones del panel admin
+/* ============================================================
+   CAMBIO DE SECCIÓN DEL ADMIN
+============================================================ */
 function showAdminSection(sectionId) {
-    // Ocultar todas las secciones
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-        section.classList.remove('active');
-    });
-    
-    // Mostrar la sección seleccionada
-    const targetSection = document.getElementById(sectionId);
-    if (targetSection) {
-        targetSection.classList.add('active');
-    }
-    
-    // Actualizar menú activo
-    const menuItems = document.querySelectorAll('.sidebar-menu li');
-    menuItems.forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    // Buscar el elemento li que fue clickeado
-    const clickedItem = event.target.closest('li');
-    if (clickedItem) {
-        clickedItem.classList.add('active');
+    document.querySelectorAll(".content-section").forEach(sec => sec.classList.remove("active"));
+    const section = document.getElementById(sectionId);
+    if (section) section.classList.add("active");
+
+    document.querySelectorAll(".sidebar-menu li").forEach(li => li.classList.remove("active"));
+    const clicked = event.target.closest("li");
+    if (clicked) clicked.classList.add("active");
+
+    if (sectionId === "reservas") cargarReservas();
+}
+
+/* ============================================================
+   CARGAR RESERVAS (ADMIN)
+============================================================ */
+async function cargarReservas() {
+    const tabla = document.getElementById("tablaReservas");
+    if (!tabla) return;
+
+    tabla.innerHTML = `<tr><td colspan="8">Cargando...</td></tr>`;
+
+    try {
+        const res = await fetch("/reservas");
+        const data = await res.json();
+
+        tabla.innerHTML = "";
+
+        data.forEach(r => {
+            tabla.innerHTML += `
+                <tr>
+                    <td>#${r.id}</td>
+                    <td>${r.fecha}</td>
+                    <td>${r.hora}</td>
+                    <td>${r.cliente_nombre}</td>
+                    <td>${r.servicio_nombre}</td>
+                    <td>${r.terapeuta_nombre ?? "—"}</td>
+                    <td><span class="badge bg-info">${r.estado}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-info" onclick="verDetalles(${r.id})"><i class="fas fa-eye"></i></button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="editarReservaAdmin(${r.id})"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="eliminarReserva(${r.id})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+
+    } catch (err) {
+        tabla.innerHTML = `<tr><td colspan="8">Error cargando reservas</td></tr>`;
+        console.error(err);
     }
 }
 
-// Ver detalles de reserva
-function verDetalles(id) {
-    const modal = new bootstrap.Modal(document.getElementById('modalDetalles'));
-    if (modal) {
+/* ============================================================
+   VER DETALLES (modal)
+============================================================ */
+async function verDetalles(id) {
+    const modal = new bootstrap.Modal(document.getElementById("modalDetalles"));
+
+    try {
+        const res = await fetch(`/reservas/show?id=${id}`);
+        const r = await res.json();
+
+        document.querySelector("#modalDetalles .modal-title").innerHTML =
+            `Detalles de reserva #${r.id}`;
+
+        document.querySelector("#modalDetalles .modal-body").innerHTML = `
+            <p><strong>Cliente:</strong> ${r.cliente_nombre}</p>
+            <p><strong>Servicio:</strong> ${r.servicio_nombre}</p>
+            <p><strong>Terapeuta:</strong> ${r.terapeuta_nombre ?? "No asignado"}</p>
+            <p><strong>Fecha:</strong> ${r.fecha}</p>
+            <p><strong>Hora:</strong> ${r.hora}</p>
+            <p><strong>Estado:</strong> ${r.estado}</p>
+            <p><strong>Notas:</strong> ${r.notas}</p>
+        `;
+
         modal.show();
-    }
-    console.log('Viendo detalles de reserva #' + id);
-}
 
-// Editar reserva (admin)
-function editarReservaAdmin(id) {
-    const modal = new bootstrap.Modal(document.getElementById('modalEditarReservaAdmin'));
-    if (modal) {
-        modal.show();
-    }
-    console.log('Editando reserva #' + id + ' (Admin)');
-}
-
-// Eliminar reserva (admin)
-function eliminarReserva(id) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta reserva? Esta acción no se puede deshacer.')) {
-        alert('Reserva #' + id + ' eliminada correctamente');
-        // Aquí se eliminaría la fila de la tabla
-        location.reload();
+    } catch (err) {
+        console.error(err);
+        mostrarNotificacion("Error al cargar detalles", "danger");
     }
 }
 
-// Cambiar estado de reserva
-function cambiarEstado(id, nuevoEstado) {
-    alert('Estado de reserva #' + id + ' cambiado a: ' + nuevoEstado);
-    location.reload();
-}
-
-// Aprobar reserva
-function aprobarReserva(id) {
-    if (confirm('¿Aprobar esta reserva?')) {
-        cambiarEstado(id, 'Confirmada');
-    }
-}
-
-// Rechazar reserva
-function rechazarReserva(id) {
-    const motivo = prompt('Ingresa el motivo del rechazo:');
-    if (motivo) {
-        alert('Reserva #' + id + ' rechazada. Motivo: ' + motivo);
-        cambiarEstado(id, 'Cancelada');
-    }
-}
-
-// Completar servicio
-function completarServicio(id) {
-    if (confirm('¿Marcar este servicio como completado?')) {
-        cambiarEstado(id, 'Completada');
-    }
-}
-
-// Agregar cliente
-function agregarCliente() {
-    const modal = new bootstrap.Modal(document.getElementById('modalAgregarCliente'));
-    if (modal) {
-        modal.show();
-    }
-}
-
-// Ver perfil cliente
-function verPerfilCliente(id) {
-    const modal = new bootstrap.Modal(document.getElementById('modalPerfilCliente'));
-    if (modal) {
-        modal.show();
-    }
-    console.log('Viendo perfil de cliente #' + id);
-}
-
-// Editar cliente
-function editarCliente(id) {
-    alert('Editando cliente #' + id);
-}
-
-// Eliminar cliente
-function eliminarCliente(id) {
-    if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
-        alert('Cliente #' + id + ' eliminado correctamente');
-        location.reload();
-    }
-}
-
-// Editar servicio
-function editarServicio(id) {
-    const modal = new bootstrap.Modal(document.getElementById('modalEditarServicio'));
-    if (modal) {
-        modal.show();
-    }
-    console.log('Editando servicio #' + id);
-}
-
-// Eliminar servicio
-function eliminarServicio(id) {
-    if (confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
-        alert('Servicio #' + id + ' eliminado correctamente');
-        location.reload();
-    }
-}
-
-// Activar/Desactivar servicio
-function toggleServicio(id) {
-    alert('Estado del servicio #' + id + ' cambiado');
-    location.reload();
-}
-
-// ========================================
-// MANEJO DE FORMULARIOS ADMIN
-// ========================================
-
-// Formulario nueva reserva admin
-const formNuevaReservaAdmin = document.getElementById('formNuevaReservaAdmin');
+/* ============================================================
+   CREAR RESERVA (ADMIN)
+============================================================ */
+const formNuevaReservaAdmin = document.getElementById("formNuevaReservaAdmin");
 if (formNuevaReservaAdmin) {
-    formNuevaReservaAdmin.addEventListener('submit', function(e) {
+    formNuevaReservaAdmin.addEventListener("submit", async e => {
         e.preventDefault();
-        alert('Reserva creada exitosamente por el administrador');
-        showAdminSection('reservas');
-        formNuevaReservaAdmin.reset();
-    });
-}
 
-// Formulario editar reserva admin
-const formEditarReservaAdmin = document.getElementById('formEditarReservaAdmin');
-if (formEditarReservaAdmin) {
-    formEditarReservaAdmin.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Reserva actualizada correctamente');
-        const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarReservaAdmin'));
-        if (modal) modal.hide();
-        location.reload();
-    });
-}
+        const formData = new FormData(formNuevaReservaAdmin);
 
-// Formulario agregar cliente
-const formAgregarCliente = document.getElementById('formAgregarCliente');
-if (formAgregarCliente) {
-    formAgregarCliente.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Cliente agregado correctamente');
-        const modal = bootstrap.Modal.getInstance(document.getElementById('modalAgregarCliente'));
-        if (modal) modal.hide();
-        location.reload();
-    });
-}
+        try {
+            const res = await fetch("/reservas", {
+                method: "POST",
+                body: formData
+            });
 
-// Formulario editar servicio
-const formEditarServicio = document.getElementById('formEditarServicio');
-if (formEditarServicio) {
-    formEditarServicio.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Servicio actualizado correctamente');
-        const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarServicio'));
-        if (modal) modal.hide();
-        location.reload();
-    });
-}
+            const json = await res.json();
 
-// ========================================
-// BÚSQUEDA Y FILTROS
-// ========================================
-
-// Búsqueda en tiempo real
-function buscarEnTabla(inputId, tablaId) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-    
-    input.addEventListener('keyup', function() {
-        const filtro = input.value.toLowerCase();
-        const tabla = document.getElementById(tablaId);
-        if (!tabla) return;
-        
-        const filas = tabla.getElementsByTagName('tr');
-        
-        for (let i = 0; i < filas.length; i++) {
-            const fila = filas[i];
-            const texto = fila.textContent || fila.innerText;
-            
-            if (texto.toLowerCase().indexOf(filtro) > -1) {
-                fila.style.display = '';
+            if (json.status === "ok") {
+                mostrarNotificacion("Reserva creada", "success");
+                formNuevaReservaAdmin.reset();
+                cargarReservas();
+                showAdminSection("reservas");
             } else {
-                fila.style.display = 'none';
+                mostrarNotificacion(json.message, "danger");
             }
+
+        } catch (err) {
+            console.error(err);
+            mostrarNotificacion("Error al crear reserva", "danger");
         }
     });
 }
 
-// Filtrar por estado
-function filtrarPorEstado(estado) {
-    const filas = document.querySelectorAll('#tablaReservas tr');
-    
-    filas.forEach(fila => {
-        if (estado === '' || fila.textContent.includes(estado)) {
-            fila.style.display = '';
-        } else {
-            fila.style.display = 'none';
-        }
-    });
-}
+/* ============================================================
+   EDITAR RESERVA
+============================================================ */
+async function editarReservaAdmin(id) {
+    const modal = new bootstrap.Modal(document.getElementById("modalEditarReservaAdmin"));
 
-// ========================================
-// ESTADÍSTICAS Y GRÁFICOS
-// ========================================
+    const res = await fetch(`/reservas/show?id=${id}`);
+    const r = await res.json();
 
-// Actualizar estadísticas del dashboard
-function actualizarEstadisticas() {
-    // Aquí se actualizarían las estadísticas con datos reales
-    console.log('Actualizando estadísticas...');
-}
+    document.getElementById("editFecha").value = r.fecha;
+    document.getElementById("editNotas").value = r.notas;
 
-// ========================================
-// NOTIFICACIONES
-// ========================================
+    modal.show();
 
-// Mostrar notificación
-function mostrarNotificacion(mensaje, tipo = 'info') {
-    // Crear elemento de notificación
-    const notif = document.createElement('div');
-    notif.className = `alert alert-${tipo} position-fixed top-0 end-0 m-3`;
-    notif.style.zIndex = '9999';
-    notif.innerHTML = `
-        <i class="fas fa-${tipo === 'success' ? 'check-circle' : 'info-circle'}"></i>
-        ${mensaje}
-    `;
-    
-    document.body.appendChild(notif);
-    
-    // Remover después de 3 segundos
-    setTimeout(() => {
-        notif.remove();
-    }, 3000);
-}
-
-// ========================================
-// VALIDACIONES
-// ========================================
-
-// Validar formulario de reserva
-function validarFormularioReserva(form) {
-    const campos = form.querySelectorAll('[required]');
-    let valido = true;
-    
-    campos.forEach(campo => {
-        if (!campo.value) {
-            campo.classList.add('is-invalid');
-            valido = false;
-        } else {
-            campo.classList.remove('is-invalid');
-        }
-    });
-    
-    return valido;
-}
-
-// ========================================
-// INICIALIZACIÓN
-// ========================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Mostrar fecha actual
-    mostrarFechaActual();
-    
-    // Inicializar tooltips de Bootstrap
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Establecer fecha mínima en inputs de fecha (hoy)
-    const inputsFecha = document.querySelectorAll('input[type="date"]');
-    const hoy = new Date().toISOString().split('T')[0];
-    inputsFecha.forEach(input => {
-        input.setAttribute('min', hoy);
-    });
-    
-    console.log('Sistema de reservas Aruma Spa inicializado correctamente');
-});
-
-// ========================================
-// PREVENIR ENVÍO DE FORMULARIOS
-// ========================================
-
-// Interceptar todos los formularios para evitar envío real
-document.querySelectorAll('form').forEach(form => {
-    if (!form.id) return; // Solo los que tienen manejo específico
-    
-    form.addEventListener('submit', function(e) {
+    document.getElementById("formEditarReservaAdmin").onsubmit = async e => {
         e.preventDefault();
-        
-        if (validarFormularioReserva(form)) {
-            console.log('Formulario válido:', form.id);
-        } else {
-            console.log('Formulario inválido:', form.id);
-        }
-    });
-});
 
-console.log('reservas.js cargado correctamente ✨');
+        const fd = new FormData(e.target);
+        fd.append("id", id);
+
+        await fetch("/reservas/update", {
+            method: "POST",
+            body: fd
+        });
+
+        mostrarNotificacion("Reserva actualizada", "success");
+        modal.hide();
+        cargarReservas();
+    };
+}
+
+/* ============================================================
+   ELIMINAR RESERVA
+============================================================ */
+async function eliminarReserva(id) {
+    if (!confirm("¿Eliminar esta reserva?")) return;
+
+    const fd = new FormData();
+    fd.append("id", id);
+
+    await fetch("/reservas/delete", {
+        method: "POST",
+        body: fd
+    });
+
+    mostrarNotificacion("Reserva eliminada", "success");
+    cargarReservas();
+}
+
+/* ============================================================
+   NOTIFICACIONES
+============================================================ */
+function mostrarNotificacion(msg, tipo = "info") {
+    const div = document.createElement("div");
+    div.className = `alert alert-${tipo} position-fixed top-0 end-0 m-3`;
+    div.textContent = msg;
+
+    div.style.zIndex = "99999";
+
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 3000);
+}
+
+/* ============================================================
+   INICIALIZACIÓN
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+    mostrarFechaActual();
+    cargarReservas();
+});

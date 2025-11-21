@@ -1,5 +1,8 @@
+console.log("Script cargado correctamente");
 
-// Variables globales
+// ===============================
+// VARIABLES GLOBALES
+// ===============================
 const loginOverlay = document.getElementById('loginOverlay');
 const registerOverlay = document.getElementById('registerOverlay');
 const btnLogin = document.getElementById('btnLogin');
@@ -10,7 +13,10 @@ const galleryOverlay = document.getElementById('galleryOverlay');
 const btnCloseGallery = document.getElementById('btnCloseGallery');
 const pinterestItems = document.querySelectorAll('.pinterest-item');
 
-// Funciones para modales de Login
+
+// ===============================
+// MODALES LOGIN / REGISTRO
+// ===============================
 function openLoginModal() {
     loginOverlay.classList.add('active');
     registerOverlay?.classList.remove('active');
@@ -22,7 +28,6 @@ function closeLoginModal() {
     document.body.style.overflow = 'auto';
 }
 
-// Funciones para modales de Registro
 function openRegisterModal() {
     registerOverlay.classList.add('active');
     loginOverlay?.classList.remove('active');
@@ -34,99 +39,112 @@ function closeRegisterModal() {
     document.body.style.overflow = 'auto';
 }
 
-/* ============================================================
-   FUNCIÓN PARA ABRIR LA GALERÍA CON IMAGEN REAL (.jpg)
-============================================================ */
 
+// ===============================
+// GALERÍA
+// ===============================
 function openGallery(item) {
-    const title = item.getAttribute('data-title');
     const imgSrc = item.querySelector('img').src;
 
-    // Insertar en el modal
     document.getElementById('galleryModalImg').src = imgSrc;
-    //document.getElementById('galleryModalTitle').textContent = title;
 
     galleryOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 
-// Función para cerrar galería
 function closeGallery() {
     galleryOverlay.classList.remove('active');
     document.body.style.overflow = 'auto';
 }
 
-// Event Listeners para Login Modal
+
+// ===============================
+// EVENTOS DE MODALES
+// ===============================
 btnLogin?.addEventListener('click', openLoginModal);
 btnCloseLogin?.addEventListener('click', closeLoginModal);
 btnCloseRegister?.addEventListener('click', closeRegisterModal);
 
 document.querySelectorAll('.link-register').forEach(link => {
-    link.addEventListener('click', (e) => {
+    link.addEventListener('click', e => {
         e.preventDefault();
         openRegisterModal();
     });
 });
 
 document.querySelectorAll('.link-login').forEach(link => {
-    link.addEventListener('click', (e) => {
+    link.addEventListener('click', e => {
         e.preventDefault();
         openLoginModal();
     });
 });
 
-// Cerrar modal al hacer clic fuera
-loginOverlay?.addEventListener('click', (e) => {
+loginOverlay?.addEventListener('click', e => {
     if (e.target === loginOverlay) closeLoginModal();
 });
-registerOverlay?.addEventListener('click', (e) => {
+
+registerOverlay?.addEventListener('click', e => {
     if (e.target === registerOverlay) closeRegisterModal();
 });
-galleryOverlay?.addEventListener('click', (e) => {
+
+galleryOverlay?.addEventListener('click', e => {
     if (e.target === galleryOverlay) closeGallery();
 });
 
-// Abrir galería con imágenes
 pinterestItems.forEach(item => {
     item.addEventListener('click', () => openGallery(item));
 });
 
 btnCloseGallery?.addEventListener('click', closeGallery);
 
-// Tecla ESC
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeLoginModal();
-        closeRegisterModal();
-        closeGallery();
-    }
-});
 
-// Formularios (demo)
+// ===============================
+// LOGIN / REGISTRO – CORRECCIÓN
+// ===============================
+// ⚠ IMPORTANTE ⚠
+// Ya NO bloqueamos el submit del login/registro
+// Solo bloqueamos formularios que NO tengan action hacia el backend.
 document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', (e) => {
+    const action = form.getAttribute("action") || "";
+
+    // Permitir envío al backend MVC
+    if (action.includes("/login") || action.includes("/register")) {
+        console.log("Enviando formulario al backend:", action);
+        return;
+    }
+
+    // Formularios que son de demostración
+    form.addEventListener('submit', e => {
         e.preventDefault();
-        alert('Gracias por tu mensaje. Esto es un ejemplo.');
+        alert('Gracias por tu mensaje. (Formulario local)');
         form.reset();
         closeLoginModal();
         closeRegisterModal();
     });
 });
 
-// Navbar sombra scroll
+
+// ===============================
+// NAVBAR SOMBRA
+// ===============================
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
     navbar.style.boxShadow =
         window.pageYOffset > 100
-            ? '0 5px 20px rgba(0, 0, 0, 0.2)'
-            : '0 2px 10px rgba(0, 0, 0, 0.1)';
+            ? '0 5px 20px rgba(0,0,0,0.2)'
+            : '0 2px 10px rgba(0,0,0,0.1)';
 });
 
-// Smooth scroll
+
+// ===============================
+// SMOOTH SCROLL
+// ===============================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+
         const navbarHeight = navbar.offsetHeight;
 
         window.scrollTo({
@@ -138,13 +156,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Animación scroll
+
+// ===============================
+// ANIMACIONES AL SCROLL
+// ===============================
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
 };
 
-const observer = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
@@ -160,25 +181,38 @@ document.querySelectorAll('.service-card, .product-card, .pinterest-item').forEa
     observer.observe(el);
 });
 
-// Carruseles
+
+// ===============================
+// CARRUSELES
+// ===============================
 document.querySelectorAll('.carousel').forEach(carousel => {
     new bootstrap.Carousel(carousel, { interval: 5000, wrap: true });
 });
 
-// Parallax
+
+// ===============================
+// PARALLAX
+// ===============================
 window.addEventListener('scroll', () => {
     const hero = document.querySelector('.hero');
     if (hero) hero.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
 });
 
-// Hover Z-index
+
+// ===============================
+// HOVER Z-INDEX
+// ===============================
 document.querySelectorAll('.service-card, .product-card').forEach(card => {
     card.addEventListener('mouseenter', () => card.style.zIndex = '10');
     card.addEventListener('mouseleave', () => card.style.zIndex = '1');
 });
 
-// Móviles
+
+// ===============================
+// MOBILE FIXES
+// ===============================
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
 if (isMobile) {
     pinterestItems.forEach(item => {
         item.addEventListener('touchstart', () => item.style.transform = 'scale(0.95)');
@@ -186,12 +220,16 @@ if (isMobile) {
     });
 }
 
-// Prevenir doble tap zoom (iOS)
+
+// ===============================
+// PREVENIR DOBLE TAP ZOOM (iOS)
+// ===============================
 let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
+document.addEventListener('touchend', e => {
     const now = Date.now();
     if (now - lastTouchEnd <= 300) e.preventDefault();
     lastTouchEnd = now;
 }, false);
 
-console.log('Aruma Spa - Scripts cargados correctamente ✨ (versión imágenes)');
+
+console.log('Aruma Spa - Scripts cargados correctamente ✨');

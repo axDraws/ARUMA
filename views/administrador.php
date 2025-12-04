@@ -9,10 +9,9 @@
     <link rel="stylesheet" href="../public/estilos/style.css">
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="../index.html">
+            <a class="navbar-brand" href="../views/home.php">
                 <i class="fas fa-spa"></i> ARUMA - Admin
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -33,11 +32,9 @@
         </div>
     </nav>
 
-    <!-- Dashboard -->
     <section class="admin-dashboard">
         <div class="container-fluid">
             <div class="row">
-                <!-- Sidebar -->
                 <div class="col-lg-2 sidebar-col">
                     <div class="admin-sidebar">
                         <div class="sidebar-header">
@@ -67,10 +64,8 @@
                     </div>
                 </div>
 
-                <!-- Contenido Principal -->
                 <div class="col-lg-10">
                     <div class="admin-content">
-                        <!-- Dashboard -->
                         <div id="dashboard" class="content-section active">
                             <div class="section-header">
                                 <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
@@ -78,108 +73,108 @@
                                     <i class="fas fa-calendar"></i> Hoy: <span id="fecha-actual"></span>
                                 </div>
                             </div>
+ 
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card stat-primary">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-info">
+                <h3><?php echo $reservas_hoy ?? 0; ?></h3>
+                <p>Reservas Hoy</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card stat-success">
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <h3><?php echo $reservas_confirmadas ?? 0; ?></h3>
+                <p>Confirmadas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card stat-warning">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3><?php echo $reservas_pendientes ?? 0; ?></h3>
+                <p>Pendientes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card stat-info">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3><?php echo $total_clientes ?? 0; ?></h3>
+                <p>Total Clientes</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-                            <!-- Estadísticas -->
-                            <div class="row g-4 mb-4">
-                                <div class="col-md-3">
-                                    <div class="stat-card stat-primary">
-                                        <div class="stat-icon">
-                                            <i class="fas fa-calendar-day"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <h3>12</h3>
-                                            <p>Reservas Hoy</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="stat-card stat-success">
-                                        <div class="stat-icon">
-                                            <i class="fas fa-check-circle"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <h3>45</h3>
-                                            <p>Confirmadas</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="stat-card stat-warning">
-                                        <div class="stat-icon">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <h3>8</h3>
-                                            <p>Pendientes</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="stat-card stat-info">
-                                        <div class="stat-icon">
-                                            <i class="fas fa-dollar-sign"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <h3>$48,500</h3>
-                                            <p>Ingresos Mes</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<div class="dashboard-section">
+    <h4><i class="fas fa-calendar-day"></i> Reservas de Hoy</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($reservas_detalle)): ?>
+                    <?php foreach ($reservas_detalle as $reserva): ?>
+                        <tr>
+                            <td><?php echo date('H:i', strtotime($reserva['hora'])); ?></td>
+                            <td><?php echo htmlspecialchars($reserva['cliente_nombre']); ?></td>
+                            <td><?php echo htmlspecialchars($reserva['servicio_nombre']); ?></td>
+                            <td>
+                                <?php 
+                                $badge_class = match ($reserva['estado']) {
+                                    'Confirmada' => 'bg-success',
+                                    'Pendiente' => 'bg-warning text-dark',
+                                    'Cancelada' => 'bg-secondary',
+                                    'Completada' => 'bg-info',
+                                    default => 'bg-primary',
+                                };
+                                ?>
+                                <span class="badge <?php echo $badge_class; ?>">
+                                    <?php echo htmlspecialchars($reserva['estado']); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" onclick="verDetalles(<?php echo $reserva['id']; ?>)">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            No hay reservas para hoy
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+                      </div>
 
-                            <!-- Reservas del Día -->
-                            <div class="dashboard-section">
-                                <h4><i class="fas fa-calendar-day"></i> Reservas de Hoy</h4>
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Hora</th>
-                                                <th>Cliente</th>
-                                                <th>Servicio</th>
-                                                <th>Terapeuta</th>
-                                                <th>Estado</th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>09:00</td>
-                                                <td>María González</td>
-                                                <td>Masaje Relajante</td>
-                                                <td>Ana López</td>
-                                                <td><span class="badge bg-success">Confirmada</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>10:30</td>
-                                                <td>Carlos Ruiz</td>
-                                                <td>Hidroterapia</td>
-                                                <td>María García</td>
-                                                <td><span class="badge bg-warning text-dark">En Proceso</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>14:00</td>
-                                                <td>Laura Martínez</td>
-                                                <td>Tratamiento Facial</td>
-                                                <td>Ana López</td>
-                                                <td><span class="badge bg-info">Confirmada</span></td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Gestión de Reservas -->
                         <div id="reservas" class="content-section">
                             <div class="section-header">
                                 <h2><i class="fas fa-calendar-check"></i> Gestión de Reservas</h2>
@@ -190,36 +185,45 @@
                                 </div>
                             </div>
 
-                            <!-- Filtros -->
-                            <div class="filters-bar">
+                            <!-- Barra de filtros mejorada -->
+                            <div class="filters-bar mb-4">
                                 <div class="row g-3">
                                     <div class="col-md-3">
-                                        <select class="form-select">
-                                            <option>Todas las Reservas</option>
-                                            <option>Confirmadas</option>
-                                            <option>Pendientes</option>
-                                            <option>Canceladas</option>
-                                            <option>Completadas</option>
+                                        <label class="form-label small">Estado</label>
+                                        <select class="form-select" id="filtroEstado" onchange="filtrarReservas()">
+                                            <option value="todos">Todos los estados</option>
+                                            <option value="Pendiente">Pendiente</option>
+                                            <option value="Confirmada">Confirmada</option>
+                                            <option value="En Proceso">En Proceso</option>
+                                            <option value="Completada">Completada</option>
+                                            <option value="Cancelada">Cancelada</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="date" class="form-control">
+                                        <label class="form-label small">Fecha</label>
+                                        <input type="date" class="form-control" id="filtroFecha" onchange="filtrarReservas()">
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-select">
-                                            <option>Todos los Servicios</option>
-                                            <option>Masaje Relajante</option>
-                                            <option>Tratamiento Facial</option>
-                                            <option>Hidroterapia</option>
+                                        <label class="form-label small">Servicio</label>
+                                        <select class="form-select" id="filtroServicio" onchange="filtrarReservas()">
+                                            <option value="">Todos los servicios</option>
+                                            <?php if(isset($servicios)): ?>
+                                                <?php foreach($servicios as $servicio): ?>
+                                                <option value="<?php echo $servicio['id']; ?>">
+                                                    <?php echo htmlspecialchars($servicio['nombre']); ?>
+                                                </option>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="search" class="form-control" placeholder="Buscar cliente...">
+                                        <label class="form-label small">Buscar</label>
+                                        <input type="search" class="form-control" id="filtroBusqueda" 
+                                               placeholder="Cliente, teléfono, email..." onkeyup="filtrarReservas()">
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Tabla de Reservas -->
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -235,175 +239,164 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tablaReservas">
-                                        <tr>
-                                            <td>#001</td>
-                                            <td>25/10/2024</td>
-                                            <td>14:00</td>
-                                            <td>Juan Pérez</td>
-                                            <td>Masaje Relajante</td>
-                                            <td>María García</td>
-                                            <td><span class="badge bg-success">Confirmada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(1)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarReservaAdmin(1)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarReserva(1)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#002</td>
-                                            <td>28/10/2024</td>
-                                            <td>10:00</td>
-                                            <td>Ana Martínez</td>
-                                            <td>Tratamiento Facial</td>
-                                            <td>Ana López</td>
-                                            <td><span class="badge bg-warning text-dark">Pendiente</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(2)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarReservaAdmin(2)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarReserva(2)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#003</td>
-                                            <td>30/10/2024</td>
-                                            <td>16:00</td>
-                                            <td>Pedro Sánchez</td>
-                                            <td>Aromaterapia</td>
-                                            <td>Laura Fernández</td>
-                                            <td><span class="badge bg-info">Confirmada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(3)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarReservaAdmin(3)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarReserva(3)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#004</td>
-                                            <td>26/10/2024</td>
-                                            <td>11:00</td>
-                                            <td>Sofia Torres</td>
-                                            <td>Reflexología</td>
-                                            <td>Carlos Martínez</td>
-                                            <td><span class="badge bg-secondary">Cancelada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(4)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" disabled>
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarReserva(4)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <?php 
+                                        // --------------------------------------------------------
+                                        // LÓGICA PHP INYECTADA: Itera sobre las reservas del Controlador
+                                        // --------------------------------------------------------
+                                        if (isset($reservas) && is_array($reservas) && count($reservas) > 0): 
+                                            foreach ($reservas as $reserva): 
+                                                
+                                                $badge_class = match ($reserva['estado']) {
+                                                    'Confirmada' => 'bg-success',
+                                                    'Pendiente' => 'bg-warning text-dark',
+                                                    'Cancelada' => 'bg-secondary',
+                                                    'Completada' => 'bg-info',
+                                                    default => 'bg-primary',
+                                                };
+                                        ?>
+                                                <tr>
+                                                    <td><?php echo '#' . htmlspecialchars($reserva['id']); ?></td>
+                                                    <td><?php echo htmlspecialchars(date('d/m/Y', strtotime($reserva['fecha']))); ?></td>
+                                                    <td><?php echo htmlspecialchars(date('H:i', strtotime($reserva['hora']))); ?></td>
+                                                    <td><?php echo htmlspecialchars($reserva['cliente_nombre']); ?></td>
+                                                    <td><?php echo htmlspecialchars($reserva['servicio_nombre']); ?></td>
+                                                    <td><?php echo htmlspecialchars($reserva['terapeuta_nombre']); ?></td>
+                                                    <td><span class="badge <?php echo $badge_class; ?>"><?php echo htmlspecialchars($reserva['estado']); ?></span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-info" onclick="verDetalles(<?php echo $reserva['id']; ?>)">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-primary" onclick="editarReservaAdmin(<?php echo $reserva['id']; ?>)">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-danger" onclick="eliminarReserva(<?php echo $reserva['id']; ?>)">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                        <?php 
+                                            endforeach; 
+                                        else:
+                                        ?>
+                                            <tr>
+                                                <td colspan="8" class="text-center text-muted">No se encontraron reservas registradas.</td>
+                                            </tr>
+                                        <?php 
+                                        endif; 
+                                        // --------------------------------------------------------
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                        <!-- Nueva Reserva Admin -->
                         <div id="nueva-reserva-admin" class="content-section">
                             <div class="section-header">
                                 <h2><i class="fas fa-plus-circle"></i> Crear Nueva Reserva</h2>
                             </div>
 
                             <div class="form-card">
-                                <form id="formNuevaReservaAdmin">
+                                <form id="formNuevaReservaAdmin" method="POST" action="/api/reservas/create"> 
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label class="form-label">Cliente</label>
-                                            <select class="form-select" required>
+                                            <label class="form-label">Cliente <span class="text-danger">*</span></label>
+                                            <select class="form-select" required name="cliente_id" id="selectCliente">
                                                 <option value="">Selecciona un cliente</option>
-                                                <option>Juan Pérez</option>
-                                                <option>Ana Martínez</option>
-                                                <option>Pedro Sánchez</option>
-                                                <option>Sofia Torres</option>
+                                                <?php if(isset($clientes)): ?>
+                                                    <?php foreach($clientes as $cliente): ?>
+                                                    <option value="<?php echo $cliente['id']; ?>">
+                                                        <?php echo htmlspecialchars($cliente['nombre']); ?> 
+                                                        (<?php echo htmlspecialchars($cliente['email']); ?>)
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <option value="">No hay clientes registrados</option>
+                                                <?php endif; ?>
                                             </select>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label class="form-label">Servicio</label>
-                                            <select class="form-select" required>
+                                            <label class="form-label">Servicio <span class="text-danger">*</span></label>
+                                            <select class="form-select" required name="servicio_id" id="selectServicio">
                                                 <option value="">Selecciona un servicio</option>
-                                                <option>Masaje Relajante - 60 min - $800</option>
-                                                <option>Masaje Piedras Calientes - 90 min - $1200</option>
-                                                <option>Tratamiento Facial - 90 min - $1000</option>
-                                                <option>Hidroterapia - 45 min - $600</option>
-                                                <option>Aromaterapia - 60 min - $750</option>
-                                                <option>Reflexología - 60 min - $700</option>
+                                                <?php if(isset($servicios)): ?>
+                                                    <?php foreach($servicios as $servicio): ?>
+                                                    <option value="<?php echo $servicio['id']; ?>" 
+                                                            data-duracion="<?php echo $servicio['duration_min']; ?>"
+                                                            data-precio="<?php echo $servicio['precio']; ?>">
+                                                        <?php echo htmlspecialchars($servicio['nombre']); ?> 
+                                                        - $<?php echo number_format($servicio['precio'], 2); ?> 
+                                                        (<?php echo $servicio['duration_min']; ?> min)
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <option value="">No hay servicios disponibles</option>
+                                                <?php endif; ?>
                                             </select>
                                         </div>
 
                                         <div class="col-md-6">
                                             <label class="form-label">Terapeuta</label>
-                                            <select class="form-select" required>
-                                                <option value="">Selecciona un terapeuta</option>
-                                                <option>María García</option>
-                                                <option>Ana López</option>
-                                                <option>Carlos Martínez</option>
-                                                <option>Laura Fernández</option>
+                                            <select class="form-select" name="therapist_id" id="selectTerapeuta">
+                                                <option value="">Selecciona un terapeuta (opcional)</option>
+                                                <?php if(isset($terapeutas)): ?>
+                                                    <?php foreach($terapeutas as $terapeuta): ?>
+                                                    <option value="<?php echo $terapeuta['id']; ?>">
+                                                        <?php echo htmlspecialchars($terapeuta['nombre']); ?>
+                                                        <?php if($terapeuta['especialidad']): ?>
+                                                        - <?php echo htmlspecialchars($terapeuta['especialidad']); ?>
+                                                        <?php endif; ?>
+                                                    </option>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <option value="">No hay terapeutas disponibles</option>
+                                                <?php endif; ?>
                                             </select>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label class="form-label">Estado</label>
-                                            <select class="form-select" required>
+                                            <label class="form-label">Estado <span class="text-danger">*</span></label>
+                                            <select class="form-select" required name="estado">
                                                 <option value="">Selecciona estado</option>
-                                                <option selected>Confirmada</option>
-                                                <option>Pendiente</option>
-                                                <option>En Proceso</option>
+                                                <option value="Pendiente" selected>Pendiente</option>
+                                                <option value="Confirmada">Confirmada</option>
+                                                <option value="En Proceso">En Proceso</option>
+                                                <option value="Completada">Completada</option>
+                                                <option value="Cancelada">Cancelada</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label class="form-label">Fecha</label>
-                                            <input type="date" class="form-control" required>
+                                            <label class="form-label">Fecha <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" required name="fecha" id="fechaReserva" 
+                                                   min="<?php echo date('Y-m-d'); ?>">
                                         </div>
 
                                         <div class="col-md-6">
-                                            <label class="form-label">Hora</label>
-                                            <select class="form-select" required>
-                                                <option value="">Selecciona una hora</option>
-                                                <option>09:00 AM</option>
-                                                <option>10:00 AM</option>
-                                                <option>11:00 AM</option>
-                                                <option>12:00 PM</option>
-                                                <option>02:00 PM</option>
-                                                <option>03:00 PM</option>
-                                                <option>04:00 PM</option>
-                                                <option>05:00 PM</option>
+                                            <label class="form-label">Hora <span class="text-danger">*</span></label>
+                                            <select class="form-select" required name="hora" id="horaReserva">
+                                                <option value="">Primero selecciona una fecha</option>
                                             </select>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label class="form-label">Duración</label>
+                                            <div class="form-control-plaintext" id="duracionServicio">
+                                                Selecciona un servicio para ver la duración
+                                            </div>
                                         </div>
 
                                         <div class="col-12">
-                                            <label class="form-label">Notas</label>
-                                            <textarea class="form-control" rows="3" placeholder="Notas adicionales..."></textarea>
+                                            <label class="form-label">Notas (opcional)</label>
+                                            <textarea class="form-control" rows="3" placeholder="Notas adicionales..." 
+                                                      name="notas" id="notasReserva"></textarea>
                                         </div>
 
                                         <div class="col-12 text-end">
                                             <button type="button" class="btn btn-outline-secondary me-2" onclick="showAdminSection('reservas')">
-                                                Cancelar
+                                                <i class="fas fa-times"></i> Cancelar
                                             </button>
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-primary" id="btnGuardarReserva">
                                                 <i class="fas fa-save"></i> Guardar Reserva
                                             </button>
                                         </div>
@@ -412,361 +405,30 @@
                             </div>
                         </div>
 
-                        <!-- Historial -->
                         <div id="historial" class="content-section">
                             <div class="section-header">
-                                <h2><i class="fas fa-history"></i> Historial de Reservas</h2>
+                                <h2><i class="fas fa-history"></i> Historial</h2>
                             </div>
-
-                            <div class="filters-bar">
-                                <div class="row g-3">
-                                    <div class="col-md-3">
-                                        <input type="date" class="form-control" placeholder="Desde">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <input type="date" class="form-control" placeholder="Hasta">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="form-select">
-                                            <option>Todas las Reservas</option>
-                                            <option>Completadas</option>
-                                            <option>Canceladas</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <button class="btn btn-primary w-100">
-                                            <i class="fas fa-search"></i> Buscar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#ID</th>
-                                            <th>Fecha</th>
-                                            <th>Cliente</th>
-                                            <th>Servicio</th>
-                                            <th>Total</th>
-                                            <th>Estado</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>#120</td>
-                                            <td>20/10/2024</td>
-                                            <td>María González</td>
-                                            <td>Masaje Relajante</td>
-                                            <td>$800</td>
-                                            <td><span class="badge bg-success">Completada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(120)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#119</td>
-                                            <td>19/10/2024</td>
-                                            <td>Carlos Ruiz</td>
-                                            <td>Tratamiento Facial</td>
-                                            <td>$1000</td>
-                                            <td><span class="badge bg-success">Completada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(119)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#118</td>
-                                            <td>18/10/2024</td>
-                                            <td>Laura Martínez</td>
-                                            <td>Hidroterapia</td>
-                                            <td>$600</td>
-                                            <td><span class="badge bg-secondary">Cancelada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(118)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#117</td>
-                                            <td>17/10/2024</td>
-                                            <td>Pedro Sánchez</td>
-                                            <td>Aromaterapia</td>
-                                            <td>$750</td>
-                                            <td><span class="badge bg-success">Completada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(117)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#116</td>
-                                            <td>16/10/2024</td>
-                                            <td>Sofia Torres</td>
-                                            <td>Reflexología</td>
-                                            <td>$700</td>
-                                            <td><span class="badge bg-success">Completada</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verDetalles(116)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> Módulo en construcción
                             </div>
                         </div>
 
-                        <!-- Clientes -->
                         <div id="clientes" class="content-section">
                             <div class="section-header">
                                 <h2><i class="fas fa-users"></i> Gestión de Clientes</h2>
-                                <button class="btn btn-primary" onclick="agregarCliente()">
-                                    <i class="fas fa-user-plus"></i> Agregar Cliente
-                                </button>
                             </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>#ID</th>
-                                            <th>Nombre</th>
-                                            <th>Email</th>
-                                            <th>Teléfono</th>
-                                            <th>Reservas</th>
-                                            <th>Última Visita</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>#C001</td>
-                                            <td>Juan Pérez</td>
-                                            <td>juan@ejemplo.com</td>
-                                            <td>+52 555 123 4567</td>
-                                            <td>15</td>
-                                            <td>25/10/2024</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verPerfilCliente(1)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarCliente(1)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarCliente(1)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#C002</td>
-                                            <td>Ana Martínez</td>
-                                            <td>ana@ejemplo.com</td>
-                                            <td>+52 555 987 6543</td>
-                                            <td>8</td>
-                                            <td>28/10/2024</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verPerfilCliente(2)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarCliente(2)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarCliente(2)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#C003</td>
-                                            <td>Pedro Sánchez</td>
-                                            <td>pedro@ejemplo.com</td>
-                                            <td>+52 555 456 7890</td>
-                                            <td>12</td>
-                                            <td>30/10/2024</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verPerfilCliente(3)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarCliente(3)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarCliente(3)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#C004</td>
-                                            <td>Sofia Torres</td>
-                                            <td>sofia@ejemplo.com</td>
-                                            <td>+52 555 321 0987</td>
-                                            <td>5</td>
-                                            <td>26/10/2024</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-info" onclick="verPerfilCliente(4)">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editarCliente(4)">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarCliente(4)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> Módulo en construcción
                             </div>
                         </div>
 
-                        <!-- Servicios -->
                         <div id="servicios" class="content-section">
                             <div class="section-header">
                                 <h2><i class="fas fa-spa"></i> Gestión de Servicios</h2>
                             </div>
-
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="service-admin-card">
-                                        <div class="service-admin-header">
-                                            <h4>Masaje Relajante</h4>
-                                            <span class="badge bg-success">Activo</span>
-                                        </div>
-                                        <div class="service-admin-body">
-                                            <p><strong>Duración:</strong> 60 minutos</p>
-                                            <p><strong>Precio:</strong> $800</p>
-                                            <p><strong>Categoría:</strong> Masajes</p>
-                                        </div>
-                                        <div class="service-admin-footer">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editarServicio(1)">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-warning" onclick="toggleServicio(1)">
-                                                <i class="fas fa-power-off"></i> Desactivar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="service-admin-card">
-                                        <div class="service-admin-header">
-                                            <h4>Tratamiento Facial</h4>
-                                            <span class="badge bg-success">Activo</span>
-                                        </div>
-                                        <div class="service-admin-body">
-                                            <p><strong>Duración:</strong> 90 minutos</p>
-                                            <p><strong>Precio:</strong> $1000</p>
-                                            <p><strong>Categoría:</strong> Faciales</p>
-                                        </div>
-                                        <div class="service-admin-footer">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editarServicio(2)">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-warning" onclick="toggleServicio(2)">
-                                                <i class="fas fa-power-off"></i> Desactivar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="service-admin-card">
-                                        <div class="service-admin-header">
-                                            <h4>Hidroterapia</h4>
-                                            <span class="badge bg-success">Activo</span>
-                                        </div>
-                                        <div class="service-admin-body">
-                                            <p><strong>Duración:</strong> 45 minutos</p>
-                                            <p><strong>Precio:</strong> $600</p>
-                                            <p><strong>Categoría:</strong> Terapias</p>
-                                        </div>
-                                        <div class="service-admin-footer">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editarServicio(3)">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-warning" onclick="toggleServicio(3)">
-                                                <i class="fas fa-power-off"></i> Desactivar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="service-admin-card">
-                                        <div class="service-admin-header">
-                                            <h4>Aromaterapia</h4>
-                                            <span class="badge bg-success">Activo</span>
-                                        </div>
-                                        <div class="service-admin-body">
-                                            <p><strong>Duración:</strong> 60 minutos</p>
-                                            <p><strong>Precio:</strong> $750</p>
-                                            <p><strong>Categoría:</strong> Terapias</p>
-                                        </div>
-                                        <div class="service-admin-footer">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editarServicio(4)">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-warning" onclick="toggleServicio(4)">
-                                                <i class="fas fa-power-off"></i> Desactivar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="service-admin-card">
-                                        <div class="service-admin-header">
-                                            <h4>Reflexología</h4>
-                                            <span class="badge bg-success">Activo</span>
-                                        </div>
-                                        <div class="service-admin-body">
-                                            <p><strong>Duración:</strong> 60 minutos</p>
-                                            <p><strong>Precio:</strong> $700</p>
-                                            <p><strong>Categoría:</strong> Terapias</p>
-                                        </div>
-                                        <div class="service-admin-footer">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editarServicio(5)">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-warning" onclick="toggleServicio(5)">
-                                                <i class="fas fa-power-off"></i> Desactivar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="service-admin-card">
-                                        <div class="service-admin-header">
-                                            <h4>Piedras Calientes</h4>
-                                            <span class="badge bg-secondary">Inactivo</span>
-                                        </div>
-                                        <div class="service-admin-body">
-                                            <p><strong>Duración:</strong> 90 minutos</p>
-                                            <p><strong>Precio:</strong> $1200</p>
-                                            <p><strong>Categoría:</strong> Masajes</p>
-                                        </div>
-                                        <div class="service-admin-footer">
-                                            <button class="btn btn-sm btn-outline-primary" onclick="editarServicio(6)">
-                                                <i class="fas fa-edit"></i> Editar
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-success" onclick="toggleServicio(6)">
-                                                <i class="fas fa-power-off"></i> Activar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> Módulo en construcción
                             </div>
                         </div>
                     </div>
@@ -775,108 +437,96 @@
         </div>
     </section>
 
-    <!-- Modal Ver Detalles -->
     <div class="modal fade" id="modalDetalles" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-info-circle"></i> Detalles de Reserva #001</h5>
+                    <h5 class="modal-title"><i class="fas fa-eye"></i> Detalles de Reserva</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Información del Cliente</h6>
-                            <p><strong>Nombre:</strong> Juan Pérez</p>
-                            <p><strong>Email:</strong> juan@ejemplo.com</p>
-                            <p><strong>Teléfono:</strong> +52 555 123 4567</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Información de la Reserva</h6>
-                            <p><strong>Servicio:</strong> Masaje Relajante</p>
-                            <p><strong>Fecha:</strong> 25/10/2024</p>
-                            <p><strong>Hora:</strong> 14:00 - 15:00</p>
-                            <p><strong>Terapeuta:</strong> María García</p>
-                            <p><strong>Estado:</strong> <span class="badge bg-success">Confirmada</span></p>
-                            <p><strong>Total:</strong> $800</p>
-                        </div>
-                        <div class="col-12">
-                            <hr>
-                            <h6 class="text-muted">Notas</h6>
-                            <p>El cliente prefiere masaje de presión media. Alergia a aceites con fragancia de lavanda.</p>
-                        </div>
-                    </div>
+                <div class="modal-body" id="modalDetallesBody">
+                    Cargando detalles...
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="editarReservaAdmin(1)">
-                        <i class="fas fa-edit"></i> Editar
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Editar Reserva Admin -->
     <div class="modal fade" id="modalEditarReservaAdmin" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-edit"></i> Editar Reserva #001</h5>
+                    <h5 class="modal-title"><i class="fas fa-edit"></i> Editar Reserva #<span id="edit_reserva_id_display">000</span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditarReservaAdmin">
-                        <div class="mb-3">
-                            <label class="form-label">Cliente</label>
-                            <select class="form-select">
-                                <option selected>Juan Pérez</option>
-                                <option>Ana Martínez</option>
-                                <option>Pedro Sánchez</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Servicio</label>
-                            <select class="form-select">
-                                <option selected>Masaje Relajante - $800</option>
-                                <option>Tratamiento Facial - $1000</option>
-                                <option>Hidroterapia - $600</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select">
-                                <option selected>Confirmada</option>
-                                <option>Pendiente</option>
-                                <option>En Proceso</option>
-                                <option>Completada</option>
-                                <option>Cancelada</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Fecha</label>
-                            <input type="date" class="form-control" value="2024-10-25">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Hora</label>
-                            <select class="form-select">
-                                <option>09:00 AM</option>
-                                <option selected>02:00 PM</option>
-                                <option>03:00 PM</option>
-                                <option>04:00 PM</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Terapeuta</label>
-                            <select class="form-select">
-                                <option selected>María García</option>
-                                <option>Ana López</option>
-                                <option>Carlos Martínez</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Notas</label>
-                            <textarea class="form-control" rows="3">El cliente prefiere masaje de presión media.</textarea>
+                    <form id="formEditarReservaAdmin" method="POST" action="/api/reservas/update">
+                        <input type="hidden" name="id" id="edit_reserva_id">
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Cliente</label>
+                                <select class="form-select" name="cliente_id" id="edit_cliente_id">
+                                    <?php if(isset($clientes)): ?>
+                                        <?php foreach($clientes as $cliente): ?>
+                                        <option value="<?php echo $cliente['id']; ?>">
+                                            <?php echo htmlspecialchars($cliente['nombre']); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Servicio</label>
+                                <select class="form-select" name="servicio_id" id="edit_servicio_id">
+                                    <?php if(isset($servicios)): ?>
+                                        <?php foreach($servicios as $servicio): ?>
+                                        <option value="<?php echo $servicio['id']; ?>">
+                                            <?php echo htmlspecialchars($servicio['nombre']); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select" name="estado" id="edit_estado">
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Confirmada">Confirmada</option>
+                                    <option value="En Proceso">En Proceso</option>
+                                    <option value="Completada">Completada</option>
+                                    <option value="Cancelada">Cancelada</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Terapeuta</label>
+                                <select class="form-select" name="therapist_id" id="edit_therapist_id">
+                                    <option value="">Sin terapeuta</option>
+                                    <?php if(isset($terapeutas)): ?>
+                                        <?php foreach($terapeutas as $terapeuta): ?>
+                                        <option value="<?php echo $terapeuta['id']; ?>">
+                                            <?php echo htmlspecialchars($terapeuta['nombre']); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" name="fecha" id="edit_fecha">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hora</label>
+                                <select class="form-select" name="hora" id="edit_hora">
+                                    <!-- Se llenará dinámicamente -->
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Notas</label>
+                                <textarea class="form-control" rows="3" name="notas" id="edit_notas"></textarea>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -890,175 +540,174 @@
         </div>
     </div>
 
-    <!-- Modal Agregar Cliente -->
-    <div class="modal fade" id="modalAgregarCliente" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-user-plus"></i> Agregar Nuevo Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formAgregarCliente">
-                        <div class="mb-3">
-                            <label class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" required placeholder="Ej: Juan Pérez">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required placeholder="ejemplo@correo.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" required placeholder="+52 555 123 4567">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Dirección</label>
-                            <input type="text" class="form-control" placeholder="Calle, Número, Colonia">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Notas (Alergias, Preferencias, etc.)</label>
-                            <textarea class="form-control" rows="2"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="formAgregarCliente" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Agregar Cliente
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Perfil Cliente -->
-    <div class="modal fade" id="modalPerfilCliente" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-user"></i> Perfil de Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Información Personal</h6>
-                            <p><strong>Nombre:</strong> Juan Pérez</p>
-                            <p><strong>Email:</strong> juan@ejemplo.com</p>
-                            <p><strong>Teléfono:</strong> +52 555 123 4567</p>
-                            <p><strong>Fecha Nacimiento:</strong> 15/05/1990</p>
-                            <p><strong>Dirección:</strong> Av. Principal 123, Centro</p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="text-muted">Estadísticas</h6>
-                            <p><strong>Cliente desde:</strong> Enero 2023</p>
-                            <p><strong>Total de Reservas:</strong> 15</p>
-                            <p><strong>Última Visita:</strong> 25/10/2024</p>
-                            <p><strong>Gasto Total:</strong> $12,800</p>
-                            <p><strong>Servicio Favorito:</strong> Masaje Relajante</p>
-                        </div>
-                        <div class="col-12">
-                            <hr>
-                            <h6 class="text-muted">Historial de Reservas Recientes</h6>
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Fecha</th>
-                                        <th>Servicio</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>25/10/2024</td>
-                                        <td>Masaje Relajante</td>
-                                        <td><span class="badge bg-success">Completada</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>18/10/2024</td>
-                                        <td>Hidroterapia</td>
-                                        <td><span class="badge bg-success">Completada</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/10/2024</td>
-                                        <td>Tratamiento Facial</td>
-                                        <td><span class="badge bg-success">Completada</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="editarCliente(1)">
-                        <i class="fas fa-edit"></i> Editar Cliente
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Editar Servicio -->
-    <div class="modal fade" id="modalEditarServicio" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-edit"></i> Editar Servicio</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="formEditarServicio">
-                        <div class="mb-3">
-                            <label class="form-label">Nombre del Servicio</label>
-                            <input type="text" class="form-control" value="Masaje Relajante">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Categoría</label>
-                            <select class="form-select">
-                                <option selected>Masajes</option>
-                                <option>Faciales</option>
-                                <option>Terapias</option>
-                                <option>Tratamientos</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Duración (minutos)</label>
-                            <input type="number" class="form-control" value="60">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Precio</label>
-                            <input type="number" class="form-control" value="800">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Descripción</label>
-                            <textarea class="form-control" rows="3">Masaje terapéutico diseñado para liberar tensiones y promover la relajación profunda.</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select">
-                                <option selected>Activo</option>
-                                <option>Inactivo</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="formEditarServicio" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Guardar Cambios
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../public/scripts/reservas.js"></script>
+    
+    <script>
+    // Funcionalidad adicional para la vista
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mostrar duración del servicio seleccionado
+        const selectServicio = document.getElementById('selectServicio');
+        const duracionServicio = document.getElementById('duracionServicio');
+        
+        if (selectServicio && duracionServicio) {
+            selectServicio.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                if (selectedOption.value) {
+                    const duracion = selectedOption.getAttribute('data-duracion');
+                    const precio = selectedOption.getAttribute('data-precio');
+                    duracionServicio.innerHTML = `
+                        <strong>Duración:</strong> ${duracion} minutos | 
+                        <strong>Precio:</strong> $${parseFloat(precio).toFixed(2)}
+                    `;
+                } else {
+                    duracionServicio.innerHTML = 'Selecciona un servicio para ver la duración';
+                }
+            });
+        }
+        
+        // Cargar horarios cuando se selecciona fecha
+        const fechaInput = document.getElementById('fechaReserva');
+        const horaSelect = document.getElementById('horaReserva');
+        
+        if (fechaInput && horaSelect) {
+            fechaInput.addEventListener('change', function() {
+                if (this.value) {
+                    cargarHorariosDisponibles(this.value);
+                }
+            });
+        }
+        
+        // También para el formulario de edición
+        const editFechaInput = document.getElementById('edit_fecha');
+        const editHoraSelect = document.getElementById('edit_hora');
+        
+        if (editFechaInput && editHoraSelect) {
+            editFechaInput.addEventListener('change', function() {
+                if (this.value) {
+                    cargarHorariosDisponibles(this.value, 'edit_');
+                }
+            });
+        }
+        
+        // Inicializar fecha mínima
+        if (fechaInput) {
+            fechaInput.min = new Date().toISOString().split('T')[0];
+        }
+        if (editFechaInput) {
+            editFechaInput.min = new Date().toISOString().split('T')[0];
+        }
+    });
+    
+    // Función para cargar horarios disponibles
+    async function cargarHorariosDisponibles(fecha, prefix = '') {
+        const horaSelect = document.getElementById(prefix + 'hora') || 
+                          document.querySelector(`select[name="${prefix}hora"]`);
+        
+        if (!fecha || !horaSelect) return;
+        
+        // Mostrar loading
+        const originalHTML = horaSelect.innerHTML;
+        horaSelect.innerHTML = '<option value="">Cargando horarios disponibles...</option>';
+        horaSelect.disabled = true;
+        
+        try {
+            const res = await fetch(`/api/horarios-disponibles?fecha=${fecha}`);
+            const horarios = await res.json();
+            
+            horaSelect.innerHTML = '<option value="">Selecciona una hora</option>';
+            
+            if (horarios && horarios.length > 0) {
+                horarios.forEach(hora => {
+                    const horaFormateada = hora.substring(0, 5); // Formato HH:MM
+                    const hora12h = convertirHora12h(horaFormateada);
+                    
+                    const option = document.createElement('option');
+                    option.value = hora + ':00'; // Formato HH:MM:SS para la BD
+                    option.textContent = `${horaFormateada} hrs (${hora12h})`;
+                    horaSelect.appendChild(option);
+                });
+            } else {
+                horaSelect.innerHTML = '<option value="">No hay horarios disponibles para esta fecha</option>';
+            }
+            
+        } catch (err) {
+            console.error('Error cargando horarios:', err);
+            horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+        } finally {
+            horaSelect.disabled = false;
+        }
+    }
+    
+    // Función para convertir hora 24h a 12h
+    function convertirHora12h(hora24) {
+        const [horas, minutos] = hora24.split(':');
+        let horas12 = parseInt(horas);
+        const ampm = horas12 >= 12 ? 'PM' : 'AM';
+        horas12 = horas12 % 12 || 12;
+        return `${horas12}:${minutos} ${ampm}`;
+    }
+    
+    // Función para filtrar la tabla de reservas
+    function filtrarReservas() {
+        const filtroEstado = document.getElementById('filtroEstado').value;
+        const filtroFecha = document.getElementById('filtroFecha').value;
+        const filtroServicio = document.getElementById('filtroServicio').value;
+        const filtroBusqueda = document.getElementById('filtroBusqueda').value.toLowerCase();
+        
+        const filas = document.querySelectorAll('#tablaReservas tr');
+        
+        filas.forEach(fila => {
+            let mostrar = true;
+            
+            // Filtrar por estado
+            if (filtroEstado && filtroEstado !== 'todos') {
+                const estadoCelda = fila.querySelector('td:nth-child(7)');
+                if (estadoCelda) {
+                    const estado = estadoCelda.textContent.trim().toLowerCase();
+                    if (estado !== filtroEstado.toLowerCase()) {
+                        mostrar = false;
+                    }
+                }
+            }
+            
+            // Filtrar por fecha
+            if (filtroFecha) {
+                const fechaCelda = fila.querySelector('td:nth-child(2)');
+                if (fechaCelda) {
+                    // Convertir fecha de tabla (d/m/Y) a formato Y-m-d
+                    const partes = fechaCelda.textContent.trim().split('/');
+                    if (partes.length === 3) {
+                        const fechaTabla = `${partes[2]}-${partes[1]}-${partes[0]}`;
+                        if (fechaTabla !== filtroFecha) {
+                            mostrar = false;
+                        }
+                    }
+                }
+            }
+            
+            // Filtrar por servicio
+            if (filtroServicio) {
+                const servicioCelda = fila.querySelector('td:nth-child(5)');
+                if (servicioCelda) {
+                    const idServicio = servicioCelda.getAttribute('data-servicio-id');
+                    if (idServicio !== filtroServicio) {
+                        mostrar = false;
+                    }
+                }
+            }
+            
+            // Filtrar por búsqueda
+            if (filtroBusqueda) {
+                const textoFila = fila.textContent.toLowerCase();
+                if (!textoFila.includes(filtroBusqueda)) {
+                    mostrar = false;
+                }
+            }
+            
+            fila.style.display = mostrar ? '' : 'none';
+        });
+    }
+    </script>
 </body>
 </html>

@@ -2,8 +2,6 @@
 // index.php - Router principal del proyecto
 
 require_once __DIR__ . '/app/config.php';
-require_once __DIR__ . '/Controller/ReservationController.php';
-require_once __DIR__ . '/Controller/AuthController.php';
 
 // Obtener la ruta solicitada
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -22,9 +20,18 @@ switch ($uri) {
         require __DIR__ . '/views/cliente.php';
         break;
 
-    // Administrador
+    // Administrador - Dashboard
     case 'administrador':
-        require __DIR__ . '/views/administrador.php';
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->dashboard();
+        break;
+
+    // Administrador - Vista de reservas (HTML completa)
+    case 'admin/reservas':
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->reservas();
         break;
 
     // Misión / Visión
@@ -32,8 +39,9 @@ switch ($uri) {
         require __DIR__ . '/views/mision-vision.php';
         break;
 
-    // Reservas (MVC)
+    // Reservas (MVC) - Para clientes
     case 'reservas':
+        require_once __DIR__ . '/Controller/ReservationController.php';
         $ctrl = new ReservationController();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ctrl->store();
@@ -42,8 +50,76 @@ switch ($uri) {
         }
         break;
 
+    // === RUTAS API PARA ADMIN ===
+
+    // API: Obtener todas las reservas (JSON)
+    case 'api/reservas':
+        session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->getReservasApi();
+        break;
+
+    // API: Obtener una reserva específica
+    case 'api/reservas/show':
+        session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->getReservaByIdApi();
+        break;
+
+    // API: Crear nueva reserva
+    case 'api/reservas/create':
+        session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->createReservaApi();
+        break;
+
+    // API: Actualizar reserva
+    case 'api/reservas/update':
+        session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->updateReservaApi();
+        break;
+
+    // API: Eliminar reserva
+    case 'api/reservas/delete':
+        session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->deleteReservaApi();
+        break;
+
     // Login
     case 'login':
+        require_once __DIR__ . '/Controller/AuthController.php';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             (new AuthController())->login();
         }
@@ -51,6 +127,7 @@ switch ($uri) {
 
     // Registro
     case 'register':
+        require_once __DIR__ . '/Controller/AuthController.php';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             (new AuthController())->register();
         }

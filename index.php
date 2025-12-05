@@ -50,7 +50,22 @@ switch ($uri) {
         }
         break;
 
-    // === RUTAS API PARA ADMIN ===
+    // ==========================================
+    // =============  RUTAS API  ADMIN  ==========
+    // ==========================================
+
+    // API: Obtener horarios disponibles
+    case 'api/horarios-disponibles':
+        session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
+        require_once __DIR__ . '/Controller/AdminController.php';
+        $adminController = new AdminController();
+        $adminController->getHorariosDisponibles();
+        break;
 
     // API: Obtener todas las reservas (JSON)
     case 'api/reservas':

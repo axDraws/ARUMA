@@ -314,28 +314,26 @@
                                                 <?php endif; ?>
                                             </select>
                                         </div>
-
-                                        <div class="col-md-6">
+                                         <div class="col-md-6">
+                                          <div class="col-md-6">
                                             <label class="form-label">Servicio <span class="text-danger">*</span></label>
-                                            <select class="form-select" required name="servicio_id" id="selectServicio">
-                                                <option value="">Selecciona un servicio</option>
-                                                <?php if(isset($servicios)): ?>
-                                                    <?php foreach($servicios as $servicio): ?>
-                                                    <option value="<?php echo $servicio['id']; ?>" 
-                                                            data-duracion="<?php echo $servicio['duration_min']; ?>"
-                                                            data-precio="<?php echo $servicio['precio']; ?>">
-                                                        <?php echo htmlspecialchars($servicio['nombre']); ?> 
-                                                        - $<?php echo number_format($servicio['precio'], 2); ?> 
-                                                        (<?php echo $servicio['duration_min']; ?> min)
-                                                    </option>
-                                                    <?php endforeach; ?>
-                                                <?php else: ?>
-                                                    <option value="">No hay servicios disponibles</option>
-                                                <?php endif; ?>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-6">
+                                              <select class="form-select" required name="servicio_id" id="selectServicio">
+                                                 <option value="">Selecciona un servicio</option>
+                                                 <?php if (isset($servicios)): ?>
+                                                     <?php foreach ($servicios as $servicio): ?>
+                                                        <option value="<?= $servicio['id']; ?>"
+                                                         data-duracion="<?= $servicio['duracion_min']; ?>"
+                                                          data-precio="<?= $servicio['precio']; ?>">
+                                                          <?= htmlspecialchars($servicio['nombre']); ?>
+                                                       - $<?= number_format($servicio['precio'], 2); ?>
+                                                         (<?= $servicio['duracion_min']; ?> min)
+                                                          </option>
+                                                          <?php endforeach; ?>
+                                                           <?php else: ?>
+                                                            <option value="">No hay servicios disponibles</option>
+                                                            <?php endif; ?>
+                                                           </select>  
+                                                  </div>
                                             <label class="form-label">Terapeuta</label>
                                             <select class="form-select" name="therapist_id" id="selectTerapeuta">
                                                 <option value="">Selecciona un terapeuta (opcional)</option>

@@ -137,22 +137,28 @@
             <tbody>
                 <?php if (!empty($reservas_detalle)): ?>
                     <?php foreach ($reservas_detalle as $reserva): ?>
+                        <?php
+                            // Protección contra NULL o keys faltantes
+                            $cliente  = $reserva['cliente_nombre']  ?? 'Sin cliente';
+                            $servicio = $reserva['servicio_nombre'] ?? 'Sin servicio';
+                            $estado   = $reserva['estado']          ?? 'pendiente';
+                        ?>
                         <tr>
                             <td><?php echo date('H:i', strtotime($reserva['hora'])); ?></td>
-                            <td><?php echo htmlspecialchars($reserva['cliente_nombre']); ?></td>
-                            <td><?php echo htmlspecialchars($reserva['servicio_nombre']); ?></td>
+                            <td><?php echo htmlspecialchars($cliente); ?></td>
+                            <td><?php echo htmlspecialchars($servicio); ?></td>
                             <td>
                                 <?php 
-                                $badge_class = match ($reserva['estado']) {
-                                    'Confirmada' => 'bg-success',
-                                    'Pendiente' => 'bg-warning text-dark',
-                                    'Cancelada' => 'bg-secondary',
-                                    'Completada' => 'bg-info',
-                                    default => 'bg-primary',
+                                $badge_class = match (strtolower($estado)) {
+                                    'confirmada' => 'bg-success',
+                                    'pendiente'  => 'bg-warning text-dark',
+                                    'cancelada'  => 'bg-secondary',
+                                    'completada' => 'bg-info',
+                                    default      => 'bg-primary',
                                 };
                                 ?>
                                 <span class="badge <?php echo $badge_class; ?>">
-                                    <?php echo htmlspecialchars($reserva['estado']); ?>
+                                    <?php echo htmlspecialchars(ucfirst($estado)); ?>
                                 </span>
                             </td>
                             <td>
@@ -173,7 +179,7 @@
         </table>
     </div>
 </div>
-                      </div>
+                     </div>
 
                         <div id="reservas" class="content-section">
                             <div class="section-header">

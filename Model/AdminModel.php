@@ -3,71 +3,109 @@ require_once __DIR__ . '/../app/config.php';
 
 class AdminModel {
     private PDO $db;
-    
+
     public function __construct() {
         $this->db = DB::get();
     }
-    
-    public function getDashboardStats() {
-        $stats = [];
-        
+
+    /**
+     * Devuelve estadísticas para el dashboard:
+     * - reservas_hoy (int)
+     * - reservas_confirmadas (int)
+     * - reservas_pendientes (int)
+     * - total_clientes (int)
+     * - reservas_hoy_detalle (array) -> each item has cliente_nombre, servicio_nombre, terapeuta_nombre, estado, estado_display, etc.
+     */
+    public function getDashboardStats(): array {
+        $stats = [
+            'reservas_hoy' => 0,
+            'reservas_confirmadas' => 0,
+            'reservas_pendientes' => 0,
+            'total_clientes' => 0,
+            'reservas_hoy_detalle' => []
+        ];
+
         try {
-            // 1. Total reservas de HOY
+            // 1) Total reservas de HOY
             $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM reservations WHERE fecha = CURDATE()");
             $stmt->execute();
-            $stats['reservas_hoy'] = $stmt->fetch()['total'] ?? 0;
-            
-            // 2. Reservas CONFIRMADAS
-            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM reservations WHERE estado = 'Confirmada'");
+            $stats['reservas_hoy'] = (int) ($stmt->fetchColumn() ?: 0);
+
+            // 2) Reservas CONFIRMADAS (BD usa valores en minúscula como 'confirmada')
+            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM reservations WHERE LOWER(estado) = 'confirmada'");
             $stmt->execute();
-            $stats['reservas_confirmadas'] = $stmt->fetch()['total'] ?? 0;
-            
-            // 3. Reservas PENDIENTES
-            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM reservations WHERE estado = 'Pendiente'");
+            $stats['reservas_confirmadas'] = (int) ($stmt->fetchColumn() ?: 0);
+
+            // 3) Reservas PENDIENTES
+            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM reservations WHERE LOWER(estado) = 'pendiente'");
             $stmt->execute();
-            $stats['reservas_pendientes'] = $stmt->fetch()['total'] ?? 0;
-            
-            // 4. Total CLIENTES
-            $stmt = $this->db->query("SELECT COUNT(*) as total FROM users WHERE role = 'client'");
-            $stats['total_clientes'] = $stmt->fetch()['total'] ?? 0;
-            
-            // 5. Reservas de HOY con detalles - versión simple primero
-            $stmt = $this->db->prepare("SELECT * FROM reservations WHERE fecha = CURDATE() ORDER BY hora ASC");
+            $stats['reservas_pendientes'] = (int) ($stmt->fetchColumn() ?: 0);
+
+            // 4) Total CLIENTES
+            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM users WHERE role = 'client'");
             $stmt->execute();
-            $stats['reservas_hoy_detalle'] = $stmt->fetchAll();
-            
+            $stats['total_clientes'] = (int) ($stmt->fetchColumn() ?: 0);
+
+            // 5) Reservas de HOY con detalles (joins correctos y alias)
+            $sql = "
+                SELECT
+                    r.id,
+                    r.cliente_id,
+                    r.servicio_id,
+                    r.therapist_id,
+                    r.fecha,
+                    r.hora,
+                    r.duracion_min,
+                    r.notas,
+                    r.estado,
+                    -- nombre de cliente/servicio/terapeuta
+                    u.nombre AS cliente_nombre,
+                    s.nombre AS servicio_nombre,
+                    t.nombre AS terapeuta_nombre,
+                    CONCAT(UPPER(LEFT(r.estado,1)), SUBSTRING(r.estado,2)) AS estado_display
+                FROM reservations r
+                LEFT JOIN users u ON r.cliente_id = u.id
+                LEFT JOIN services s ON r.servicio_id = s.id
+                LEFT JOIN therapists t ON r.therapist_id = t.id
+                WHERE r.fecha = CURDATE()
+                ORDER BY r.hora ASC, r.fecha ASC
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $stats['reservas_hoy_detalle'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
-            // En caso de error, devolver valores por defecto
-            error_log("Error en AdminModel: " . $e->getMessage());
-            $stats = [
-                'reservas_hoy' => 0,
-                'reservas_confirmadas' => 0,
-                'reservas_pendientes' => 0,
-                'total_clientes' => 0,
-                'reservas_hoy_detalle' => []
-            ];
+            error_log("Error en AdminModel::getDashboardStats -> " . $e->getMessage());
+            // Retornamos los valores por defecto ya inicializados
         }
-        
+
         return $stats;
     }
-public function getAllReservations() {
-    try {
-        $stmt = $this->db->prepare("
-            SELECT r.*, 
-                   u.nombre as cliente_nombre, 
-                   s.nombre as servicio_nombre,
-                   t.nombre as terapeuta_nombre
-            FROM reservations r
-            JOIN users u ON r.clients_id = u.id
-            JOIN services s ON r.service_id = s.id
-            LEFT JOIN therapists t ON r.therapist_id = t.id
-            ORDER BY r.fecha DESC, r.hora DESC
-        ");
-        $stmt->execute();
-        return $stmt->fetchAll();
-    } catch (PDOException $e) {
-        error_log("Error en getAllReservations: " . $e->getMessage());
-        return [];
+
+    /**
+     * Obtener todas las reservas (para módulo reservas).
+     * Incluye nombres y alias correctos; usado por vistas de administración.
+     */
+    public function getAllReservations(): array {
+        try {
+            $sql = "
+                SELECT r.*,
+                       u.nombre AS cliente_nombre,
+                       s.nombre AS servicio_nombre,
+                       t.nombre AS terapeuta_nombre,
+                       CONCAT(UPPER(LEFT(r.estado,1)), SUBSTRING(r.estado,2)) AS estado_display
+                FROM reservations r
+                LEFT JOIN users u ON r.cliente_id = u.id
+                LEFT JOIN services s ON r.servicio_id = s.id
+                LEFT JOIN therapists t ON r.therapist_id = t.id
+                ORDER BY r.fecha DESC, r.hora DESC
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error en AdminModel::getAllReservations -> " . $e->getMessage());
+            return [];
+        }
     }
-}
 }

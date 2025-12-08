@@ -296,151 +296,409 @@
                             </div>
                         </div>
 
-                        <div id="nueva-reserva-admin" class="content-section">
-                            <div class="section-header">
-                                <h2><i class="fas fa-plus-circle"></i> Crear Nueva Reserva</h2>
-                            </div>
+                  <div id="nueva-reserva-admin" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-plus-circle"></i> Crear Nueva Reserva</h2>
+    </div>
 
-                            <div class="form-card">
-                                <form id="formNuevaReservaAdmin" method="POST" action="/api/reservas/create"> 
-                                    <div class="row g-3">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Cliente <span class="text-danger">*</span></label>
-                                            <select class="form-select" required name="cliente_id" id="selectCliente">
-                                                <option value="">Selecciona un cliente</option>
-                                                <?php if(isset($clientes)): ?>
-                                                    <?php foreach($clientes as $cliente): ?>
-                                                    <option value="<?php echo $cliente['id']; ?>">
-                                                        <?php echo htmlspecialchars($cliente['nombre']); ?> 
-                                                        (<?php echo htmlspecialchars($cliente['email']); ?>)
-                                                    </option>
-                                                    <?php endforeach; ?>
-                                                <?php else: ?>
-                                                    <option value="">No hay clientes registrados</option>
-                                                <?php endif; ?>
-                                            </select>
-                                        </div>
-                                         <div class="col-md-6">
-                                          <div class="col-md-6">
-                                            <label class="form-label">Servicio <span class="text-danger">*</span></label>
-                                              <select class="form-select" required name="servicio_id" id="selectServicio">
-                                                 <option value="">Selecciona un servicio</option>
-                                                 <?php if (isset($servicios)): ?>
-                                                     <?php foreach ($servicios as $servicio): ?>
-                                                        <option value="<?= $servicio['id']; ?>"
-                                                         data-duracion="<?= $servicio['duracion_min']; ?>"
-                                                          data-precio="<?= $servicio['precio']; ?>">
-                                                          <?= htmlspecialchars($servicio['nombre']); ?>
-                                                       - $<?= number_format($servicio['precio'], 2); ?>
-                                                         (<?= $servicio['duracion_min']; ?> min)
-                                                          </option>
-                                                          <?php endforeach; ?>
-                                                           <?php else: ?>
-                                                            <option value="">No hay servicios disponibles</option>
-                                                            <?php endif; ?>
-                                                           </select>  
-                                                  </div>
-                                            <label class="form-label">Terapeuta</label>
-                                            <select class="form-select" name="therapist_id" id="selectTerapeuta">
-                                                <option value="">Selecciona un terapeuta (opcional)</option>
-                                                <?php if(isset($terapeutas)): ?>
-                                                    <?php foreach($terapeutas as $terapeuta): ?>
-                                                    <option value="<?php echo $terapeuta['id']; ?>">
-                                                        <?php echo htmlspecialchars($terapeuta['nombre']); ?>
-                                                        <?php if($terapeuta['especialidad']): ?>
-                                                        - <?php echo htmlspecialchars($terapeuta['especialidad']); ?>
-                                                        <?php endif; ?>
-                                                    </option>
-                                                    <?php endforeach; ?>
-                                                <?php else: ?>
-                                                    <option value="">No hay terapeutas disponibles</option>
-                                                <?php endif; ?>
-                                            </select>
-                                        </div>
+    <div class="form-card">
+        <form id="formNuevaReservaAdmin" method="POST" action="/api/reservas/create"> 
+            <div class="row g-3">
+                <!-- CLIENTE -->
+                <div class="col-md-6">
+                    <label class="form-label">Cliente <span class="text-danger">*</span></label>
+                    <select class="form-select" required name="cliente_id" id="selectCliente">
+                        <option value="">Selecciona un cliente</option>
+                        <?php if(isset($clientes)): ?>
+                            <?php foreach($clientes as $cliente): ?>
+                            <option value="<?php echo $cliente['id']; ?>">
+                                <?php echo htmlspecialchars($cliente['nombre']); ?> 
+                                (<?php echo htmlspecialchars($cliente['email']); ?>)
+                            </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No hay clientes registrados</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                
+                <!-- SERVICIO -->
+                <div class="col-md-6">
+                    <label class="form-label">Servicio <span class="text-danger">*</span></label>
+                    <select class="form-select" required name="servicio_id" id="selectServicio">
+                        <option value="">Selecciona un servicio</option>
+                        <?php if (isset($servicios)): ?>
+                            <?php foreach ($servicios as $servicio): ?>
+                            <option value="<?= $servicio['id']; ?>"
+                                data-duracion="<?= $servicio['duracion_min']; ?>"
+                                data-precio="<?= $servicio['precio']; ?>">
+                                <?= htmlspecialchars($servicio['nombre']); ?>
+                                - $<?= number_format($servicio['precio'], 2); ?>
+                                (<?= $servicio['duracion_min']; ?> min)
+                            </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No hay servicios disponibles</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                
+                <!-- TERAPEUTA -->
+                <div class="col-md-6">
+                    <label class="form-label">Terapeuta</label>
+                    <select class="form-select" name="therapist_id" id="selectTerapeuta">
+                        <option value="">Selecciona un terapeuta (opcional)</option>
+                        <?php if(isset($terapeutas)): ?>
+                            <?php foreach($terapeutas as $terapeuta): ?>
+                            <option value="<?php echo $terapeuta['id']; ?>">
+                                <?php echo htmlspecialchars($terapeuta['nombre']); ?>
+                                <?php if($terapeuta['especialidad']): ?>
+                                - <?php echo htmlspecialchars($terapeuta['especialidad']); ?>
+                                <?php endif; ?>
+                            </option>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <option value="">No hay terapeutas disponibles</option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                
+                <!-- ESTADO -->
+                <div class="col-md-6">
+                    <label class="form-label">Estado <span class="text-danger">*</span></label>
+                    <select class="form-select" required name="estado">
+                        <option value="">Selecciona estado</option>
+                        <option value="Pendiente" selected>Pendiente</option>
+                        <option value="Confirmada">Confirmada</option>
+                        <option value="En Proceso">En Proceso</option>
+                        <option value="Completada">Completada</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
+                
+                <!-- FECHA -->
+                <div class="col-md-6">
+                    <label class="form-label">Fecha <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" required name="fecha" id="fechaReserva" 
+                           min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>">
+                </div>
+                
+                <!-- HORA -->
+                <div class="col-md-6">
+                    <label class="form-label">Hora <span class="text-danger">*</span></label>
+                    <select class="form-select" required name="hora" id="horaReserva">
+                        <option value="">Selecciona una hora</option>
+                        <?php
+                        // Generar horas disponibles
+                        $horas = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+                        foreach ($horas as $hora):
+                        ?>
+                        <option value="<?php echo $hora; ?>:00"><?php echo $hora; ?> hrs</option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <!-- DURACIÓN -->
+                <div class="col-md-12">
+                    <label class="form-label">Duración</label>
+                    <div class="form-control-plaintext" id="duracionServicio">
+                        Selecciona un servicio para ver la duración
+                    </div>
+                </div>
+                
+                <!-- NOTAS -->
+                <div class="col-12">
+                    <label class="form-label">Notas (opcional)</label>
+                    <textarea class="form-control" rows="3" placeholder="Notas adicionales..." 
+                              name="notas" id="notasReserva"></textarea>
+                </div>
+                
+                <!-- BOTONES -->
+                <div class="col-12 text-end">
+                    <button type="button" class="btn btn-outline-secondary me-2" onclick="showAdminSection('reservas')">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnGuardarReserva">
+                        <i class="fas fa-save"></i> Guardar Reserva
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="historial" class="content-section">
+    <div class="section-header">
+        <h2><i class="fas fa-history"></i> Historial de Actividades</h2>
+        <div class="header-actions">
+            <button class="btn btn-outline-secondary btn-sm" onclick="exportarHistorial()">
+                <i class="fas fa-download"></i> Exportar
+            </button>
+            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalLimpiarHistorial">
+                <i class="fas fa-trash-alt"></i> Limpiar
+            </button>
+        </div>
+    </div>
 
-                                        <div class="col-md-6">
-                                            <label class="form-label">Estado <span class="text-danger">*</span></label>
-                                            <select class="form-select" required name="estado">
-                                                <option value="">Selecciona estado</option>
-                                                <option value="Pendiente" selected>Pendiente</option>
-                                                <option value="Confirmada">Confirmada</option>
-                                                <option value="En Proceso">En Proceso</option>
-                                                <option value="Completada">Completada</option>
-                                                <option value="Cancelada">Cancelada</option>
-                                            </select>
-                                        </div>
+    <!-- Barra de filtros mejorada -->
+    <div class="filters-bar mb-4">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label small">Tipo de evento</label>
+                <select class="form-select" id="filtroTipoHistorial" onchange="filtrarHistorial()">
+                    <option value="todos">Todos los tipos</option>
+                    <option value="reserva">Reservas</option>
+                    <option value="usuario">Usuarios</option>
+                    <option value="terapeuta">Terapeutas</option>
+                    <option value="servicio">Servicios</option>
+                </select>
+            </div>
 
-                                        <div class="col-md-6">
-                                            <label class="form-label">Fecha <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" required name="fecha" id="fechaReserva" 
-                                                   min="<?php echo date('Y-m-d'); ?>">
-                                        </div>
+            <div class="col-md-2">
+                <label class="form-label small">Evento específico</label>
+                <select class="form-select" id="filtroEventoHistorial" onchange="filtrarHistorial()">
+                    <option value="todos">Todos los eventos</option>
+                    <option value="Reserva Creada">Creada</option>
+                    <option value="Reserva Actualizada">Actualizada</option>
+                    <option value="Reserva Eliminada">Eliminada</option>
+                    <option value="Auto-completada">Auto-completada</option>
+                    <option value="Login">Login</option>
+                    <option value="Logout">Logout</option>
+                </select>
+            </div>
 
-                                        <div class="col-md-6">
-                                            <label class="form-label">Hora <span class="text-danger">*</span></label>
-                                            <select class="form-select" required name="hora" id="horaReserva">
-                                                <option value="">Primero selecciona una fecha</option>
-                                            </select>
-                                        </div>
+            <div class="col-md-2">
+                <label class="form-label small">Fecha desde</label>
+                <input type="date" class="form-control" id="filtroFechaDesde" onchange="filtrarHistorial()">
+            </div>
 
-                                        <div class="col-md-12">
-                                            <label class="form-label">Duración</label>
-                                            <div class="form-control-plaintext" id="duracionServicio">
-                                                Selecciona un servicio para ver la duración
-                                            </div>
-                                        </div>
+            <div class="col-md-2">
+                <label class="form-label small">Fecha hasta</label>
+                <input type="date" class="form-control" id="filtroFechaHasta" onchange="filtrarHistorial()">
+            </div>
 
-                                        <div class="col-12">
-                                            <label class="form-label">Notas (opcional)</label>
-                                            <textarea class="form-control" rows="3" placeholder="Notas adicionales..." 
-                                                      name="notas" id="notasReserva"></textarea>
-                                        </div>
+            <div class="col-md-3">
+                <label class="form-label small">Buscar</label>
+                <div class="input-group">
+                    <input type="search" class="form-control" id="filtroBusquedaHistorial" 
+                           placeholder="Usuario, detalle, IP..." onkeyup="filtrarHistorial()">
+                    <button class="btn btn-outline-secondary" type="button" onclick="filtrarHistorial()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                                        <div class="col-12 text-end">
-                                            <button type="button" class="btn btn-outline-secondary me-2" onclick="showAdminSection('reservas')">
-                                                <i class="fas fa-times"></i> Cancelar
-                                            </button>
-                                            <button type="submit" class="btn btn-primary" id="btnGuardarReserva">
-                                                <i class="fas fa-save"></i> Guardar Reserva
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+    <!-- Estadísticas rápidas -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card card-sm bg-light">
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">Total registros</h6>
+                            <small class="text-muted">Historial completo</small>
                         </div>
-
-                        <div id="historial" class="content-section">
-                            <div class="section-header">
-                                <h2><i class="fas fa-history"></i> Historial</h2>
-                            </div>
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle"></i> Módulo en construcción
-                            </div>
-                        </div>
-
-                        <div id="clientes" class="content-section">
-                            <div class="section-header">
-                                <h2><i class="fas fa-users"></i> Gestión de Clientes</h2>
-                            </div>
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle"></i> Módulo en construcción
-                            </div>
-                        </div>
-
-                        <div id="servicios" class="content-section">
-                            <div class="section-header">
-                                <h2><i class="fas fa-spa"></i> Gestión de Servicios</h2>
-                            </div>
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle"></i> Módulo en construcción
-                            </div>
-                        </div>
+                        <span class="badge bg-primary" id="totalRegistros">0</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+        <div class="col-md-3">
+            <div class="card card-sm bg-light">
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">Reservas hoy</h6>
+                            <small class="text-muted">Acciones del día</small>
+                        </div>
+                        <span class="badge bg-success" id="reservasHoy">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-sm bg-light">
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">Últimos 7 días</h6>
+                            <small class="text-muted">Actividad reciente</small>
+                        </div>
+                        <span class="badge bg-info" id="ultimos7Dias">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card card-sm bg-light">
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-0">Usuarios activos</h6>
+                            <small class="text-muted">Con actividad</small>
+                        </div>
+                        <span class="badge bg-warning" id="usuariosActivos">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Tabla del historial mejorada -->
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead class="table-light">
+                <tr>
+                    <th width="60">#ID</th>
+                    <th width="120">Fecha/Hora</th>
+                    <th>Usuario</th>
+                    <th width="100">Tipo</th>
+                    <th>Evento</th>
+                    <th>Detalles</th>
+                    <th width="80">IP</th>
+                    <th width="100">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaHistorial">
+                <!-- Se llena dinámicamente con JavaScript -->
+                <tr id="loadingRow">
+                    <td colspan="8" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Cargando historial...</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación del historial" class="mt-4">
+        <ul class="pagination justify-content-center" id="paginacionHistorial">
+            <!-- Se genera dinámicamente -->
+        </ul>
+    </nav>
+</div>
+
+<!-- Modal para ver detalles completos -->
+<div class="modal fade" id="modalDetallesCompletos" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle"></i> Detalles completos - Evento #<span id="detalleEventoId">0</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Información básica</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <td><strong>ID:</strong></td>
+                                <td id="detalleId"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fecha/Hora:</strong></td>
+                                <td id="detalleFechaHora"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Usuario:</strong></td>
+                                <td id="detalleUsuario"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IP:</strong></td>
+                                <td id="detalleIP"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Navegador:</strong></td>
+                                <td id="detalleNavegador"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Valores del cambio</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-header py-2">
+                                        <small class="fw-bold">Valor anterior</small>
+                                    </div>
+                                    <div class="card-body p-2">
+                                        <pre class="mb-0" id="detalleAnterior" style="font-size: 12px;"></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-header py-2">
+                                        <small class="fw-bold">Nuevo valor</small>
+                                    </div>
+                                    <div class="card-body p-2">
+                                        <pre class="mb-0" id="detalleNuevo" style="font-size: 12px;"></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h6>Descripción completa</h6>
+                    <div class="alert alert-light" id="detalleCompleto"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para limpiar historial -->
+<div class="modal fade" id="modalLimpiarHistorial" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-trash-alt"></i> Limpiar historial</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Esta acción no se puede deshacer. Se eliminarán registros antiguos del historial.
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Eliminar registros más antiguos que:</label>
+                    <select class="form-select" id="diasLimpiar">
+                        <option value="30">30 días</option>
+                        <option value="90" selected>90 días</option>
+                        <option value="180">180 días</option>
+                        <option value="365">1 año</option>
+                    </select>
+                    <div class="form-text">
+                        Se conservarán los registros recientes.
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    Esta acción solo elimina registros del historial, no afecta las reservas, usuarios u otros datos.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="limpiarHistorial()">
+                    <i class="fas fa-trash-alt"></i> Limpiar historial
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="modal fade" id="modalDetalles" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -457,7 +715,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <div class="modal fade" id="modalEditarReservaAdmin" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -546,6 +804,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../public/scripts/reservas.js"></script>
+<!-- Después de Bootstrap y otros scripts -->
+<script src="../public/scripts/historial.js"></script>
     
     <script>
     // Funcionalidad adicional para la vista

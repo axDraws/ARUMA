@@ -108,4 +108,30 @@ public function getDashboardStats(): array {
             return [];
         }
     }
+    
+public function getHistorial(): array {
+    try {
+        $sql = "
+            SELECT r.*,
+                   u.nombre AS cliente_nombre,
+                   s.nombre AS servicio_nombre,
+                   t.nombre AS terapeuta_nombre,
+                   CONCAT(UPPER(LEFT(r.estado,1)), SUBSTRING(r.estado,2)) AS estado_display
+            FROM reservations r
+            LEFT JOIN users u ON r.cliente_id = u.id
+            LEFT JOIN services s ON r.servicio_id = s.id
+            LEFT JOIN therapists t ON r.therapist_id = t.id
+            ORDER BY r.fecha DESC, r.hora DESC
+        ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (PDOException $e) {
+        error_log("Error en AdminModel::getHistorial -> " . $e->getMessage());
+        return [];
+    }
+}
 }

@@ -6,43 +6,137 @@ require_once __DIR__ . '/app/config.php';
 // Obtener la ruta solicitada
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
-// Tabla de rutas
+// ---- FUNCION PARA PROTEGER APIs ADMIN ----
+function adminApi($callback) {
+    session_start();
+    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+        http_response_code(401);
+        echo json_encode(['error' => 'No autorizado']);
+        exit();
+    }
+    require_once __DIR__ . '/Controller/AdminController.php';
+    $admin = new AdminController();
+    $admin->$callback();
+    exit();
+}
+
+// ---- FUNCION PARA PROTEGER APIs DE HISTORIAL ----
+function historyApi($callback) {
+    session_start();
+    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+        http_response_code(401);
+        echo json_encode(['error' => 'No autorizado']);
+        exit();
+    }
+    require_once __DIR__ . '/Controller/HistoryController.php';
+    $history = new HistoryController();
+    $history->$callback();
+    exit();
+}
+
 switch ($uri) {
 
-    // Página principal
+    /* ======================================
+     * PÁGINAS PÚBLICAS / CLIENTE
+     * ====================================== */
+
     case '':
     case 'home':
         require __DIR__ . '/views/home.php';
         break;
 
-    // Cliente
     case 'cliente':
         require __DIR__ . '/views/cliente.php';
         break;
 
-    // Administrador - Dashboard
+    /* ======================================
+     * ADMIN: Dashboard
+     * ====================================== */
+
     case 'administrador':
         require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->dashboard();
+        (new AdminController())->dashboard();
         break;
 
-    // Administrador - Vista de reservas (HTML completa)
+    /* ======================================
+     * ADMIN: Reservas
+     * ====================================== */
+
     case 'admin/reservas':
         require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->reservas();
+        (new AdminController())->reservas();
         break;
 
-    // Misión / Visión
-    case 'mision-vision':
-        require __DIR__ . '/views/mision-vision.php';
+    /* ======================================
+     * ADMIN: Historial (CORREGIDO)
+     * ====================================== */
+
+    case 'admin/historial':
+        require_once __DIR__ . '/Controller/HistoryController.php';
+        $historyController = new HistoryController();
+        $historyController->index();
         break;
 
-    // Reservas (MVC) - Para clientes
+    /* ======================================
+     * API ADMIN
+     * ====================================== */
+
+    case 'api/horarios-disponibles':
+        adminApi('getHorariosDisponibles');
+        break;
+
+    case 'api/reservas':
+        adminApi('getReservasApi');
+        break;
+
+    case 'api/reservas/show':
+        adminApi('getReservaByIdApi');
+        break;
+
+    case 'api/reservas/create':
+        adminApi('createReservaApi');
+        break;
+
+    case 'api/reservas/update':
+        adminApi('updateReservaApi');
+        break;
+
+    case 'api/reservas/delete':
+        adminApi('deleteReservaApi');
+        break;
+
+    /* ======================================
+     * API HISTORIAL
+     * ====================================== */
+
+    case 'api/historial':
+        historyApi('getHistorialApi');
+        break;
+
+    case 'api/historial/estadisticas':
+        historyApi('getEstadisticasApi');
+        break;
+
+    case 'api/historial/limpiar':
+        historyApi('limpiarHistorialApi');
+        break;
+
+    case 'api/historial/exportar':
+        historyApi('exportarHistorialApi');
+        break;
+
+    case 'api/historial/evento':
+        historyApi('getEventoByIdApi');
+        break;
+
+    /* ======================================
+     * CLIENTE: Reservas
+     * ====================================== */
+
     case 'reservas':
         require_once __DIR__ . '/Controller/ReservationController.php';
         $ctrl = new ReservationController();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ctrl->store();
         } else {
@@ -50,89 +144,10 @@ switch ($uri) {
         }
         break;
 
-    // ==========================================
-    // =============  RUTAS API  ADMIN  ==========
-    // ==========================================
+    /* ======================================
+     * LOGIN / REGISTER
+     * ====================================== */
 
-    // API: Obtener horarios disponibles
-    case 'api/horarios-disponibles':
-        session_start();
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
-            exit();
-        }
-        require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->getHorariosDisponibles();
-        break;
-
-    // API: Obtener todas las reservas (JSON)
-    case 'api/reservas':
-        session_start();
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
-            exit();
-        }
-        require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->getReservasApi();
-        break;
-
-    // API: Obtener una reserva específica
-    case 'api/reservas/show':
-        session_start();
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
-            exit();
-        }
-        require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->getReservaByIdApi();
-        break;
-
-    // API: Crear nueva reserva
-    case 'api/reservas/create':
-        session_start();
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
-            exit();
-        }
-        require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->createReservaApi();
-        break;
-
-    // API: Actualizar reserva
-    case 'api/reservas/update':
-        session_start();
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
-            exit();
-        }
-        require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->updateReservaApi();
-        break;
-
-    // API: Eliminar reserva
-    case 'api/reservas/delete':
-        session_start();
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
-            exit();
-        }
-        require_once __DIR__ . '/Controller/AdminController.php';
-        $adminController = new AdminController();
-        $adminController->deleteReservaApi();
-        break;
-
-    // Login
     case 'login':
         require_once __DIR__ . '/Controller/AuthController.php';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -140,7 +155,6 @@ switch ($uri) {
         }
         break;
 
-    // Registro
     case 'register':
         require_once __DIR__ . '/Controller/AuthController.php';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -148,14 +162,16 @@ switch ($uri) {
         }
         break;
 
-    // Logout
     case 'logout':
         session_start();
         session_destroy();
         header("Location: /");
         break;
 
-    // 404
+    /* ======================================
+     * 404 - NOT FOUND
+     * ====================================== */
+
     default:
         http_response_code(404);
         echo "<h1>404 - Página no encontrada</h1>";

@@ -13,6 +13,12 @@ class ServiceModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    // MÉTODO REQUERIDO POR AdminController.php
+    public function find($id) {
+        return $this->getServiceById($id);
+    }
+    
+    // Método original que ya tenías
     public function getServiceById($id) {
         $stmt = $this->db->prepare("SELECT * FROM services WHERE id = :id");
         $stmt->execute([':id' => $id]);

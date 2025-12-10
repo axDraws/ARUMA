@@ -7,7 +7,8 @@ require_once __DIR__ . '/app/config.php';
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
 // ---- FUNCION PARA PROTEGER APIs ADMIN ----
-function adminApi($callback) {
+function adminApi($callback)
+{
     session_start();
     if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         http_response_code(401);
@@ -21,7 +22,8 @@ function adminApi($callback) {
 }
 
 // ---- FUNCION PARA PROTEGER APIs DE HISTORIAL ----
-function historyApi($callback) {
+function historyApi($callback)
+{
     session_start();
     if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         http_response_code(401);
@@ -128,6 +130,73 @@ switch ($uri) {
     case 'api/historial/evento':
         historyApi('getEventoByIdApi');
         break;
+
+    /* ======================================
+     * API CLIENTES (ADMIN)
+     * ====================================== */
+
+    // Función helper interna para clientes, similar a adminApi pero para ClientController
+    // Se define aquí o se puede refactorizar. Por simplicidad, la simulo con un bloque.
+
+    case 'api/clientes':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->getAllClientsApi();
+        exit();
+
+    case 'api/clientes/show':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->getClientByIdApi();
+        exit();
+
+    case 'api/clientes/create':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->createClientApi();
+        exit();
+
+    case 'api/clientes/update':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->updateClientApi();
+        exit();
+
+    case 'api/clientes/delete':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->deleteClientApi();
+        exit();
 
     /* ======================================
      * CLIENTE: Reservas

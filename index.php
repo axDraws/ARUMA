@@ -199,6 +199,70 @@ switch ($uri) {
         exit();
 
     /* ======================================
+     * API SERVICIOS (ADMIN)
+     * ====================================== */
+
+    case 'api/servicios':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ServiceController.php';
+        (new ServiceController())->getAllServicesApi();
+        exit();
+
+    case 'api/servicios/show':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ServiceController.php';
+        (new ServiceController())->getServiceByIdApi();
+        exit();
+
+    case 'api/servicios/create':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ServiceController.php';
+        (new ServiceController())->createServiceApi();
+        exit();
+
+    case 'api/servicios/update':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ServiceController.php';
+        (new ServiceController())->updateServiceApi();
+        exit();
+
+    case 'api/servicios/delete':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ServiceController.php';
+        (new ServiceController())->deleteServiceApi();
+        exit();
+
+    /* ======================================
      * CLIENTE: Reservas
      * ====================================== */
 

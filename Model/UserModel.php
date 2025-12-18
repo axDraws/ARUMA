@@ -17,12 +17,14 @@ class UserModel {
 
     public function create($nombre, $email, $password_hash) {
         $stmt = $this->db->prepare("INSERT INTO users (role, nombre, email, password_hash)
-                                    VALUES ('client', :nombre, :email, :pass)");
+                                    VALUES ('client', :nombre, :email, :pass, NOW())");
         $stmt->execute([
             ':nombre' => $nombre,
             ':email' => $email,
             ':pass' => $password_hash
         ]);
+
+        return $this->db->lastInsertId();
     }
 }
 

@@ -30,14 +30,44 @@ class AuthController {
 
     public function register() {
 
-        $nombre = $_POST['nombre'];
-        $email = $_POST['email'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $nombre = trim($_POST['nombre'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $passwordRaw = $_POST['password'] ?? '';
+
+        if ($nombre === '' || $email === '' || $passwordRaw === '') {
+            echo "<script>alert('Todos los campos son requeridos'); window.history.back();</script>";
+            exit();
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('Correo inválido'); window.history.back();</script>";
+            exit();
+        }
 
         $userModel = new UserModel();
-        $userModel->create($nombre, $email, $password);
+        // verificar si ya existe
+        if ($userModel->findByEmail($email)) {
+            echo "<script>alert('Ya existe una cuenta con ese correo'); window.history.back();</script>";
+            exit();
+        }
 
-        echo "<script>alert('Usuario registrado correctamente'); window.location='/';</script>";
+        $password = password_hash($passwordRaw, PASSWORD_DEFAULT);
+
+        try {
+            $id = $userModel->create($nombre, $email, $password);
+            if ($id) {
+                echo "<script>alert('Usuario registrado correctamente'); window.location='/';</script>";
+                exit();
+            }
+        } catch (PDOException $e) {
+            // código 23000 = integrity constraint violation (p.ej. duplicate entry)
+            if ($e->getCode() == '23000') {
+                echo "<script>alert('Correo ya registrado'); window.history.back();</script>";
+                exit();
+            }
+            echo "<script>alert('Error en el registro: " . addslashes($e->getMessage()) . "'); window.history.back();</script>";
+            exit();
+        }
     }
 }
 

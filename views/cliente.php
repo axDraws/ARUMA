@@ -41,7 +41,7 @@
         <div class="container">
             <div class="row align-items-center justify-content-center text-center">
                 <div class="col-lg-8">
-                    <h1 class="hero-title">Bienvenido, Cliente</h1>
+                    <h1 class="hero-title">Bienvenido, <?php echo htmlspecialchars($_SESSION['username'] ?? ''); ?></h1>
                     <p class="hero-subtitle">Gestiona tus reservas fácilmente</p>
                 </div>
             </div>
@@ -66,8 +66,10 @@
                             <li onclick="showSection('nueva-reserva')">
                                 <i class="fas fa-plus-circle"></i> Nueva Reserva
                             </li>
-                            <li onclick="showSection('mi-perfil')">
-                                <i class="fas fa-user"></i> Mi Perfil
+                            <li>
+                                <a href="/mi-perfil" class="text-decoration-none text-dark">
+                                    <i class="fas fa-user"></i> Mi Perfil
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -355,4 +357,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="reservas.js"></script>
 </body>
+
 </html>

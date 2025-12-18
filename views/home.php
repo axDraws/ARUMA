@@ -44,7 +44,7 @@
         <h2 class="text-center mb-4">Iniciar Sesión</h2>
 
         <!-- FORMULARIO REAL DE LOGIN -->
-        <form method="POST" action="/login">
+        <form method="POST" action="login">
             <div class="mb-3">
                 <label for="email_login" class="form-label">Correo Electrónico</label>
                 <input type="email" class="form-control" name="email" id="email_login" required>
@@ -64,7 +64,7 @@
         </form>
     </div>
 </div>
-!-- Hero Section -->
+<!-- Hero Section -->
 <section id="inicio" class="hero">
     <div class="container">
         <div class="row align-items-center">
@@ -88,7 +88,7 @@
         <h2 class="text-center mb-4">Crear Cuenta</h2>
 
         <!-- FORMULARIO REAL DE REGISTRO -->
-        <form method="POST" action="/register">
+        <form method="POST" action="register">
             <div class="mb-3">
                 <label class="form-label">Nombre Completo</label>
                 <input type="text" class="form-control" name="nombre" required>
@@ -398,7 +398,7 @@
                   <img src="../public/img/salerm/AcondicionadorBioMarine_335.jpg" alt="Acondicionador Bio Marine" class="img-fluid rounded">
                 </div>
                 <h4>Acondicionador Bio Marine</h4>
-                <p>$335</p>
+              
               </div>
             </div>
 
@@ -408,7 +408,7 @@
                   <img src="../public/img/salerm/mascarillaMultiProteinas.jpg" alt="Mascarilla Multi Proteinas" class="img-fluid rounded">
                 </div>
                 <h4>Mascarilla Multi Proteinas</h4>
-                <p>$399</p>
+          
               </div>
             </div>
 
@@ -418,7 +418,7 @@
                   <img src="../public/img/salerm/ShampooControlCaspa.jpg" alt="Shampoo Control Caspa" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Control Caspa</h4>
-                <p>$267</p>
+                
               </div>
             </div>
 
@@ -428,7 +428,7 @@
                   <img src="../public/img/salerm/SampooCabellosblancos.jpg" alt="Shampoo Cabellos Blancos" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Cabellos Blancos</h4>
-                <p>$265</p>
+          
               </div>
             </div>
 
@@ -438,7 +438,7 @@
                   <img src="../public/img/salerm/CeraParaPeinar.jpeg" alt="Cera Para Peinar" class="img-fluid rounded">
                 </div>
                 <h4>Cera Para Peinar</h4>
-                <p>$343</p>
+              
               </div>
             </div>
 
@@ -455,7 +455,7 @@
                   <img src="../public/img/salerm/AcondicionadorColorDurarero.jpg" alt="Acondicionador Color Duradero" class="img-fluid rounded">
                 </div>
                 <h4>Acondicionador Color Duradero</h4>
-                <p>$399</p>
+              
               </div>
             </div>
 
@@ -465,7 +465,7 @@
                   <img src="../public/img/salerm/ShampooControlCaida.jpeg" alt="Shampoo Control Caída" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Control Caída</h4>
-                <p>$290</p>
+                
               </div>
             </div>
 
@@ -475,7 +475,7 @@
                   <img src="../public/img/salerm/SalermCosmetics21Shampoo.jpeg" alt="Salerm Cosmetics 21 Shampoo" class="img-fluid rounded">
                 </div>
                 <h4>Salerm Cosmetics 21 Shampoo</h4>
-                <p>$267</p>
+              
               </div>
             </div>
 
@@ -485,7 +485,7 @@
                   <img src="../public/img/salerm/IceGel03.jpeg" alt="Ice Gel 03" class="img-fluid rounded">
                 </div>
                 <h4>Ice Gel 03</h4>
-                <p>$278</p>
+            
               </div>
             </div>
 
@@ -495,7 +495,7 @@
                   <img src="../public/img/salerm/MascarillaGermenDeTrigo.jpeg" alt="Mascarilla Germen de Trigo" class="img-fluid rounded">
                 </div>
                 <h4>Mascarilla Germen de Trigo</h4>
-                <p>$531</p>
+              
               </div>
             </div>
 
@@ -512,7 +512,7 @@
                   <img src="../public/img/salerm/ShampooBalsamoAcondicionador.jpg" alt="Salerm 21 Silk Protein" class="img-fluid rounded">
                 </div>
                 <h4>Shampoo Balsamo Acondicionador</h4>
-                <p>$535</p>
+                
               </div>
             </div>
 
@@ -522,7 +522,7 @@
                   <img src="../public/img/salerm/GelParaDespuesDeAfeitar.jpeg" alt="Brillo Final Spray" class="img-fluid rounded">
                 </div>
                 <h4>Gel Para Despues De Afeitar</h4>
-                <p>$192</p>
+                
               </div>
             </div>
 
@@ -531,8 +531,8 @@
                 <div class="product-img">
                   <img src="../public/img/salerm/GelParaAfeita.jpg" alt="Keratin Shot" class="img-fluid rounded">
                 </div>
-                <h4>GelParaAfeita</h4>
-                <p>$344</p>
+                <h4>Gel Para Afeitar</h4>
+                
               </div>
             </div>
 
@@ -542,7 +542,7 @@
                   <img src="../public/img/salerm/CeraParaCabelloYBarba.jpeg" alt="Mascarilla Argán" class="img-fluid rounded">
                 </div>
                 <h4>Cera Para Cabello Y Barba</h4>
-                <p>$315</p>
+                
               </div>
             </div>
 
@@ -552,7 +552,7 @@
                   <img src="../public/img/salerm/AceiteParaBarba.jpeg" alt="Sérum Capilar" class="img-fluid rounded">
                 </div>
                 <h4>Aceite Para Barba</h4>
-                <p>$312</p>
+                
               </div>
             </div>
 

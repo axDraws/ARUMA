@@ -108,7 +108,8 @@ document.querySelectorAll('form').forEach(form => {
     const action = form.getAttribute("action") || "";
 
     // Permitir envío al backend MVC
-    if (action.includes("/login") || action.includes("/register")) {
+    // Aceptamos "login", "/login", "register", "/register"
+    if (action.includes("login") || action.includes("register")) {
         console.log("Enviando formulario al backend:", action);
         return;
     }

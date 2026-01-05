@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../public/estilos/style.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -20,10 +22,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.html">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.html">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="mision-vision.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/home.php">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/home.php">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/home.php">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="mision-vision.php">Nosotros</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.html">Galería</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.html">Contacto</a></li>
                 </ul>
@@ -86,10 +88,15 @@
                         </div>
                         <h2 class="card-title mb-4">Nuestra Misión</h2>
                         <p class="card-text">
-                            En Aruma Spa nos dedicamos a proporcionar experiencias de bienestar excepcionales que revitalizan el cuerpo, calman la mente y nutren el espíritu. Nuestro compromiso es ofrecer servicios de la más alta calidad, utilizando productos premium y técnicas innovadoras, en un ambiente de tranquilidad y armonía.
+                            En Aruma Spa nos dedicamos a proporcionar experiencias de bienestar excepcionales que
+                            revitalizan el cuerpo, calman la mente y nutren el espíritu. Nuestro compromiso es ofrecer
+                            servicios de la más alta calidad, utilizando productos premium y técnicas innovadoras, en un
+                            ambiente de tranquilidad y armonía.
                         </p>
                         <p class="card-text">
-                            Nos esforzamos por crear un refugio donde cada cliente pueda escapar del estrés diario y reconectar consigo mismo, promoviendo un estilo de vida saludable y equilibrado a través de tratamientos personalizados y un servicio excepcional.
+                            Nos esforzamos por crear un refugio donde cada cliente pueda escapar del estrés diario y
+                            reconectar consigo mismo, promoviendo un estilo de vida saludable y equilibrado a través de
+                            tratamientos personalizados y un servicio excepcional.
                         </p>
                         <div class="values-list mt-4">
                             <div class="value-item">
@@ -120,10 +127,15 @@
                         </div>
                         <h2 class="card-title mb-4">Nuestra Visión</h2>
                         <p class="card-text">
-                            Ser el spa de referencia en bienestar integral, reconocido por nuestra excelencia, innovación y compromiso con la salud holística de nuestros clientes. Aspiramos a expandir nuestra presencia para llevar nuestros servicios de calidad a más personas que buscan mejorar su calidad de vida.
+                            Ser el spa de referencia en bienestar integral, reconocido por nuestra excelencia,
+                            innovación y compromiso con la salud holística de nuestros clientes. Aspiramos a expandir
+                            nuestra presencia para llevar nuestros servicios de calidad a más personas que buscan
+                            mejorar su calidad de vida.
                         </p>
                         <p class="card-text">
-                            Visualizamos un futuro donde Aruma Spa sea sinónimo de transformación personal, donde cada visita sea una experiencia memorable que inspire a nuestros clientes a mantener un equilibrio permanente entre cuerpo, mente y espíritu, convirtiéndose en un estilo de vida.
+                            Visualizamos un futuro donde Aruma Spa sea sinónimo de transformación personal, donde cada
+                            visita sea una experiencia memorable que inspire a nuestros clientes a mantener un
+                            equilibrio permanente entre cuerpo, mente y espíritu, convirtiéndose en un estilo de vida.
                         </p>
                         <div class="goals-list mt-4">
                             <div class="goal-item">
@@ -237,36 +249,32 @@
     </section>
 
 
-    
-<!-- Ubicación / Mapa -->
-<section class="py-5 bg-light">
-    <div class="container text-center">
-        <h2 class="section-title mb-4">Ubicación</h2>
-        <p class="mb-4">
-            Encuéntranos en <strong>Manuel Altamirano 7-A, Ex Hacienda Santa Mónica, Tlalnepantla, Edo. Méx.</strong>
-        </p>
 
-        <!-- Contenedor del mapa -->
-        <div class="map-container mb-4" style="border-radius: 15px; overflow: hidden;">
-            <iframe 
-                src="https://www.google.com/maps?q=Manuel+Altamirano+7-A,+Ex+Hacienda+Santa+Mónica,+Tlalnepantla,+Estado+de+México&output=embed" 
-                width="100%" 
-                height="400" 
-                style="border:0;" 
-                allowfullscreen 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+    <!-- Ubicación / Mapa -->
+    <section class="py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="section-title mb-4">Ubicación</h2>
+            <p class="mb-4">
+                Encuéntranos en <strong>Manuel Altamirano 7-A, Ex Hacienda Santa Mónica, Tlalnepantla, Edo.
+                    Méx.</strong>
+            </p>
+
+            <!-- Contenedor del mapa -->
+            <div class="map-container mb-4" style="border-radius: 15px; overflow: hidden;">
+                <iframe
+                    src="https://www.google.com/maps?q=Manuel+Altamirano+7-A,+Ex+Hacienda+Santa+Mónica,+Tlalnepantla,+Estado+de+México&output=embed"
+                    width="100%" height="400" style="border:0;" allowfullscreen loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+
+            <!-- Botón para abrir Google Maps -->
+            <a href="https://www.google.com/maps/dir/?api=1&destination=Manuel+Altamirano+7-A,+Ex+Hacienda+Santa+Mónica,+Tlalnepantla,+Estado+de+México"
+                target="_blank" class="btn btn-success">
+                <i class="fas fa-map-marked-alt"></i> Cómo llegar
+            </a>
         </div>
-
-        <!-- Botón para abrir Google Maps -->
-        <a href="https://www.google.com/maps/dir/?api=1&destination=Manuel+Altamirano+7-A,+Ex+Hacienda+Santa+Mónica,+Tlalnepantla,+Estado+de+México" 
-           target="_blank" 
-           class="btn btn-success">
-            <i class="fas fa-map-marked-alt"></i> Cómo llegar
-        </a>
-    </div>
-</section>
+    </section>
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -302,6 +310,7 @@
     </footer>
 
     <script src="../public/scripts/bootstrap.bundle.min.js></script>
-    <script src="../public/scripts/script.js"></script>
+    <script src=" ../public/scripts/script.js"></script>
 </body>
+
 </html>

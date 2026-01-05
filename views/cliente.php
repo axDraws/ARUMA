@@ -1,5 +1,13 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: /");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +16,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../public/estilos/style.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="../index.html">
+            <a class="navbar-brand" href="../views/home.php">
                 <i class="fas fa-spa"></i> ARUMA
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -20,8 +29,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../index.html#servicios">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/mision-vision.php">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/home#servicios">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link" href="../index.html#contacto">Contacto</a></li>
                     <li class="nav-item">
                         <a class="nav-link active" href="cliente.html">
@@ -86,75 +95,13 @@
                             </button>
                         </div>
 
-                        <div class="row g-3">
-                            <!-- Reserva 1 -->
-                            <div class="col-md-6">
-                                <div class="reserva-card">
-                                    <div class="reserva-header">
-                                        <span class="badge bg-success">Confirmada</span>
-                                        <span class="reserva-id">#001</span>
-                                    </div>
-                                    <div class="reserva-body">
-                                        <h4>Masaje Relajante</h4>
-                                        <div class="reserva-info">
-                                            <div class="info-item">
-                                                <i class="fas fa-calendar"></i>
-                                                <span>25 de Octubre, 2024</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <i class="fas fa-clock"></i>
-                                                <span>14:00 - 15:00</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <i class="fas fa-user-md"></i>
-                                                <span>Terapeuta: María García</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="reserva-footer">
-                                        <button class="btn btn-sm btn-outline-primary" onclick="editarReserva(1)">
-                                            <i class="fas fa-edit"></i> Modificar
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="cancelarReserva(1)">
-                                            <i class="fas fa-times"></i> Cancelar
-                                        </button>
-                                    </div>
+                        <div class="row g-3" id="mis-reservas-container">
+                            <!-- Las reservas se cargarán aquí dinámicamente -->
+                            <div class="col-12 text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
                                 </div>
-                            </div>
-
-                            <!-- Reserva 2 -->
-                            <div class="col-md-6">
-                                <div class="reserva-card">
-                                    <div class="reserva-header">
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                        <span class="reserva-id">#002</span>
-                                    </div>
-                                    <div class="reserva-body">
-                                        <h4>Tratamiento Facial</h4>
-                                        <div class="reserva-info">
-                                            <div class="info-item">
-                                                <i class="fas fa-calendar"></i>
-                                                <span>28 de Octubre, 2024</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <i class="fas fa-clock"></i>
-                                                <span>10:00 - 11:30</span>
-                                            </div>
-                                            <div class="info-item">
-                                                <i class="fas fa-user-md"></i>
-                                                <span>Terapeuta: Ana López</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="reserva-footer">
-                                        <button class="btn btn-sm btn-outline-primary" onclick="editarReserva(2)">
-                                            <i class="fas fa-edit"></i> Modificar
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="cancelarReserva(2)">
-                                            <i class="fas fa-times"></i> Cancelar
-                                        </button>
-                                    </div>
-                                </div>
+                                <p class="mt-2">Cargando tus reservas...</p>
                             </div>
                         </div>
                     </div>
@@ -170,62 +117,48 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Servicio</label>
-                                        <select class="form-select" required>
-                                            <option value="">Selecciona un servicio</option>
-                                            <option>Masaje Relajante - 60 min - $800</option>
-                                            <option>Masaje Piedras Calientes - 90 min - $1200</option>
-                                            <option>Tratamiento Facial - 90 min - $1000</option>
-                                            <option>Hidroterapia - 45 min - $600</option>
-                                            <option>Aromaterapia - 60 min - $750</option>
-                                            <option>Reflexología - 60 min - $700</option>
+                                        <select class="form-select" id="reservaServicio" name="servicio_id" required>
+                                            <option value="">Cargando servicios...</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label">Terapeuta</label>
-                                        <select class="form-select" required>
-                                            <option value="">Selecciona un terapeuta</option>
-                                            <option>María García</option>
-                                            <option>Ana López</option>
-                                            <option>Carlos Martínez</option>
-                                            <option>Laura Fernández</option>
+                                        <label class="form-label">Terapeuta (Opcional)</label>
+                                        <select class="form-select" id="reservaTerapeuta" name="therapist_id">
+                                            <option value="">Cualquiera disponible</option>
+                                            <!-- Se puede poblar dinámicamente si se desea -->
                                         </select>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Fecha</label>
-                                        <input type="date" class="form-control" required>
+                                        <input type="date" class="form-control" name="fecha" required>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Hora</label>
-                                        <select class="form-select" required>
+                                        <select class="form-select" id="reservaHora" name="hora" required>
                                             <option value="">Selecciona una hora</option>
-                                            <option>09:00 AM</option>
-                                            <option>10:00 AM</option>
-                                            <option>11:00 AM</option>
-                                            <option>12:00 PM</option>
-                                            <option>02:00 PM</option>
-                                            <option>03:00 PM</option>
-                                            <option>04:00 PM</option>
-                                            <option>05:00 PM</option>
                                         </select>
                                     </div>
 
                                     <div class="col-12">
                                         <label class="form-label">Notas Adicionales (Opcional)</label>
-                                        <textarea class="form-control" rows="3" placeholder="Alguna preferencia o comentario especial..."></textarea>
+                                        <textarea class="form-control" name="notas" rows="3"
+                                            placeholder="Alguna preferencia o comentario especial..."></textarea>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="alert alert-info">
                                             <i class="fas fa-info-circle"></i>
-                                            <strong>Nota:</strong> Tu reserva será confirmada en un plazo de 24 horas. Recibirás un correo de confirmación.
+                                            <strong>Nota:</strong> Tu reserva será confirmada en un plazo de 24 horas.
+                                            Recibirás un correo de confirmación.
                                         </div>
                                     </div>
 
                                     <div class="col-12 text-end">
-                                        <button type="button" class="btn btn-outline-secondary me-2" onclick="showSection('mis-reservas')">
+                                        <button type="button" class="btn btn-outline-secondary me-2"
+                                            onclick="showSection('mis-reservas')">
                                             Cancelar
                                         </button>
                                         <button type="submit" class="btn btn-primary">
@@ -248,27 +181,30 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label class="form-label">Nombre Completo</label>
-                                        <input type="text" class="form-control" value="Juan Pérez" required>
+                                        <input type="text" class="form-control" id="profileNombre" name="nombre"
+                                            required>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Correo Electrónico</label>
-                                        <input type="email" class="form-control" value="juan@ejemplo.com" required>
+                                        <input type="email" class="form-control" id="profileEmail" name="email"
+                                            required>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Teléfono</label>
-                                        <input type="tel" class="form-control" value="+52 555 123 4567" required>
+                                        <input type="tel" class="form-control" id="profilePhone" name="telefono"
+                                            required>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="form-label">Fecha de Nacimiento</label>
-                                        <input type="date" class="form-control" value="1990-05-15">
+                                        <input type="date" class="form-control" id="profileDob" name="fecha_nac">
                                     </div>
 
                                     <div class="col-12">
                                         <label class="form-label">Dirección</label>
-                                        <input type="text" class="form-control" value="Av. Principal 123, Centro">
+                                        <input type="text" class="form-control" id="profileAddress" name="direccion">
                                     </div>
 
                                     <div class="col-12">
@@ -355,7 +291,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="reservas.js"></script>
+    <script src="public/scripts/client_logic.js"></script>
 </body>
 
 </html>

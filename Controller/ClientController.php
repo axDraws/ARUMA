@@ -263,4 +263,105 @@ class ClientController
             echo json_encode(['error' => 'Error al eliminar (posiblemente tiene reservas asociadas)']);
         }
     }
+
+    /* ============================================================
+        API: OBTENER MI PERFIL (CLIENTE)
+    ============================================================ */
+    public function getProfileApi()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        try {
+            $cliente = $this->clientModel->find($_SESSION['user_id']);
+            if ($cliente) {
+                // No enviamos el hash del password
+                unset($cliente['password_hash']);
+                echo json_encode($cliente);
+            } else {
+                http_response_code(404);
+                echo json_encode(['error' => 'Usuario no encontrado']);
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error interno']);
+        }
+    }
+
+    /* ============================================================
+        API: ACTUALIZAR MI PERFIL (CLIENTE)
+    ============================================================ */
+    public function updateProfileApi()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido']);
+            return;
+        }
+
+        $userId = $_SESSION['user_id'];
+
+        try {
+            $clienteActual = $this->clientModel->find($userId);
+            if (!$clienteActual) {
+                http_response_code(404);
+                echo json_encode(['error' => 'Usuario no encontrado']);
+                return;
+            }
+
+            // Datos a actualizar
+            $data = [
+                'nombre' => $_POST['nombre'] ?? $clienteActual['nombre'],
+                'email' => $_POST['email'] ?? $clienteActual['email'], // Opcional: validar si cambia
+                'telefono' => $_POST['telefono'] ?? $clienteActual['telefono'],
+                'fecha_nac' => $_POST['fecha_nac'] ?? $clienteActual['fecha_nac'],
+                'direccion' => $_POST['direccion'] ?? $clienteActual['direccion']
+            ];
+
+            // TODO: Si cambia email, verificar unicidad.
+
+            // Ver si hay cambio de contraseña
+            // (Asumimos que si envían 'new_password' no vacío, quieren cambiarla)
+            /* 
+              NOTA: Para cambio de contraseña seguro, se debería pedir password actual y validar.
+              Por simplicidad en este paso, solo actualizamos perfil básico.
+              Si se requiere cambio de password, sería una lógica adicional.
+           */
+
+            $ok = $this->clientModel->update($userId, $data);
+
+            if ($ok) {
+                echo json_encode(['status' => 'ok']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['error' => 'No se pudo actualizar el perfil']);
+            }
+
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error interno: ' . $e->getMessage()]);
+        }
+    }
 }
+

@@ -49,7 +49,7 @@ class ServiceController
     }
 
     /* ============================================================
-        API: OBTENER TODOS LOS SERVICIOS
+        API: OBTENER TODOS LOS SERVICIOS (ADMIN)
     ============================================================ */
     public function getAllServicesApi()
     {
@@ -59,6 +59,39 @@ class ServiceController
         try {
             $servicios = $this->serviceModel->getAllServices();
             echo json_encode($servicios);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error al obtener servicios']);
+        }
+    }
+
+    /* ============================================================
+        API: OBTENER TODOS LOS SERVICIOS (PUBLICO/CLIENTE)
+    ============================================================ */
+    public function getPublicServicesApi()
+    {
+        // Puedes agregar validar sesión si es privado
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Si quieres que sea totalmente público, quita esto.
+        // Si quieres solo usuarios registrados:
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        try {
+            // Podríamos filtrar solo activos
+            $servicios = $this->serviceModel->getAllServices();
+            $activos = array_filter($servicios, function ($s) {
+                return isset($s['activo']) ? $s['activo'] == 1 : true;
+            });
+            echo json_encode(array_values($activos));
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'Error al obtener servicios']);

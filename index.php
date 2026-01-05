@@ -263,6 +263,134 @@ switch ($uri) {
         exit();
 
     /* ======================================
+     * API TERAPEUTAS (ADMIN)
+     * ====================================== */
+
+    case 'api/terapeutas':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/TherapistController.php';
+        (new TherapistController())->getAllTherapistsApi();
+        exit();
+
+    case 'api/terapeutas/show':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/TherapistController.php';
+        (new TherapistController())->getTherapistByIdApi();
+        exit();
+
+    case 'api/terapeutas/create':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/TherapistController.php';
+        (new TherapistController())->createTherapistApi();
+        exit();
+
+    case 'api/terapeutas/update':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/TherapistController.php';
+        (new TherapistController())->updateTherapistApi();
+        exit();
+
+    case 'api/terapeutas/delete':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/TherapistController.php';
+        (new TherapistController())->deleteTherapistApi();
+        exit();
+
+    /* ======================================
+     * API PRODUCTOS (ADMIN)
+     * ====================================== */
+
+    case 'api/productos':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ProductController.php';
+        (new ProductController())->getAllProductsApi();
+        exit();
+
+    case 'api/productos/show':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ProductController.php';
+        (new ProductController())->getProductByIdApi();
+        exit();
+
+    case 'api/productos/create':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ProductController.php';
+        (new ProductController())->createProductApi();
+        exit();
+
+    case 'api/productos/update':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ProductController.php';
+        (new ProductController())->updateProductApi();
+        exit();
+
+    case 'api/productos/delete':
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        require_once __DIR__ . '/Controller/ProductController.php';
+        (new ProductController())->deleteProductApi();
+        exit();
+
+    /* ======================================
      * CLIENTE: Reservas
      * ====================================== */
 
@@ -300,6 +428,45 @@ switch ($uri) {
         session_destroy();
         header("Location: /");
         break;
+
+    /* ======================================
+     * API CLIENTE (Perfil y Reservas)
+     * ====================================== */
+
+    case 'api/client/profile':
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->getProfileApi();
+        exit();
+
+    case 'api/client/profile/update':
+        require_once __DIR__ . '/Controller/ClientController.php';
+        (new ClientController())->updateProfileApi();
+        exit();
+
+    case 'api/client/reservas':
+        require_once __DIR__ . '/Controller/ReservationController.php';
+        (new ReservationController())->getMyReservationsApi();
+        exit();
+
+    case 'api/client/reservas/create':
+        require_once __DIR__ . '/Controller/ReservationController.php';
+        (new ReservationController())->createReservationApi();
+        exit();
+
+    case 'api/client/reservas/cancel':
+        require_once __DIR__ . '/Controller/ReservationController.php';
+        (new ReservationController())->cancelReservationApi();
+        exit();
+
+    /* ======================================
+     * API PÚBLICA / COMPARTIDA
+     * ====================================== */
+
+    case 'api/public/services':
+        require_once __DIR__ . '/Controller/ServiceController.php';
+        (new ServiceController())->getPublicServicesApi();
+        exit();
+
 
     /* ======================================
      * 404 - NOT FOUND

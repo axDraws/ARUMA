@@ -1,121 +1,152 @@
 <?php
+require_once __DIR__ . '/../Model/ReservationModel.php';
+require_once __DIR__ . '/../Model/HistoryModel.php';
 
-class ReservationModel {
-    private $db;
+class ReservationController
+{
+    private $reservationModel;
+    private $historyModel;
 
-    public function __construct($db = null) {
-        $this->db = $db ?? DB::get();
+    public function __construct()
+    {
+        $this->reservationModel = new ReservationModel();
+        $this->historyModel = new HistoryModel();
     }
 
     /* ============================================================
-       OBTENER TODAS LAS RESERVAS
+        VALIDAR SESIÓN
     ============================================================ */
-    public function all() {
-        $sql = "SELECT r.*, 
-                       c.nombre AS cliente, 
-                       s.nombre AS servicio, 
-                       t.nombre AS terapeuta
-                FROM reservations r
-                LEFT JOIN users c ON r.cliente_id = c.id
-                LEFT JOIN services s ON r.servicio_id = s.id
-                LEFT JOIN users t ON r.therapist_id = t.id
-                ORDER BY r.fecha, r.hora";
+    private function checkSession()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
-        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        if (!isset($_SESSION['user_id'])) {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit();
+        }
     }
 
     /* ============================================================
-       BUSCAR UNA RESERVA POR ID
+        API: OBTENER MIS RESERVAS (CLIENTE)
     ============================================================ */
-    public function find($id) {
-        $sql = "SELECT * FROM reservations WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getMyReservationsApi()
+    {
+        $this->checkSession();
+        header('Content-Type: application/json');
+
+        $userId = $_SESSION['user_id'];
+
+        // Como el modelo no tiene un método específico getMyReservations, 
+        // traeremos todas y filtraremos (o idealmente agregaríamos un método al modelo).
+        // Por ahora, filtramos aquí.
+        // TODO: Agregar getByClientId en ReservationModel para mejor performance.
+
+        $reservations = $this->reservationModel->all();
+        $myReservations = array_filter($reservations, function ($res) use ($userId) {
+            return $res['cliente_id'] == $userId;
+        });
+
+        echo json_encode(array_values($myReservations));
     }
 
     /* ============================================================
-       CREAR UNA RESERVA
+        API: CREAR RESERVA (CLIENTE)
     ============================================================ */
-    public function create($data) {
-        $sql = "INSERT INTO reservations 
-                (cliente_id, servicio_id, therapist_id, fecha, hora, duracion_min, estado, notas)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public function createReservationApi()
+    {
+        $this->checkSession();
+        header('Content-Type: application/json');
 
-        $stmt = $this->db->prepare($sql);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido']);
+            return;
+        }
 
-        $stmt->execute([
-            $data['cliente_id'],
-            $data['servicio_id'],
-            $data['therapist_id'],
-            $data['fecha'],
-            $data['hora'],
-            $data['duracion_min'],
-            $data['estado'],
-            $data['notas']
-        ]);
+        // Validar datos mínimos
+        if (empty($_POST['servicio_id']) || empty($_POST['fecha']) || empty($_POST['hora'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Servicio, fecha y hora son requeridos']);
+            return;
+        }
 
-        return $this->db->lastInsertId();
+        $data = [
+            'cliente_id' => $_SESSION['user_id'],
+            'servicio_id' => $_POST['servicio_id'],
+            'therapist_id' => $_POST['therapist_id'] ?? null, // Opcional o asignado por admin
+            'fecha' => $_POST['fecha'],
+            'hora' => $_POST['hora'],
+            'duracion_min' => 60, // Podría venir del servicio seleccionad
+            'estado' => 'pendiente',
+            'notas' => $_POST['notas'] ?? ''
+        ];
+
+        /* 
+           NOTA: En una implementación real, deberíamos validar:
+           1. Que el servicio exista.
+           2. Que el terapeuta esté disponible (si se seleccionó).
+           3. Que no haya conflictos de horario.
+           4. Obtener duración real del servicio.
+        */
+
+        $id = $this->reservationModel->create($data);
+
+        if ($id) {
+            echo json_encode(['status' => 'ok', 'id' => $id]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error al crear la reserva']);
+        }
     }
 
     /* ============================================================
-       ACTUALIZAR RESERVA
+        API: CANCELAR RESERVA (CLIENTE)
     ============================================================ */
-    public function update($id, $data) {
-        $sql = "UPDATE reservations SET 
-                    cliente_id   = ?,
-                    servicio_id  = ?,
-                    therapist_id = ?,
-                    fecha        = ?,
-                    hora         = ?,
-                    duracion_min = ?,
-                    estado       = ?,
-                    notas        = ?
-                WHERE id = ?";
+    public function cancelReservationApi()
+    {
+        $this->checkSession();
+        header('Content-Type: application/json');
 
-        $stmt = $this->db->prepare($sql);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido']);
+            return;
+        }
 
-        return $stmt->execute([
-            $data['cliente_id'],
-            $data['servicio_id'],
-            $data['therapist_id'] !== '' ? $data['therapist_id'] : null,
-            $data['fecha'],
-            $data['hora'],
-            $data['duracion_min'],
-            $data['estado'],
-            trim($data['notas']),
-            $id
-        ]);
-    }
+        if (empty($_POST['id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID de reserva requerido']);
+            return;
+        }
 
-    /* ============================================================
-       ELIMINAR RESERVA
-    ============================================================ */
-    public function delete($id) {
-        $stmt = $this->db->prepare("DELETE FROM reservations WHERE id = ?");
-        return $stmt->execute([$id]);
-    }
+        $reservaId = $_POST['id'];
+        $userId = $_SESSION['user_id'];
 
-    /* ============================================================
-       RESERVAS PASADAS SIN REGISTRO EN HISTORIAL
-    ============================================================ */
-    public function getPastReservationsWithoutHistory() {
-        $sql = "SELECT r.*
-                FROM reservations r
-                LEFT JOIN history h ON h.reservation_id = r.id
-                WHERE r.fecha < CURDATE()
-                AND h.id IS NULL
-                AND r.estado != 'completada'";
+        // Verificar que la reserva pertenezca al usuario
+        $reserva = $this->reservationModel->find($reservaId);
 
-        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    }
+        if (!$reserva || $reserva['cliente_id'] != $userId) {
+            http_response_code(403);
+            echo json_encode(['error' => 'No tienes permiso para cancelar esta reserva']);
+            return;
+        }
 
-    /* ============================================================
-       MARCAR RESERVA COMO COMPLETADA
-    ============================================================ */
-    public function markAsCompleted($id) {
-        $sql = "UPDATE reservations SET estado = 'completada' WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$id]);
+        if ($reserva['estado'] === 'cancelada') {
+            echo json_encode(['status' => 'ok', 'message' => 'La reserva ya estaba cancelada']);
+            return;
+        }
+
+        // Cancelamos actualizando estado
+        $ok = $this->reservationModel->updateEstado($reservaId, 'cancelada');
+
+        if ($ok) {
+            echo json_encode(['status' => 'ok']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['error' => 'Error al cancelar la reserva']);
+        }
     }
 }

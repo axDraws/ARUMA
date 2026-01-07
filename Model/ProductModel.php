@@ -27,11 +27,12 @@ class ProductModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function create($nombre, $descripcion, $precio, $imagen_path)
+    public function create($nombre, $categoria, $descripcion, $precio, $imagen_path)
     {
-        $stmt = $this->db->prepare("INSERT INTO products (nombre, descripcion, precio, imagen_path) VALUES (:nombre, :descripcion, :precio, :imagen_path)");
+        $stmt = $this->db->prepare("INSERT INTO products (nombre, categoria, descripcion, precio, imagen_path) VALUES (:nombre, :categoria, :descripcion, :precio, :imagen_path)");
         $stmt->execute([
             ':nombre' => $nombre,
+            ':categoria' => $categoria,
             ':descripcion' => $descripcion,
             ':precio' => $precio,
             ':imagen_path' => $imagen_path
@@ -59,6 +60,10 @@ class ProductModel
         if (isset($data['imagen_path'])) {
             $fields[] = "imagen_path = :imagen_path";
             $params[':imagen_path'] = $data['imagen_path'];
+        }
+        if (isset($data['categoria'])) {
+            $fields[] = "categoria = :categoria";
+            $params[':categoria'] = $data['categoria'];
         }
         // If I use 'activo' column
         if (isset($data['activo'])) {

@@ -78,6 +78,39 @@ class ProductController
         }
     }
 
+    private function handleImageUpload($categoria)
+    {
+        if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($_FILES['imagen']['tmp_name']);
+
+        if (!in_array($mime, $allowed)) {
+            throw new Exception("Tipo de archivo no permitido: " . $mime);
+        }
+
+        // Determinar carpeta destino
+        $categoriaFolder = strtolower($categoria) === 'salerm' ? 'salerm' : 'cuccio';
+        $uploadDir = __DIR__ . '/../public/img/' . $categoriaFolder . '/';
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
+        $filename = uniqid('prod_') . '.' . $ext;
+        $targetPath = $uploadDir . $filename;
+
+        if (move_uploaded_file($_FILES['imagen']['tmp_name'], $targetPath)) {
+            return '../public/img/' . $categoriaFolder . '/' . $filename;
+        }
+
+        throw new Exception("Error al mover el archivo subido.");
+    }
+
     public function createProductApi()
     {
         $this->checkAdmin();
@@ -98,13 +131,29 @@ class ProductController
         try {
             $nombre = $_POST['nombre'];
             $precio = $_POST['precio'];
+            $categoria = $_POST['categoria'] ?? 'Cuccio'; // Default
             $descripcion = $_POST['descripcion'] ?? '';
-            $imagen_path = $_POST['imagen_path'] ?? ''; // Handle generic path/url for now
 
-            $id = $this->productModel->create($nombre, $descripcion, $precio, $imagen_path);
+            // Handle Upload
+            $imagen_path = '';
+            try {
+                $uploadedPath = $this->handleImageUpload($categoria);
+                if ($uploadedPath) {
+                    $imagen_path = $uploadedPath;
+                } else {
+                    // Fallback to text input if any (backward compatibility) or generic
+                    $imagen_path = $_POST['imagen_path'] ?? '';
+                }
+            } catch (Exception $e) {
+                http_response_code(400);
+                echo json_encode(['error' => $e->getMessage()]);
+                return;
+            }
+
+            $id = $this->productModel->create($nombre, $categoria, $descripcion, $precio, $imagen_path);
 
             if ($id) {
-                $this->logAdminAction('Producto Creado', "Producto: $nombre", $id);
+                $this->logAdminAction('Producto Creado', "Producto: $nombre ($categoria)", $id);
                 echo json_encode(['status' => 'ok', 'id' => $id]);
             } else {
                 http_response_code(500);
@@ -141,11 +190,31 @@ class ProductController
                 return;
             }
 
+            $nombre = $_POST['nombre'] ?? $current['nombre'];
+            $categoria = $_POST['categoria'] ?? ($current['categoria'] ?? 'Cuccio');
+            $precio = $_POST['precio'] ?? $current['precio'];
+            $descripcion = $_POST['descripcion'] ?? $current['descripcion'];
+
+            // Handle Upload
+            $imagen_path = $current['imagen_path'];
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+                try {
+                    $uploaded = $this->handleImageUpload($categoria);
+                    if ($uploaded)
+                        $imagen_path = $uploaded;
+                } catch (Exception $e) {
+                    http_response_code(400);
+                    echo json_encode(['error' => $e->getMessage()]);
+                    return;
+                }
+            }
+
             $data = [
-                'nombre' => $_POST['nombre'] ?? $current['nombre'],
-                'precio' => $_POST['precio'] ?? $current['precio'],
-                'descripcion' => $_POST['descripcion'] ?? $current['descripcion'],
-                'imagen_path' => $_POST['imagen_path'] ?? $current['imagen_path']
+                'nombre' => $nombre,
+                'precio' => $precio,
+                'descripcion' => $descripcion,
+                'imagen_path' => $imagen_path,
+                'categoria' => $categoria
             ];
 
             // Log changes
@@ -154,6 +223,10 @@ class ProductController
                 $changes[] = "Nombre";
             if ($current['precio'] != $data['precio'])
                 $changes[] = "Precio";
+            if (($current['categoria'] ?? '') != $data['categoria'])
+                $changes[] = "Categoría";
+            if ($current['imagen_path'] != $data['imagen_path'])
+                $changes[] = "Imagen";
 
             $ok = $this->productModel->update($_POST['id'], $data);
 

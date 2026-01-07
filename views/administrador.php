@@ -1305,8 +1305,16 @@
                                 <textarea class="form-control" name="descripcion" rows="3"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">URL Imagen (Opcional)</label>
-                                <input type="text" class="form-control" name="imagen_path" placeholder="https://...">
+                                <label class="form-label">Marca <span class="text-danger">*</span></label>
+                                <select class="form-select" name="categoria" required>
+                                    <option value="Select">Selecciona una marca</option>
+                                    <option value="Cuccio">Cuccio</option>
+                                    <option value="Salerm">Salerm</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Imagen (Opcional)</label>
+                                <input type="file" class="form-control" name="imagen" accept="image/*">
                             </div>
                             <div class="text-end">
                                 <button type="button" class="btn btn-secondary"
@@ -1346,9 +1354,16 @@
                                     rows="3"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">URL Imagen (Opcional)</label>
-                                <input type="text" class="form-control" name="imagen_path"
-                                    id="edit_producto_imagen_path">
+                                <label class="form-label">Marca <span class="text-danger">*</span></label>
+                                <select class="form-select" name="categoria" id="edit_producto_categoria" required>
+                                    <option value="Cuccio">Cuccio</option>
+                                    <option value="Salerm">Salerm</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Imagen (Opcional)</label>
+                                <input type="file" class="form-control" name="imagen" accept="image/*">
+                                <small class="text-muted">Dejar vacío para mantener la actual</small>
                             </div>
                             <div class="text-end">
                                 <button type="button" class="btn btn-secondary"
@@ -2125,7 +2140,9 @@
                         document.getElementById('edit_producto_nombre').value = json.nombre;
                         document.getElementById('edit_producto_precio').value = json.precio;
                         document.getElementById('edit_producto_descripcion').value = json.descripcion || '';
-                        document.getElementById('edit_producto_imagen_path').value = json.imagen_path || '';
+                        document.getElementById('edit_producto_descripcion').value = json.descripcion || '';
+                        document.getElementById('edit_producto_categoria').value = json.categoria || 'Cuccio';
+                        // document.getElementById('edit_producto_imagen_path').value = json.imagen_path || ''; // Removed
                         new bootstrap.Modal(document.getElementById('modalEditarProducto')).show();
                     } else {
                         alert('Error al cargar producto');

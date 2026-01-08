@@ -1,765 +1,576 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aruma Spa - Bienestar y Belleza</title>
-    <link rel="stylesheet" href="../public/estilos/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../public/estilos/style.css">
-    <link rel="icon" type="image/png" href="../public/img/aruma spa/logo1.jpg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aruma Spa - Bienestar y Belleza</title>
+  <link rel="stylesheet" href="../public/estilos/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../public/estilos/style.css">
+  <link rel="icon" type="image/png" href="../public/img/aruma spa/logo1.jpg">
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-spa"></i> ARUMA
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="../views/mision-vision.php">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
-                </ul>
-                <button class="btn btn-login ms-3" id="btnLogin">
-                    <i class="fas fa-user"></i> Iniciar Sesión
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    
-<!-- Modal de Login -->
-<div class="login-overlay" id="loginOverlay">
-    <div class="login-modal">
-        <button class="btn-close-modal" id="btnCloseLogin">
-            <i class="fas fa-times"></i>
-        </button>
-
-        <h2 class="text-center mb-4">Iniciar Sesión</h2>
-
-        <!-- FORMULARIO REAL DE LOGIN -->
-        <form method="POST" action="login">
-            <div class="mb-3">
-                <label for="email_login" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="email" id="email_login" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="password_login" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="password" id="password_login" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-
-            <div class="text-center mt-3">
-                <a href="#" class="text-muted d-block mb-2">¿Olvidaste tu contraseña?</a>
-                <a href="#" class="text-muted link-register">¿No tienes cuenta? Regístrate</a>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- Hero Section -->
-<section id="inicio" class="hero">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="hero-title">Bienvenido a Aruma Spa</h1>
-                <p class="hero-subtitle">Tu espacio de bienestar y relajación</p>
-                <a href="#servicios" class="btn btn-hero">Agenda una cita</a>
-            </div>
-        </div>
-    </div>
-</section>
- 
-
-<!-- Modal de Registro -->
-<div class="login-overlay" id="registerOverlay">
-    <div class="login-modal">
-        <button class="btn-close-modal" id="btnCloseRegister">
-            <i class="fas fa-times"></i>
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-spa"></i> ARUMA
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../views/mision-vision.php">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
+        </ul>
+        <button class="btn btn-login ms-3" id="btnLogin">
+          <i class="fas fa-user"></i> Iniciar Sesión
         </button>
-
-        <h2 class="text-center mb-4">Crear Cuenta</h2>
-
-        <!-- FORMULARIO REAL DE REGISTRO -->
-        <form method="POST" action="register">
-            <div class="mb-3">
-                <label class="form-label">Nombre Completo</label>
-                <input type="text" class="form-control" name="nombre" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" name="email" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="password" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Registrarme</button>
-
-            <div class="text-center mt-3">
-                <a href="#" class="text-muted d-block" id="linkToLogin">¿Ya tienes cuenta? Inicia sesión</a>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- Carrusel de Servicios con Modal -->
-<section id="servicios" class="py-5">
-  <div class="container">
-    <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
-
-    <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel">
-      <!-- Indicadores -->
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="2"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="3"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="4"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="5"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="6"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="7"></button>
-        <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="8"></button>
-      </div>
-
-      <!-- Contenido del carrusel -->
-      <div class="carousel-inner">
-
-        <!-- Grupo 1 -->
-        <div class="carousel-item active">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/uñas.jpg" alt="UÑAS" class="service-img" data-title="UÑAS" data-desc="Manicure, Pedicure, Gel semi permanente, Gel de inmersión, Soft gel.">
-                <h3>Gel semi permanente</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/manicura.jpg" alt="Manicura" class="service-img" data-title="Manicura" data-desc="Cuidado profesional de uñas y cutículas.">
-                <h3>Manicura</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/pedicura.jpg" alt="Pedicura" class="service-img" data-title="Pedicura" data-desc="Tratamiento estético para pies que limpia, hidrata y embellece.">
-                <h3>Pedicura</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 2 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/gel de inmercion.jpg" alt="Gel de Inmersión" class="service-img" data-title="Gel de Inmersión" data-desc="Técnica avanzada que ofrece uñas duraderas con acabado natural.">
-                <h3>Gel de inmersión</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/softGel.jpg" alt="Soft Gel" class="service-img" data-title="Soft Gel" data-desc="Extensiones ligeras y resistentes con un acabado perfecto.">
-                <h3>Soft Gel</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/lavadoDeCabello.jpg" alt="Lavado de Cabello" class="service-img" data-title="Lavado de Cabello" data-desc="Limpieza profunda con productos profesionales.">
-                <h3>Lavado de cabello</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 3 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/peinadoSocial.jpg" alt="Peinado Social" class="service-img" data-title="Peinado Social" data-desc="Estilos elegantes para eventos especiales.">
-                <h3>Peinado social</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/moldeado.jpg" alt="Moldeado" class="service-img" data-title="Moldeado" data-desc="Dale forma y volumen a tu cabello con técnicas suaves.">
-                <h3>Moldeado</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/planchado.png" alt="Planchado" class="service-img" data-title="Planchado" data-desc="Cabello perfectamente liso y brillante.">
-                <h3>Planchado</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 4 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/tinte.jpg" alt="Tinte" class="service-img" data-title="Tinte" data-desc="Coloración profesional con tonos vibrantes o naturales.">
-                <h3>Decoloracion completa</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/rizado.jpeg" alt="Reflejos" class="service-img" data-title="Reflejos" data-desc="Iluminaciones que aportan brillo y movimiento.">
-                <h3>Rizado</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/corteDama.jpg" alt="Depilación con Cera" class="service-img" data-title="Depilación con Cera" data-desc="Elimina el vello desde la raíz para una piel suave.">
-                <h3>Corte de dama</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 5 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/corteCaballero.jpg" alt="Maquillaje Social" class="service-img" data-title="Maquillaje Social" data-desc="Maquillaje profesional para cualquier ocasión.">
-                <h3>Maquillaje social</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/arregloBarba.jpg" alt="Diseño de Cejas" class="service-img" data-title="Diseño de Cejas" data-desc="Moldea tus cejas con precisión.">
-                <h3>Areglo de barba</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/planchadoCeja.jpg" alt="Extensión de Pestañas" class="service-img" data-title="Extensión de Pestañas" data-desc="Logra una mirada intensa con extensiones naturales.">
-                <h3>Planchado de cejas</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 6 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/bioplastia.jpg" alt="Spa de Pies" class="service-img" data-title="Spa de Pies" data-desc="Relaja y revitaliza tus pies con sales, aceites y masajes.">
-                <h3>bioplastia</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/mascarilla.jpg" alt="Masaje Corporal" class="service-img" data-title="Masaje Corporal" data-desc="Terapia relajante que alivia tensión y mejora la circulación.">
-                <h3>Mascarilla</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/ampolletas.jpg" alt="Exfoliación" class="service-img" data-title="Exfoliación" data-desc="Elimina impurezas para una piel más suave y luminosa.">
-                <h3>Ampolletas</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 7 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/efectoColor.jpg" alt="Mascarilla Facial" class="service-img" data-title="Mascarilla Facial" data-desc="Tratamiento nutritivo que hidrata y suaviza la piel.">
-                <h3>Tinte efecto de color</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/retoqueTinte.jpg" alt="Hidratación" class="service-img" data-title="Hidratación" data-desc="Tratamiento capilar para cabello seco y dañado.">
-                <h3>Retoque de tinte</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/epilacionCeja.png" alt="Corte de Cabello" class="service-img" data-title="Corte de Cabello" data-desc="Estilos modernos y personalizados según tu rostro.">
-                <h3>Epilacion de ceja</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 8 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/epilacionBozo.jpg" alt="Barbería" class="service-img" data-title="Barbería" data-desc="Cortes y perfilado de barba con precisión.">
-                <h3>Epilacion de bozo</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/epilacionPatilla.jpg" alt="Alisado Permanente" class="service-img" data-title="Alisado Permanente" data-desc="Cabello liso por más tiempo con tratamientos sin daño.">
-                <h3>Epilacion de patilla</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/epilacionRostro.jpg" alt="Tratamiento con Keratina" class="service-img" data-title="Tratamiento con Keratina" data-desc="Repara el cabello dañado y devuelve su brillo natural.">
-                <h3>Epilacion de rostro</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grupo 9 -->
-        <div class="carousel-item">
-          <div class="row g-4">
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/EpilacionPierna.jpg" alt="Tinte Fantasía" class="service-img" data-title="Tinte Fantasía" data-desc="Colores vibrantes y únicos para un look atrevido.">
-                <h3>Epilacion de media pierna</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/epilacionAntebrazo.jpg" alt="Maquillaje de Novia" class="service-img" data-title="Maquillaje de Novia" data-desc="Maquillaje elegante y duradero para tu gran día.">
-                <h3>Epilacion de antebrazo</h3>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="service-card">
-                <img src="../public/img/servicios/balayage.jpeg" alt="Peinado de Novia" class="service-img" data-title="Peinado de Novia" data-desc="Diseños personalizados que realzan tu belleza natural.">
-                <h3>Balayage</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Controles -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- Modal -->
-<div id="serviceModal" class="service-modal">
-  <div class="service-modal-content">
-    <span class="service-modal-close">&times;</span>
-    <div class="service-modal-body">
-      <div class="service-modal-text">
-        <h3 id="serviceTitle"></h3>
-        <p id="serviceDescription"></p>
-      </div>
-      <div class="service-modal-image">
-        <img id="serviceImage" src="" alt="Servicio">
       </div>
     </div>
-  </div>
-</div> 
-<!-- Carrusel Marca 1 -->
-<section id="productos" class="py-5 bg-light">
-  <div class="container">
-    <h2 class="section-title text-center mb-5">Productos que Utilizamos</h2>
+  </nav>
 
-    <!-- Línea Premium Natural -->
-    <h3 class="text-center mb-4">Salerm Cosmetics</h3>
-    <div id="marca1Carousel" class="carousel slide mb-5" data-bs-ride="carousel">
-      <div class="carousel-inner">
 
-        <!-- Primera diapositiva -->
-        <div class="carousel-item active">
-          <div class="row g-4 justify-content-center"> 
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/AcondicionadorBioMarine_335.jpg" alt="Acondicionador Bio Marine" class="img-fluid rounded">
-                </div>
-                <h4>Acondicionador Bio Marine</h4>
-              
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/mascarillaMultiProteinas.jpg" alt="Mascarilla Multi Proteinas" class="img-fluid rounded">
-                </div>
-                <h4>Mascarilla Multi Proteinas</h4>
-          
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/ShampooControlCaspa.jpg" alt="Shampoo Control Caspa" class="img-fluid rounded">
-                </div>
-                <h4>Shampoo Control Caspa</h4>
-                
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/SampooCabellosblancos.jpg" alt="Shampoo Cabellos Blancos" class="img-fluid rounded">
-                </div>
-                <h4>Shampoo Cabellos Blancos</h4>
-          
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/CeraParaPeinar.jpeg" alt="Cera Para Peinar" class="img-fluid rounded">
-                </div>
-                <h4>Cera Para Peinar</h4>
-              
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Segunda diapositiva -->
-        <div class="carousel-item">
-          <div class="row g-4 justify-content-center"> 
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/AcondicionadorColorDurarero.jpg" alt="Acondicionador Color Duradero" class="img-fluid rounded">
-                </div>
-                <h4>Acondicionador Color Duradero</h4>
-              
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/ShampooControlCaida.jpeg" alt="Shampoo Control Caída" class="img-fluid rounded">
-                </div>
-                <h4>Shampoo Control Caída</h4>
-                
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/SalermCosmetics21Shampoo.jpeg" alt="Salerm Cosmetics 21 Shampoo" class="img-fluid rounded">
-                </div>
-                <h4>Salerm Cosmetics 21 Shampoo</h4>
-              
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/IceGel03.jpeg" alt="Ice Gel 03" class="img-fluid rounded">
-                </div>
-                <h4>Ice Gel 03</h4>
-            
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/MascarillaGermenDeTrigo.jpeg" alt="Mascarilla Germen de Trigo" class="img-fluid rounded">
-                </div>
-                <h4>Mascarilla Germen de Trigo</h4>
-              
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Tercera diapositiva  -->
-        <div class="carousel-item">
-          <div class="row g-4 justify-content-center">
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/ShampooBalsamoAcondicionador.jpg" alt="Salerm 21 Silk Protein" class="img-fluid rounded">
-                </div>
-                <h4>Shampoo Balsamo Acondicionador</h4>
-                
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/GelParaDespuesDeAfeitar.jpeg" alt="Brillo Final Spray" class="img-fluid rounded">
-                </div>
-                <h4>Gel Para Despues De Afeitar</h4>
-                
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/GelParaAfeita.jpg" alt="Keratin Shot" class="img-fluid rounded">
-                </div>
-                <h4>Gel Para Afeitar</h4>
-                
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/CeraParaCabelloYBarba.jpeg" alt="Mascarilla Argán" class="img-fluid rounded">
-                </div>
-                <h4>Cera Para Cabello Y Barba</h4>
-                
-              </div>
-            </div>
-
-            <div class="col-6 col-sm-4 col-md-2">
-              <div class="product-card">
-                <div class="product-img">
-                  <img src="../public/img/salerm/AceiteParaBarba.jpeg" alt="Sérum Capilar" class="img-fluid rounded">
-                </div>
-                <h4>Aceite Para Barba</h4>
-                
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-
-      <button class="carousel-control-prev" type="button" data-bs-target="#marca1Carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#marca1Carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </div>
-</section>
-<!-- Línea cuccio -->
-<h3 class="text-center mb-4 mt-5">cuccio</h3>
-<div id="marca2Carousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-
-    <!-- Primera diapositiva -->
-    <div class="carousel-item active">
-      <div class="row g-4 justify-content-center">
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/AceiteCorporalEnSeco.jpeg" alt="Caviar Gold Serum" class="img-fluid rounded">
-            </div>
-            <h4>Aceite Corporal En Seco</h4>
-            <p>$549</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/AceiteDeCuticulaEnBola.jpeg" alt="Ácido Hialurónico" class="img-fluid rounded">
-            </div>
-            <h4>Aceite De Cuticula En Bola</h4>
-            <p>$349</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/CremaButterBlend8oz.jpeg" alt="Colágeno Marino" class="img-fluid rounded">
-            </div>
-            <h4>Crema Butter Blend 8oz</h4>
-            <p>$359</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/CremaLyteButter32oz.jpg" alt="Oro 24K Mask" class="img-fluid rounded">
-            </div>
-            <h4>Crema Lyte Butter 32oz</h4>
-            <p>$799</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/CremaParaMasajeCuccio.jpeg" alt="Oro 24K Mask" class="img-fluid rounded">
-            </div>
-            <h4>Crema ParaMasaje Cuccio</h4>
-            <p>$729</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Segunda diapositiva -->
-    <div class="carousel-item">
-      <div class="row g-4 justify-content-center">
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/CremaBonce8oz.jpeg" alt="Peeling Diamante" class="img-fluid rounded">
-            </div>
-            <h4>Crema Bonze 8oz</h4>
-            <p>$389</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/BañoDeLeche.jpeg" alt="Vitamina E Pro" class="img-fluid rounded">
-            </div>
-            <h4>Baño De Leche</h4>
-            <p>$689</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/AceiteDeCuticulaRollOn.jpg" alt="Cryo Gel" class="img-fluid rounded">
-            </div>
-            <h4>Aceite De Cuticula Roll On</h4>
-            <p>$169</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/ExfolianteCuccio156oz.jpeg" alt="SPF 50+ Defense" class="img-fluid rounded">
-            </div>
-            <h4>Exfoliante Cuccio 156 oz</h4>
-            <p>$1399</p>
-          </div>
-        </div>
-
-        <div class="col-6 col-sm-4 col-md-2">
-          <div class="product-card">
-            <div class="product-img">
-              <img src="../public/img/cuccio/DetoxWashCuccio8oz.jpeg" alt="SPF 50+ Defense" class="img-fluid rounded">
-            </div>
-            <h4>Detox Wash Cuccio 8oz</h4>
-            <p>$359</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button class="carousel-control-prev" type="button" data-bs-target="#marca2Carousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-
-  <button class="carousel-control-next" type="button" data-bs-target="#marca2Carousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
-
-</div>
-</section>
-<!-- Galería Pinterest Style -->
-<section id="galeria" class="py-5">
-    <div class="container">
-        <h2 class="section-title text-center mb-5">Nuestra Galería</h2>
-        
-        <div class="pinterest-grid">
-
-            <div class="pinterest-item" data-title="Sala de Masajes">
-                <img src="../public/img/aruma spa/Local1.jpg" alt="Sala de Masajes">
-            </div>
-
-            <div class="pinterest-item tall" data-title="Área de Relajación">
-                <img src="../public/img/aruma spa/Local3.jpeg" alt="Área de Relajación">
-            </div>
-
-            <div class="pinterest-item" data-title="Tratamiento Facial">
-                <img src="../public/img/aruma spa/Local4.jpeg" alt="Tratamiento Facial">
-            </div>
-
-            <div class="pinterest-item wide" data-title="Piscina Termal">
-                <img src="../public/img/aruma spa/Local5.jpeg" alt="Piscina Termal">
-            </div>
-
-            <div class="pinterest-item" data-title="Sauna">
-                <img src="../public/img/aruma spa/Local6.jpeg" alt="Sauna">
-            </div>
-
-            <div class="pinterest-item tall" data-title="Yoga Studio">
-                <img src="../public/img/aruma spa/Local7.jpeg" alt="Yoga Studio">
-            </div>
-
-            <div class="pinterest-item" data-title="Recepción">
-                <img src="../public/img/aruma spa/Local8.jpeg" alt="Recepción">
-            </div>
-
-            <div class="pinterest-item" data-title="Manicure">
-                <img src="../public/img/aruma spa/Local9.jpeg" alt="Manicure">
-            </div>
-
-            <div class="pinterest-item wide" data-title="Jardín Zen">
-                <img src="../public/img/aruma spa/Local11.jpeg" alt="Jardín Zen">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Modal Galería -->
-<div class="gallery-overlay" id="galleryOverlay">
-    <button class="btn-close-gallery" id="btnCloseGallery">
+  <!-- Modal de Login -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-modal">
+      <button class="btn-close-modal" id="btnCloseLogin">
         <i class="fas fa-times"></i>
+      </button>
+
+      <h2 class="text-center mb-4">Iniciar Sesión</h2>
+
+      <!-- FORMULARIO REAL DE LOGIN -->
+      <form method="POST" action="login">
+        <div class="mb-3">
+          <label for="email_login" class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" name="email" id="email_login" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password_login" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" name="password" id="password_login" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+
+        <div class="text-center mt-3">
+          <a href="#" class="text-muted d-block mb-2">¿Olvidaste tu contraseña?</a>
+          <a href="#" class="text-muted link-register">¿No tienes cuenta? Regístrate</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Hero Section -->
+  <section id="inicio" class="hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <h1 class="hero-title">Bienvenido a Aruma Spa</h1>
+          <p class="hero-subtitle">Tu espacio de bienestar y relajación</p>
+          <a href="#servicios" class="btn btn-hero">Agenda una cita</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Modal de Registro -->
+  <div class="login-overlay" id="registerOverlay">
+    <div class="login-modal">
+      <button class="btn-close-modal" id="btnCloseRegister">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <h2 class="text-center mb-4">Crear Cuenta</h2>
+
+      <!-- FORMULARIO REAL DE REGISTRO -->
+      <form method="POST" action="register">
+        <div class="mb-3">
+          <label class="form-label">Nombre Completo</label>
+          <input type="text" class="form-control" name="nombre" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Correo Electrónico</label>
+          <input type="email" class="form-control" name="email" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Registrarme</button>
+
+        <div class="text-center mt-3">
+          <a href="#" class="text-muted d-block" id="linkToLogin">¿Ya tienes cuenta? Inicia sesión</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- Carrusel de Servicios con Modal -->
+  <section id="servicios" class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
+
+      <div id="serviciosCarousel" class="carousel slide" data-bs-ride="carousel">
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="0" class="active"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="2"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="3"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="4"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="5"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="6"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="7"></button>
+          <button type="button" data-bs-target="#serviciosCarousel" data-bs-slide-to="8"></button>
+        </div>
+
+        <!-- Contenido del carrusel -->
+        <div class="carousel-inner">
+
+          <!-- Grupo 1 -->
+          <div class="carousel-item active">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/uñas.jpg" alt="UÑAS" class="service-img" data-title="UÑAS"
+                    data-desc="Manicure, Pedicure, Gel semi permanente, Gel de inmersión, Soft gel.">
+                  <h3>Gel semi permanente</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/manicura.jpg" alt="Manicura" class="service-img"
+                    data-title="Manicura" data-desc="Cuidado profesional de uñas y cutículas.">
+                  <h3>Manicura</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/pedicura.jpg" alt="Pedicura" class="service-img"
+                    data-title="Pedicura" data-desc="Tratamiento estético para pies que limpia, hidrata y embellece.">
+                  <h3>Pedicura</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 2 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/gel de inmercion.jpg" alt="Gel de Inmersión" class="service-img"
+                    data-title="Gel de Inmersión"
+                    data-desc="Técnica avanzada que ofrece uñas duraderas con acabado natural.">
+                  <h3>Gel de inmersión</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/softGel.jpg" alt="Soft Gel" class="service-img"
+                    data-title="Soft Gel" data-desc="Extensiones ligeras y resistentes con un acabado perfecto.">
+                  <h3>Soft Gel</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/lavadoDeCabello.jpg" alt="Lavado de Cabello" class="service-img"
+                    data-title="Lavado de Cabello" data-desc="Limpieza profunda con productos profesionales.">
+                  <h3>Lavado de cabello</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 3 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/peinadoSocial.jpg" alt="Peinado Social" class="service-img"
+                    data-title="Peinado Social" data-desc="Estilos elegantes para eventos especiales.">
+                  <h3>Peinado social</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/moldeado.jpg" alt="Moldeado" class="service-img"
+                    data-title="Moldeado" data-desc="Dale forma y volumen a tu cabello con técnicas suaves.">
+                  <h3>Moldeado</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/planchado.png" alt="Planchado" class="service-img"
+                    data-title="Planchado" data-desc="Cabello perfectamente liso y brillante.">
+                  <h3>Planchado</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 4 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/tinte.jpg" alt="Tinte" class="service-img" data-title="Tinte"
+                    data-desc="Coloración profesional con tonos vibrantes o naturales.">
+                  <h3>Decoloracion completa</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/rizado.jpeg" alt="Reflejos" class="service-img"
+                    data-title="Reflejos" data-desc="Iluminaciones que aportan brillo y movimiento.">
+                  <h3>Rizado</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/corteDama.jpg" alt="Depilación con Cera" class="service-img"
+                    data-title="Depilación con Cera" data-desc="Elimina el vello desde la raíz para una piel suave.">
+                  <h3>Corte de dama</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 5 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/corteCaballero.jpg" alt="Maquillaje Social" class="service-img"
+                    data-title="Maquillaje Social" data-desc="Maquillaje profesional para cualquier ocasión.">
+                  <h3>Maquillaje social</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/arregloBarba.jpg" alt="Diseño de Cejas" class="service-img"
+                    data-title="Diseño de Cejas" data-desc="Moldea tus cejas con precisión.">
+                  <h3>Areglo de barba</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/planchadoCeja.jpg" alt="Extensión de Pestañas" class="service-img"
+                    data-title="Extensión de Pestañas" data-desc="Logra una mirada intensa con extensiones naturales.">
+                  <h3>Planchado de cejas</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 6 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/bioplastia.jpg" alt="Spa de Pies" class="service-img"
+                    data-title="Spa de Pies" data-desc="Relaja y revitaliza tus pies con sales, aceites y masajes.">
+                  <h3>bioplastia</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/mascarilla.jpg" alt="Masaje Corporal" class="service-img"
+                    data-title="Masaje Corporal"
+                    data-desc="Terapia relajante que alivia tensión y mejora la circulación.">
+                  <h3>Mascarilla</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/ampolletas.jpg" alt="Exfoliación" class="service-img"
+                    data-title="Exfoliación" data-desc="Elimina impurezas para una piel más suave y luminosa.">
+                  <h3>Ampolletas</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 7 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/efectoColor.jpg" alt="Mascarilla Facial" class="service-img"
+                    data-title="Mascarilla Facial" data-desc="Tratamiento nutritivo que hidrata y suaviza la piel.">
+                  <h3>Tinte efecto de color</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/retoqueTinte.jpg" alt="Hidratación" class="service-img"
+                    data-title="Hidratación" data-desc="Tratamiento capilar para cabello seco y dañado.">
+                  <h3>Retoque de tinte</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/epilacionCeja.png" alt="Corte de Cabello" class="service-img"
+                    data-title="Corte de Cabello" data-desc="Estilos modernos y personalizados según tu rostro.">
+                  <h3>Epilacion de ceja</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 8 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/epilacionBozo.jpg" alt="Barbería" class="service-img"
+                    data-title="Barbería" data-desc="Cortes y perfilado de barba con precisión.">
+                  <h3>Epilacion de bozo</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/epilacionPatilla.jpg" alt="Alisado Permanente" class="service-img"
+                    data-title="Alisado Permanente" data-desc="Cabello liso por más tiempo con tratamientos sin daño.">
+                  <h3>Epilacion de patilla</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/epilacionRostro.jpg" alt="Tratamiento con Keratina"
+                    class="service-img" data-title="Tratamiento con Keratina"
+                    data-desc="Repara el cabello dañado y devuelve su brillo natural.">
+                  <h3>Epilacion de rostro</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grupo 9 -->
+          <div class="carousel-item">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/EpilacionPierna.jpg" alt="Tinte Fantasía" class="service-img"
+                    data-title="Tinte Fantasía" data-desc="Colores vibrantes y únicos para un look atrevido.">
+                  <h3>Epilacion de media pierna</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/epilacionAntebrazo.jpg" alt="Maquillaje de Novia"
+                    class="service-img" data-title="Maquillaje de Novia"
+                    data-desc="Maquillaje elegante y duradero para tu gran día.">
+                  <h3>Epilacion de antebrazo</h3>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="service-card">
+                  <img src="../public/img/servicios/balayage.jpeg" alt="Peinado de Novia" class="service-img"
+                    data-title="Peinado de Novia" data-desc="Diseños personalizados que realzan tu belleza natural.">
+                  <h3>Balayage</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#serviciosCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="serviceModal" class="service-modal">
+    <div class="service-modal-content">
+      <span class="service-modal-close">&times;</span>
+      <div class="service-modal-body">
+        <div class="service-modal-text">
+          <h3 id="serviceTitle"></h3>
+          <p id="serviceDescription"></p>
+        </div>
+        <div class="service-modal-image">
+          <img id="serviceImage" src="" alt="Servicio">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Carrusel Marca 1 -->
+  <section id="productos" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="section-title text-center mb-5">Productos que Utilizamos</h2>
+
+      <!-- Línea Premium Natural -->
+      <h3 class="text-center mb-4">Salerm Cosmetics</h3>
+      <?php if (!empty($salermProducts)): ?>
+        <div id="marca1Carousel" class="carousel slide mb-5" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <?php
+            $chunks = array_chunk($salermProducts, 6);
+            foreach ($chunks as $index => $chunk):
+              ?>
+              <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                <div class="row g-4 justify-content-center">
+                  <?php foreach ($chunk as $product): ?>
+                    <div class="col-6 col-sm-4 col-md-2">
+                      <div class="product-card">
+                        <div class="product-img">
+                          <img
+                            src="<?php echo !empty($product['imagen_path']) ? htmlspecialchars($product['imagen_path']) : '../public/img/placeholder.jpg'; ?>"
+                            alt="<?php echo htmlspecialchars($product['nombre']); ?>" class="img-fluid rounded">
+                        </div>
+                        <h4>
+                          <?php echo htmlspecialchars($product['nombre']); ?>
+                        </h4>
+                        <p>$
+                          <?php echo number_format($product['precio'], 2); ?>
+                        </p>
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+
+          <?php if (count($chunks) > 1): ?>
+            <button class="carousel-control-prev" type="button" data-bs-target="#marca1Carousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#marca1Carousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          <?php endif; ?>
+        </div>
+      <?php else: ?>
+        <p class="text-center">No hay productos disponibles por el momento.</p>
+      <?php endif; ?>
+    </div>
+  </section>
+  <!-- Línea Cuccio -->
+  <h3 class="text-center mb-4 mt-5">Cuccio</h3>
+  <?php if (!empty($cuccioProducts)): ?>
+    <div id="marca2Carousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <?php
+        $chunks = array_chunk($cuccioProducts, 6);
+        foreach ($chunks as $index => $chunk):
+          ?>
+          <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+            <div class="row g-4 justify-content-center">
+              <?php foreach ($chunk as $product): ?>
+                <div class="col-6 col-sm-4 col-md-2">
+                  <div class="product-card">
+                    <div class="product-img">
+                      <img
+                        src="<?php echo !empty($product['imagen_path']) ? htmlspecialchars($product['imagen_path']) : '../public/img/placeholder.jpg'; ?>"
+                        alt="<?php echo htmlspecialchars($product['nombre']); ?>" class="img-fluid rounded">
+                    </div>
+                    <h4>
+                      <?php echo htmlspecialchars($product['nombre']); ?>
+                    </h4>
+                    <p>$
+                      <?php echo number_format($product['precio'], 2); ?>
+                    </p>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <?php if (count($chunks) > 1): ?>
+        <button class="carousel-control-prev" type="button" data-bs-target="#marca2Carousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#marca2Carousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      <?php endif; ?>
+
+    </div>
+  <?php else: ?>
+    <p class="text-center">No hay productos disponibles por el momento.</p>
+  <?php endif; ?>
+  </section>
+  <!-- Galería Pinterest Style -->
+  <section id="galeria" class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center mb-5">Nuestra Galería</h2>
+
+      <div class="pinterest-grid">
+
+        <div class="pinterest-item" data-title="Sala de Masajes">
+          <img src="../public/img/aruma spa/Local1.jpg" alt="Sala de Masajes">
+        </div>
+
+        <div class="pinterest-item tall" data-title="Área de Relajación">
+          <img src="../public/img/aruma spa/Local3.jpeg" alt="Área de Relajación">
+        </div>
+
+        <div class="pinterest-item" data-title="Tratamiento Facial">
+          <img src="../public/img/aruma spa/Local4.jpeg" alt="Tratamiento Facial">
+        </div>
+
+        <div class="pinterest-item wide" data-title="Piscina Termal">
+          <img src="../public/img/aruma spa/Local5.jpeg" alt="Piscina Termal">
+        </div>
+
+        <div class="pinterest-item" data-title="Sauna">
+          <img src="../public/img/aruma spa/Local6.jpeg" alt="Sauna">
+        </div>
+
+        <div class="pinterest-item tall" data-title="Yoga Studio">
+          <img src="../public/img/aruma spa/Local7.jpeg" alt="Yoga Studio">
+        </div>
+
+        <div class="pinterest-item" data-title="Recepción">
+          <img src="../public/img/aruma spa/Local8.jpeg" alt="Recepción">
+        </div>
+
+        <div class="pinterest-item" data-title="Manicure">
+          <img src="../public/img/aruma spa/Local9.jpeg" alt="Manicure">
+        </div>
+
+        <div class="pinterest-item wide" data-title="Jardín Zen">
+          <img src="../public/img/aruma spa/Local11.jpeg" alt="Jardín Zen">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Galería -->
+  <div class="gallery-overlay" id="galleryOverlay">
+    <button class="btn-close-gallery" id="btnCloseGallery">
+      <i class="fas fa-times"></i>
     </button>
 
     <img class="gallery-modal-img" id="galleryModalImg" src="" alt="">
-    
-</div>
 
-    <!-- Chatbot -->
-     <script type="text/javascript">
-  (function(d, t) {
+  </div>
+
+  <!-- Chatbot -->
+  <script type="text/javascript">
+    (function (d, t) {
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-      v.onload = function() {
+      v.onload = function () {
         window.voiceflow.chat.load({
           verify: { projectID: '68ffdb072a3464dcb56c6e60' },
           url: 'https://general-runtime.voiceflow.com',
@@ -770,44 +581,45 @@
         });
       }
       v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-  })(document, 'script');
-</script>
+    })(document, 'script');
+  </script>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5><i class="fas fa-spa"></i> ARUMA SPA</h5>
-                    <p>Tu espacio de bienestar donde cuerpo y mente encuentran armonía perfecta.</p>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5>Enlaces Rápidos</h5>
-                    <ul class="footer-links">
-                        <li><a href="#servicios">Servicios</a></li>
-                        <li><a href="#productos">Productos</a></li>
-                        <li><a href="#galeria">Galería</a></li>
-                        <li><a href="../views/mision-vision.php">inicio</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <h5>Síguenos</h5>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="text-center pt-3 border-top">
-                <p>&copy; 2024 Aruma Spa. Todos los derechos reservados.</p>
-            </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5><i class="fas fa-spa"></i> ARUMA SPA</h5>
+          <p>Tu espacio de bienestar donde cuerpo y mente encuentran armonía perfecta.</p>
         </div>
-    </footer>
+        <div class="col-md-4 mb-4">
+          <h5>Enlaces Rápidos</h5>
+          <ul class="footer-links">
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="../views/mision-vision.php">inicio</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Síguenos</h5>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
 
-    <script src="../public/scripts/bootstrap.bundle.min.js"></script>
-    <script src="../public/scripts/script.js"></script>
+          </div>
+        </div>
+      </div>
+      <div class="text-center pt-3 border-top">
+        <p>&copy; 2024 Aruma Spa. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../public/scripts/bootstrap.bundle.min.js"></script>
+  <script src="../public/scripts/script.js"></script>
 </body>
+
 </html>

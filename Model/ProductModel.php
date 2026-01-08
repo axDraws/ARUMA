@@ -27,6 +27,13 @@ class ProductModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function findByCategory($categoria)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM products WHERE categoria = :categoria ORDER BY id DESC");
+        $stmt->execute([':categoria' => $categoria]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function create($nombre, $categoria, $descripcion, $precio, $imagen_path)
     {
         $stmt = $this->db->prepare("INSERT INTO products (nombre, categoria, descripcion, precio, imagen_path) VALUES (:nombre, :categoria, :descripcion, :precio, :imagen_path)");

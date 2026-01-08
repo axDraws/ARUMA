@@ -44,6 +44,10 @@ switch ($uri) {
 
     case '':
     case 'home':
+        require_once __DIR__ . '/Model/ProductModel.php';
+        $productModel = new ProductModel();
+        $salermProducts = $productModel->findByCategory('Salerm');
+        $cuccioProducts = $productModel->findByCategory('Cuccio');
         require __DIR__ . '/views/home.php';
         break;
 

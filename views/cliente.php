@@ -75,10 +75,8 @@ if (!isset($_SESSION['user_id'])) {
                             <li onclick="showSection('nueva-reserva')">
                                 <i class="fas fa-plus-circle"></i> Nueva Reserva
                             </li>
-                            <li>
-                                <a href="/mi-perfil" class="text-decoration-none text-dark">
-                                    <i class="fas fa-user"></i> Mi Perfil
-                                </a>
+                            <li onclick="showSection('mi-perfil')">
+                                <i class="fas fa-user"></i> Mi Perfil
                             </li>
                         </ul>
                     </div>

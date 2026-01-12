@@ -46,7 +46,7 @@
       <h2 class="text-center mb-4">Iniciar Sesión</h2>
 
       <!-- FORMULARIO REAL DE LOGIN -->
-      <form method="POST" action="login">
+      <form method="POST" action="/login">
         <div class="mb-3">
           <label for="email_login" class="form-label">Correo Electrónico</label>
           <input type="email" class="form-control" name="email" id="email_login" required>
@@ -90,7 +90,7 @@
       <h2 class="text-center mb-4">Crear Cuenta</h2>
 
       <!-- FORMULARIO REAL DE REGISTRO -->
-      <form method="POST" action="register">
+      <form method="POST" action="/register">
         <div class="mb-3">
           <label class="form-label">Nombre Completo</label>
           <input type="text" class="form-control" name="nombre" required>

@@ -1,0 +1,23 @@
+services:
+  # Servidor de Base de Datos
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: aruma_spa  # <--- Cambiado para coincidir con tu config.php
+    volumes:
+      # Docker importará automáticamente tu .sql al crear el contenedor
+      - ./aruma_schema.sql:/docker-entrypoint-initdb.d/1.sql 
+    ports:
+      - "3306:3306"
+
+  # Servidor Web (PHP + Apache)
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db

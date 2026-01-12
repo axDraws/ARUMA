@@ -4,10 +4,11 @@ ini_set('display_errors', 1);
 
 class DB
 {
-    private static $host = "localhost";
-    private static $db = "aruma_spa";
-    private static $user = "root";       // ← tu usuario real
-    private static $pass = ""; // ← tu contraseña real
+    // CAMBIOS REALIZADOS PARA DOCKER:
+    private static $host = "db";        // Antes "localhost", ahora "db" (nombre del servicio en docker-compose)
+    private static $db = "aruma_db";    // Asegúrate de que coincida con MYSQL_DATABASE en docker-compose
+    private static $user = "root";      
+    private static $pass = "root";      // Antes vacío, ahora "root" como definimos en el docker-compose
     private static $charset = "utf8mb4";
 
     public static function get()
